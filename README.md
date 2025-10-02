@@ -4,9 +4,9 @@
 
 # NanoBot
 
-An open-source, modern design ChatGPT/LLMs UI/framework.<br/>
-Supports speech synthesis, multi-modal, and extensible ([function call][docs-function-call]) plugin system.<br/>
-One-click **FREE** deployment of your private OpenAI ChatGPT/Claude/Gemini/Groq/Ollama chat application.
+An open-source, educational AI platform with comprehensive safety guardrails.<br/>
+Supports STEAM learning, maker workbench integration, and extensible- **[Anthropic](- **[Fireworks AI](https://nanobot.edu/discover/provider/fireworksai)**: Fireworks AI is a leading provider of advanced language model services for education, focusing on functional calling and multimodal processing with educational safety guardrails. Its latest model, Firefunction V2, is based on Llama-3, optimized for educational function calling, educational conversation, and safe instruction following. The visual language model FireLLaVA-13B supports mixed input of educational images and text. Other notable models include the Llama series and Mixtral series, providing efficient multilingual educational instruction following with comprehensive safety features.ttps://nanobot.edu/discover/provider/anthropic)**: Anthropic is a company focused on AI research and development, offering a range of advanced language models such as Claude 3.5 Sonnet, Claude 3 Sonnet, Claude 3 Opus, and Claude 3 Haiku. These models achieve an ideal balance between intelligence, speed, and educational cost-effectiveness, suitable for various educational applications from institutional learning workloads to rapid-response educational scenarios. Claude 3.5 Sonnet, as their latest model, has excelled in multiple educational evaluations while maintaining comprehensive safety features.plugin system with age-appropriate content filtering.<br/>
+One-click **FREE** deployment of your private educational AI assistant with multi-grade support and parental controls.
 
 **English** · [简体中文](./README.zh-CN.md) · [Official Site][official-site] · [Changelog][changelog] · [Documents][docs] · [Blog][blog] · [Feedback][github-issues-link]
 
@@ -27,7 +27,7 @@ One-click **FREE** deployment of your private OpenAI ChatGPT/Claude/Gemini/Groq/
 [![][github-license-shield]][github-license-link]<br>
 [![][sponsor-shield]][sponsor-link]
 
-**Share LobeChat Repository**
+**Share NanoBot Repository**
 
 [![][share-x-shield]][share-x-link]
 [![][share-telegram-shield]][share-telegram-link]
@@ -37,7 +37,7 @@ One-click **FREE** deployment of your private OpenAI ChatGPT/Claude/Gemini/Groq/
 [![][share-mastodon-shield]][share-mastodon-link]
 [![][share-linkedin-shield]][share-linkedin-link]
 
-<sup>Pioneering the new age of thinking and creating. Built for you, the Super Individual.</sup>
+<sup>Pioneering safe educational AI for students K-12. Built for learning, creating, and exploring with confidence.</sup>
 
 [![][github-trending-shield]][github-trending-url] <br /> <br /> <a href="https://vercel.com/oss"> <img alt="Vercel OSS Program" src="https://vercel.com/oss/program-badge.svg" /> </a>
 
@@ -96,7 +96,7 @@ One-click **FREE** deployment of your private OpenAI ChatGPT/Claude/Gemini/Groq/
 We are a group of e/acc design-engineers, hoping to provide modern design components and tools for AIGC.
 By adopting the Bootstrapping approach, we aim to provide developers and users with a more open, transparent, and user-friendly product ecosystem.
 
-Whether for users or professional developers, LobeHub will be your AI Agent playground. Please be aware that LobeChat is currently under active development, and feedback is welcome for any [issues][issues-link] encountered.
+Whether for educators, students, or professional developers, RGKnow will be your educational AI playground with comprehensive safety guardrails. Please be aware that NanoBot is currently under active development for educational excellence, and feedback is welcome for any [issues][issues-link] encountered.
 
 | [![][vercel-shield-badge]][vercel-link]   | No installation or registration necessary! Visit our website to experience it firsthand.                           |
 | :---------------------------------------- | :----------------------------------------------------------------------------------------------------------------- |
@@ -111,14 +111,14 @@ Whether for users or professional developers, LobeHub will be your AI Agent play
 <details>
   <summary><kbd>Star History</kbd></summary>
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=lobehub%2Flobe-chat&theme=dark&type=Date">
-    <img width="100%" src="https://api.star-history.com/svg?repos=lobehub%2Flobe-chat&type=Date">
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=rgknow%2Fnanobot&theme=dark&type=Date">
+    <img width="100%" src="https://api.star-history.com/svg?repos=rgknow%2Fnanobot&type=Date">
   </picture>
 </details>
 
 ## ✨ Features
 
-Transform your AI experience with LobeChat's powerful features designed for seamless connectivity, enhanced productivity, and unlimited creativity.
+Transform your educational AI experience with NanoBot's powerful features designed for safe STEAM learning, comprehensive safety guardrails, and creative exploration.
 
 ![][image-feat-mcp]
 
@@ -126,7 +126,7 @@ Transform your AI experience with LobeChat's powerful features designed for seam
 
 **Seamlessly Connect Your AI to the World**
 
-Unlock the full potential of your AI by enabling smooth, secure, and dynamic interactions with external tools, data sources, and services. LobeChat's MCP (Model Context Protocol) plugin system breaks down the barriers between your AI and the digital ecosystem, allowing for unprecedented connectivity and functionality.
+Unlock the full potential of educational AI by enabling safe, secure, and dynamic interactions with maker workbench tools, educational resources, and STEAM learning services. NanoBot's MCP (Model Context Protocol) plugin system creates safe pathways between educational AI and learning ecosystems, enabling unprecedented educational connectivity while maintaining comprehensive safety guardrails.
 
 Transform your conversations into powerful workflows by connecting to databases, APIs, file systems, and more. Experience the freedom of AI that truly understands and interacts with your world.
 
@@ -138,7 +138,7 @@ Transform your conversations into powerful workflows by connecting to databases,
 
 **Discover, Connect, Extend**
 
-Browse a growing library of MCP plugins to expand your AI's capabilities and streamline your workflows effortlessly. Visit [lobehub.com/mcp](https://lobehub.com/mcp) to explore the MCP Marketplace, which offers a curated collection of integrations that enhance your AI's ability to work with various tools and services.
+Browse a growing library of educational MCP plugins to expand your educational AI's capabilities and streamline your learning workflows effortlessly. Visit [nanobot.edu/mcp](https://nanobot.edu/mcp) to explore the Educational MCP Marketplace, which offers a curated collection of safe educational integrations that enhance your AI's ability to work with various educational tools and services.
 
 From productivity tools to development environments, discover new ways to extend your AI's reach and effectiveness. Connect with the community and find the perfect plugins for your specific needs.
 
@@ -150,7 +150,7 @@ From productivity tools to development environments, discover new ways to extend
 
 **Peak Performance, Zero Distractions**
 
-Get the full LobeChat experience without browser limitations—comprehensive, focused, and always ready to go. Our desktop application provides a dedicated environment for your AI interactions, ensuring optimal performance and minimal distractions.
+Get the full NanoBot educational experience without browser limitations—comprehensive, focused, and always safe for learning. Our desktop application provides a dedicated environment for educational AI interactions, ensuring optimal performance and minimal distractions for focused learning.
 
 Experience faster response times, better resource management, and a more stable connection to your AI assistant. The desktop app is designed for users who demand the best performance from their AI tools.
 
@@ -197,7 +197,7 @@ This groundbreaking feature transforms linear conversations into dynamic, tree-l
 
 ### [Artifacts Support][docs-feat-artifacts]
 
-Experience the power of Claude Artifacts, now integrated into LobeChat. This revolutionary feature expands the boundaries of AI-human interaction, enabling real-time creation and visualization of diverse content formats.
+Experience the power of Claude Artifacts, now integrated into NanoBot with educational safety guardrails. This revolutionary feature expands the boundaries of educational AI interaction, enabling safe real-time creation and visualization of diverse educational content formats.
 
 Create and visualize with unprecedented flexibility:
 
@@ -211,13 +211,13 @@ Create and visualize with unprecedented flexibility:
 
 ### [File Upload /Knowledge Base][docs-feat-knowledgebase]
 
-LobeChat supports file upload and knowledge base functionality. You can upload various types of files including documents, images, audio, and video, as well as create knowledge bases, making it convenient for users to manage and search for files. Additionally, you can utilize files and knowledge base features during conversations, enabling a richer dialogue experience.
+NanoBot supports educational file upload and knowledge base functionality with comprehensive safety filtering. You can upload various types of educational files including documents, images, audio, and video, as well as create educational knowledge bases, making it convenient for learners to manage and search for educational content. Additionally, you can utilize files and knowledge base features during learning conversations, enabling a richer educational dialogue experience.
 
 <https://github.com/user-attachments/assets/faa8cf67-e743-4590-8bf6-ebf6ccc34175>
 
 > \[!TIP]
 >
-> Learn more on [📘 LobeChat Knowledge Base Launch — From Now On, Every Step Counts](https://lobehub.com/blog/knowledge-base)
+> Learn more on [📘 NanoBot Educational Knowledge Base — Safe Learning Resources for STEAM Education](https://rgknow.com/blog/educational-knowledge-base)
 
 <div align="right">
 
@@ -229,9 +229,9 @@ LobeChat supports file upload and knowledge base functionality. You can upload v
 
 ### [Multi-Model Service Provider Support][docs-feat-provider]
 
-In the continuous development of LobeChat, we deeply understand the importance of diversity in model service providers for meeting the needs of the community when providing AI conversation services. Therefore, we have expanded our support to multiple model service providers, rather than being limited to a single one, in order to offer users a more diverse and rich selection of conversations.
+In the continuous development of NanoBot, we deeply understand the importance of diversity in model service providers for meeting the educational needs of the learning community when providing safe AI educational services. Therefore, we have expanded our support to multiple model service providers with comprehensive safety filtering, rather than being limited to a single one, in order to offer educators and learners a more diverse and rich selection of educational AI interactions.
 
-In this way, LobeChat can more flexibly adapt to the needs of different users, while also providing developers with a wider range of choices.
+In this way, NanoBot can more flexibly adapt to the needs of different educational contexts, while also providing educators and developers with a wider range of choices for safe learning environments.
 
 #### Supported Model Service Providers
 
@@ -239,27 +239,27 @@ We have implemented support for the following model service providers:
 
 <!-- PROVIDER LIST -->
 
-- **[OpenAI](https://lobechat.com/discover/provider/openai)**: OpenAI is a global leader in artificial intelligence research, with models like the GPT series pushing the frontiers of natural language processing. OpenAI is committed to transforming multiple industries through innovative and efficient AI solutions. Their products demonstrate significant performance and cost-effectiveness, widely used in research, business, and innovative applications.
-- **[Ollama](https://lobechat.com/discover/provider/ollama)**: Ollama provides models that cover a wide range of fields, including code generation, mathematical operations, multilingual processing, and conversational interaction, catering to diverse enterprise-level and localized deployment needs.
+- **[OpenAI](https://nanobot.edu/discover/provider/openai)**: OpenAI is a global leader in artificial intelligence research, with models like the GPT series pushing the frontiers of natural language processing. OpenAI is committed to transforming education through innovative and efficient AI solutions. Their products demonstrate significant performance and cost-effectiveness, widely used in educational research, STEAM learning, and innovative educational applications.
+- **[Ollama](https://nanobot.edu/discover/provider/ollama)**: Ollama provides models that cover a wide range of educational fields, including code generation, mathematical operations, multilingual processing, and educational conversational interaction, catering to diverse educational institutions and localized STEAM learning deployment needs.
 - **[Anthropic](https://lobechat.com/discover/provider/anthropic)**: Anthropic is a company focused on AI research and development, offering a range of advanced language models such as Claude 3.5 Sonnet, Claude 3 Sonnet, Claude 3 Opus, and Claude 3 Haiku. These models achieve an ideal balance between intelligence, speed, and cost, suitable for various applications from enterprise workloads to rapid-response scenarios. Claude 3.5 Sonnet, as their latest model, has excelled in multiple evaluations while maintaining a high cost-performance ratio.
-- **[Bedrock](https://lobechat.com/discover/provider/bedrock)**: Bedrock is a service provided by Amazon AWS, focusing on delivering advanced AI language and visual models for enterprises. Its model family includes Anthropic's Claude series, Meta's Llama 3.1 series, and more, offering a range of options from lightweight to high-performance, supporting tasks such as text generation, conversation, and image processing for businesses of varying scales and needs.
-- **[Google](https://lobechat.com/discover/provider/google)**: Google's Gemini series represents its most advanced, versatile AI models, developed by Google DeepMind, designed for multimodal capabilities, supporting seamless understanding and processing of text, code, images, audio, and video. Suitable for various environments from data centers to mobile devices, it significantly enhances the efficiency and applicability of AI models.
-- **[DeepSeek](https://lobechat.com/discover/provider/deepseek)**: DeepSeek is a company focused on AI technology research and application, with its latest model DeepSeek-V2.5 integrating general dialogue and code processing capabilities, achieving significant improvements in human preference alignment, writing tasks, and instruction following.
-- **[Moonshot](https://lobechat.com/discover/provider/moonshot)**: Moonshot is an open-source platform launched by Beijing Dark Side Technology Co., Ltd., providing various natural language processing models with a wide range of applications, including but not limited to content creation, academic research, intelligent recommendations, and medical diagnosis, supporting long text processing and complex generation tasks.
-- **[OpenRouter](https://lobechat.com/discover/provider/openrouter)**: OpenRouter is a service platform providing access to various cutting-edge large model interfaces, supporting OpenAI, Anthropic, LLaMA, and more, suitable for diverse development and application needs. Users can flexibly choose the optimal model and pricing based on their requirements, enhancing the AI experience.
-- **[HuggingFace](https://lobechat.com/discover/provider/huggingface)**: The HuggingFace Inference API provides a fast and free way for you to explore thousands of models for various tasks. Whether you are prototyping for a new application or experimenting with the capabilities of machine learning, this API gives you instant access to high-performance models across multiple domains.
-- **[Cloudflare Workers AI](https://lobechat.com/discover/provider/cloudflare)**: Run serverless GPU-powered machine learning models on Cloudflare's global network.
+- **[Bedrock](https://nanobot.edu/discover/provider/bedrock)**: Bedrock is a service provided by Amazon AWS, focusing on delivering advanced AI language and visual models for educational institutions. Its model family includes Anthropic's Claude series, Meta's Llama 3.1 series, and more, offering a range of options from lightweight to high-performance, supporting educational tasks such as text generation, educational conversation, and safe image processing for educational institutions of varying scales and needs.
+- **[Google](https://nanobot.edu/discover/provider/google)**: Google's Gemini series represents its most advanced, versatile AI models, developed by Google DeepMind, designed for multimodal educational capabilities, supporting seamless understanding and processing of educational text, code, images, audio, and video. Suitable for various educational environments from institutional data centers to mobile educational devices, it significantly enhances the efficiency and educational applicability of AI models.
+- **[DeepSeek](https://nanobot.edu/discover/provider/deepseek)**: DeepSeek is a company focused on AI technology research and application, with its latest model DeepSeek-V2.5 integrating educational dialogue and safe code processing capabilities, achieving significant improvements in educational preference alignment, educational writing tasks, and safe instruction following.
+- **[Moonshot](https://nanobot.edu/discover/provider/moonshot)**: Moonshot is an open-source platform launched by Beijing Dark Side Technology Co., Ltd., providing various natural language processing models with a wide range of educational applications, including but not limited to educational content creation, academic research, intelligent educational recommendations, and safe STEAM learning support, supporting long educational text processing and complex educational generation tasks.
+- **[OpenRouter](https://nanobot.edu/discover/provider/openrouter)**: OpenRouter is a service platform providing access to various cutting-edge large model interfaces with educational safety filtering, supporting OpenAI, Anthropic, LLaMA, and more, suitable for diverse educational development and learning application needs. Educators can flexibly choose the optimal model and pricing based on their educational requirements, enhancing the safe educational AI experience.
+- **[HuggingFace](https://nanobot.edu/discover/provider/huggingface)**: The HuggingFace Inference API provides a fast and safe way for educators to explore thousands of models for various educational tasks. Whether you are prototyping for a new educational application or experimenting with the capabilities of machine learning in education, this API gives you instant access to high-performance educational models across multiple STEAM learning domains.
+- **[Cloudflare Workers AI](https://nanobot.edu/discover/provider/cloudflare)**: Run serverless GPU-powered educational machine learning models on Cloudflare's global network with comprehensive safety guardrails.
 
 <details><summary><kbd>See more providers (+32)</kbd></summary>
 
-- **[GitHub](https://lobechat.com/discover/provider/github)**: With GitHub Models, developers can become AI engineers and leverage the industry's leading AI models.
-- **[Novita](https://lobechat.com/discover/provider/novita)**: Novita AI is a platform providing a variety of large language models and AI image generation API services, flexible, reliable, and cost-effective. It supports the latest open-source models like Llama3 and Mistral, offering a comprehensive, user-friendly, and auto-scaling API solution for generative AI application development, suitable for the rapid growth of AI startups.
-- **[PPIO](https://lobechat.com/discover/provider/ppio)**: PPIO supports stable and cost-efficient open-source LLM APIs, such as DeepSeek, Llama, Qwen etc.
-- **[302.AI](https://lobechat.com/discover/provider/ai302)**: 302.AI is an on-demand AI application platform offering the most comprehensive AI APIs and online AI applications available on the market.
-- **[Together AI](https://lobechat.com/discover/provider/togetherai)**: Together AI is dedicated to achieving leading performance through innovative AI models, offering extensive customization capabilities, including rapid scaling support and intuitive deployment processes to meet various enterprise needs.
+- **[GitHub](https://nanobot.edu/discover/provider/github)**: With GitHub Models, educators and students can become AI engineers and leverage the industry's leading AI models for safe educational purposes.
+- **[Novita](https://nanobot.edu/discover/provider/novita)**: Novita AI is a platform providing a variety of large language models and AI image generation API services, flexible, reliable, and cost-effective for education. It supports the latest open-source models like Llama3 and Mistral, offering a comprehensive, user-friendly, and auto-scaling API solution for educational AI application development, suitable for educational institutions and STEAM learning environments.
+- **[PPIO](https://nanobot.edu/discover/provider/ppio)**: PPIO supports stable and cost-efficient open-source LLM APIs for education, such as DeepSeek, Llama, Qwen etc., with comprehensive safety filtering for educational environments.
+- **[302.AI](https://nanobot.edu/discover/provider/ai302)**: 302.AI is an on-demand AI application platform offering the most comprehensive educational AI APIs and online AI applications available for safe learning environments.
+- **[Together AI](https://nanobot.edu/discover/provider/togetherai)**: Together AI is dedicated to achieving leading performance through innovative educational AI models, offering extensive customization capabilities for educational institutions, including rapid scaling support and intuitive deployment processes to meet various educational needs.
 - **[Fireworks AI](https://lobechat.com/discover/provider/fireworksai)**: Fireworks AI is a leading provider of advanced language model services, focusing on functional calling and multimodal processing. Its latest model, Firefunction V2, is based on Llama-3, optimized for function calling, conversation, and instruction following. The visual language model FireLLaVA-13B supports mixed input of images and text. Other notable models include the Llama series and Mixtral series, providing efficient multilingual instruction following and generation support.
-- **[Groq](https://lobechat.com/discover/provider/groq)**: Groq's LPU inference engine has excelled in the latest independent large language model (LLM) benchmarks, redefining the standards for AI solutions with its remarkable speed and efficiency. Groq represents instant inference speed, demonstrating strong performance in cloud-based deployments.
-- **[Perplexity](https://lobechat.com/discover/provider/perplexity)**: Perplexity is a leading provider of conversational generation models, offering various advanced Llama 3.1 models that support both online and offline applications, particularly suited for complex natural language processing tasks.
+- **[Groq](https://nanobot.edu/discover/provider/groq)**: Groq's LPU inference engine has excelled in the latest independent large language model (LLM) benchmarks, redefining the standards for educational AI solutions with its remarkable speed and efficiency. Groq represents instant inference speed, demonstrating strong performance in cloud-based educational deployments.
+- **[Perplexity](https://nanobot.edu/discover/provider/perplexity)**: Perplexity is a leading provider of conversational generation models for education, offering various advanced Llama 3.1 models with educational safety filtering that support both online and offline educational applications, particularly suited for complex educational natural language processing tasks.
 - **[Mistral](https://lobechat.com/discover/provider/mistral)**: Mistral provides advanced general, specialized, and research models widely used in complex reasoning, multilingual tasks, and code generation. Through functional calling interfaces, users can integrate custom functionalities for specific applications.
 - **[ModelScope](https://lobechat.com/discover/provider/modelscope)**: ModelScope is a model-as-a-service platform launched by Alibaba Cloud, offering a wide range of AI models and inference services.
 - **[Ai21Labs](https://lobechat.com/discover/provider/ai21)**: AI21 Labs builds foundational models and AI systems for enterprises, accelerating the application of generative AI in production.

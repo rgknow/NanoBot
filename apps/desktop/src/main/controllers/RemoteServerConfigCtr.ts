@@ -13,7 +13,7 @@ const logger = createLogger('controllers:RemoteServerConfigCtr');
 
 /**
  * Remote Server Configuration Controller
- * Used to manage custom remote LobeChat server configuration
+ * Used to manage custom remote NanoBot server configuration
  */
 export default class RemoteServerConfigCtr extends ControllerModule {
   /**

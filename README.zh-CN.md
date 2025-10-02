@@ -6,7 +6,7 @@
 
 现代化设计的开源 ChatGPT/LLMs 聊天应用与开发框架<br/>
 支持语音合成、多模态、可扩展的（[function call][docs-functionc-call]）插件系统<br/>
-一键**免费**拥有你自己的 ChatGPT/Gemini/Claude/Ollama 应用
+一键**免费**拥有你自己的 Cha> 查阅 [📘 NanoBot 教育知识库上线 —— STEAM 教育安全学习资源](https://rgknow.com/zh/blog/educational-knowledge-base) 了解详情。GPT/Gemini/Claude/Ollama 应用
 
 [English](./README.md) · **简体中文** · [官网][official-site] · [更新日志][changelog] · [文档][docs] · [博客][blog] · [反馈问题][github-issues-link]
 
@@ -27,7 +27,7 @@
 [![][github-license-shield]][github-license-link]<br>
 [![][sponsor-shield]][sponsor-link]
 
-**分享 LobeChat 给你的好友**
+**分享 NanoBot 给你的好友**
 
 [![][share-x-shield]][share-x-link]
 [![][share-telegram-shield]][share-telegram-link]
@@ -97,7 +97,7 @@
 我们是一群充满热情的设计工程师，希望为 AIGC 提供现代化的设计组件和工具，并以开源的方式分享。
 同时通过 Bootstrapping 的方式，我们希望能够为开发者和用户提供一个更加开放、更加透明友好的产品生态。
 
-不论普通用户与专业开发者，LobeHub 旨在成为所有人的 AI Agent 实验场。LobeChat 目前正在积极开发中，有任何需求或者问题，欢迎提交 [issues][issues-link]
+不论普通用户与专业开发者，RGKnow 旨在成为所有人的教育 AI Agent 实验场，具有全面的安全防护。NanoBot 目前正在积极开发中以实现教育卓越，有任何需求或者问题，欢迎提交 [issues][issues-link]
 
 | [![][vercel-shield-badge]][vercel-link]   | 无需安装或注册！访问我们的网站，快速体验                                     |
 | :---------------------------------------- | :--------------------------------------------------------------------------- |
@@ -111,14 +111,14 @@
 
 <details><summary><kbd>Star History</kbd></summary>
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=lobehub%2Flobe-chat&theme=dark&type=Date">
-    <img src="https://api.star-history.com/svg?repos=lobehub%2Flobe-chat&type=Date">
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=rgknow%2Fnanobot&theme=dark&type=Date">
+    <img src="https://api.star-history.com/svg?repos=rgknow%2Fnanobot&type=Date">
   </picture>
 </details>
 
 ## ✨ 特性一览
 
-通过 LobeChat 的强大功能，体验为无缝连接、提升效率和无限创意而设计的全新 AI 体验。
+通过 NanoBot 的强大功能，体验为安全 STEAM 学习、全面安全防护和创意探索而设计的全新教育 AI 体验。
 
 ### ✨ MCP 插件一键安装
 
@@ -138,7 +138,7 @@
 
 **发现、连接、扩展**
 
-浏览不断增长的 MCP 插件库，轻松扩展你的 AI 能力并简化工作流程。访问 [lobehub.com/mcp](https://lobehub.com/mcp) 探索 MCP 市场，提供精选的集成集合，增强你的 AI 与各种工具和服务协作的能力。
+浏览不断增长的教育 MCP 插件库，轻松扩展你的教育 AI 能力并简化学习工作流程。访问 [nanobot.edu/mcp](https://nanobot.edu/mcp) 探索教育 MCP 市场，提供精选的安全教育集成集合，增强你的 AI 与各种教育工具和服务协作的能力。
 
 从生产力工具到开发环境，发现扩展 AI 覆盖范围和效率的新方式。与社区连接，找到满足特定需求的完美插件。
 
@@ -150,7 +150,7 @@
 
 **巅峰性能，零干扰**
 
-获得完整的 LobeChat 体验，摆脱浏览器限制 —— 轻量级、专注且随时就绪。我们的桌面应用程序为你的 AI 交互提供专用环境，确保最佳性能和最小干扰。
+获得完整的 NanoBot 教育体验，摆脱浏览器限制 —— 轻量级、专注且随时就绪安全学习。我们的桌面应用程序为你的教育 AI 交互提供专用环境，确保最佳性能和最小学习干扰。
 
 体验更快的响应时间、更好的资源管理和与 AI 助手的更稳定连接。桌面应用专为要求 AI 工具最佳性能的用户设计。
 
@@ -197,7 +197,7 @@
 
 ### [支持白板 (Artifacts)][docs-feat-artifacts]
 
-体验集成于 LobeChat 的 Claude Artifacts 能力。这项革命性功能突破了 AI 人机交互的边界，让您能够实时创建和可视化各种格式的内容。
+体验集成于 NanoBot 的 Claude Artifacts 教育能力和安全防护。这项革命性功能突破了教育 AI 人机交互的边界，让您能够安全实时创建和可视化各种教育格式的内容。
 
 以前所未有的灵活度进行创作与可视化：
 
@@ -211,7 +211,7 @@
 
 ### [文件上传 / 知识库][docs-feat-knowledgebase]
 
-LobeChat 支持文件上传与知识库功能，你可以上传文件、图片、音频、视频等多种类型的文件，以及创建知识库，方便用户管理和查找文件。同时在对话中使用文件和知识库功能，实现更加丰富的对话体验。
+NanoBot 支持教育文件上传与知识库功能，并具有全面的安全过滤功能。你可以上传教育文件、图片、音频、视频等多种类型的教育文件，以及创建教育知识库，方便学习者管理和查找教育内容。同时在学习对话中使用文件和知识库功能，实现更加丰富的教育对话体验。
 
 <https://github.com/user-attachments/assets/faa8cf67-e743-4590-8bf6-ebf6ccc34175>
 
@@ -229,9 +229,9 @@ LobeChat 支持文件上传与知识库功能，你可以上传文件、图片�
 
 ### [多模型服务商支持][docs-feat-provider]
 
-在 LobeChat 的不断发展过程中，我们深刻理解到在提供 AI 会话服务时模型服务商的多样性对于满足社区需求的重要性。因此，我们不再局限于单一的模型服务商，而是拓展了对多种模型服务商的支持，以便为用户提供更为丰富和多样化的会话选择。
+在 NanoBot 的不断发展过程中，我们深刻理解到在提供安全 AI 教育服务时模型服务商的多样性对于满足学习社区需求的重要性。因此，我们不再局限于单一的模型服务商，而是拓展了对多种具有全面安全过滤的模型服务商的支持，以便为教育者和学习者提供更为丰富和多样化的教育 AI 交互选择。
 
-通过这种方式，LobeChat 能够更灵活地适应不同用户的需求，同时也为开发者提供了更为广泛的选择空间。
+通过这种方式，NanoBot 能够更灵活地适应不同教育环境的需求，同时也为教育者和开发者提供了更为广泛的安全学习环境选择空间。
 
 #### 已支持的模型服务商
 
@@ -239,9 +239,9 @@ LobeChat 支持文件上传与知识库功能，你可以上传文件、图片�
 
 <!-- PROVIDER LIST -->
 
-- **[OpenAI](https://lobechat.com/discover/provider/openai)**: OpenAI 是全球领先的人工智能研究机构，其开发的模型如 GPT 系列推动了自然语言处理的前沿。OpenAI 致力于通过创新和高效的 AI 解决方案改变多个行业。他们的产品具有显著的性能和经济性，广泛用于研究、商业和创新应用。
-- **[Ollama](https://lobechat.com/discover/provider/ollama)**: Ollama 提供的模型广泛涵盖代码生成、数学运算、多语种处理和对话互动等领域，支持企业级和本地化部署的多样化需求。
-- **[Anthropic](https://lobechat.com/discover/provider/anthropic)**: Anthropic 是一家专注于人工智能研究和开发的公司，提供了一系列先进的语言模型，如 Claude 3.5 Sonnet、Claude 3 Sonnet、Claude 3 Opus 和 Claude 3 Haiku。这些模型在智能、速度和成本之间取得了理想的平衡，适用于从企业级工作负载到快速响应的各种应用场景。Claude 3.5 Sonnet 作为其最新模型，在多项评估中表现优异，同时保持了较高的性价比。
+- **[OpenAI](https://nanobot.edu/discover/provider/openai)**: OpenAI 是全球领先的人工智能研究机构，其开发的模型如 GPT 系列推动了自然语言处理的前沿。OpenAI 致力于通过创新和高效的 AI 解决方案改变教育行业。他们的产品具有显著的性能和经济性，广泛用于教育研究、STEAM 学习和创新教育应用。
+- **[Ollama](https://nanobot.edu/discover/provider/ollama)**: Ollama 提供的模型广泛涵盖教育代码生成、数学运算、多语种处理和教育对话互动等领域，支持教育机构级和本地化部署的多样化 STEAM 学习需求。
+- **[Anthropic](https://nanobot.edu/discover/provider/anthropic)**: Anthropic 是一家专注于人工智能研究和开发的公司，提供了一系列先进的语言模型，如 Claude 3.5 Sonnet、Claude 3 Sonnet、Claude 3 Opus 和 Claude 3 Haiku。这些模型在智能、速度和教育成本效益之间取得了理想的平衡，适用于从教育机构级工作负载到快速响应的各种教育应用场景。Claude 3.5 Sonnet 作为其最新模型，在多项教育评估中表现优异，同时保持了全面的安全功能。
 - **[Bedrock](https://lobechat.com/discover/provider/bedrock)**: Bedrock 是亚马逊 AWS 提供的一项服务，专注于为企业提供先进的 AI 语言模型和视觉模型。其模型家族包括 Anthropic 的 Claude 系列、Meta 的 Llama 3.1 系列等，涵盖从轻量级到高性能的多种选择，支持文本生成、对话、图像处理等多种任务，适用于不同规模和需求的企业应用。
 - **[Google](https://lobechat.com/discover/provider/google)**: Google 的 Gemini 系列是其最先进、通用的 AI 模型，由 Google DeepMind 打造，专为多模态设计，支持文本、代码、图像、音频和视频的无缝理解与处理。适用于从数据中心到移动设备的多种环境，极大提升了 AI 模型的效率与应用广泛性。
 - **[DeepSeek](https://lobechat.com/discover/provider/deepseek)**: DeepSeek 是一家专注于人工智能技术研究和应用的公司，其最新模型 DeepSeek-V3 多项评测成绩超越 Qwen2.5-72B 和 Llama-3.1-405B 等开源模型，性能对齐领军闭源模型 GPT-4o 与 Claude-3.5-Sonnet。
