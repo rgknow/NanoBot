@@ -1,0 +1,256 @@
+name: Educational Safety Validation
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    # Run safety validation daily at 6 AM UTC
+    - cron: '0 6 * * *'
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  content-safety-validation:
+    name: Content Safety Validation
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ secrets.BUN_VERSION }}
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Run Content Safety Tests
+        run: bun run test:safety:content
+        env:
+          NODE_ENV: test
+          EDUCATION_MODE: strict
+
+      - name: Validate K-12 Age Appropriateness
+        run: bun run test:safety:age-groups
+        env:
+          GRADE_LEVELS: "elementary,middle,high"
+          SAFETY_LEVEL: strict
+
+      - name: Test Profanity Filter
+        run: bun run test:safety:profanity
+
+      - name: Test Violence Content Filter
+        run: bun run test:safety:violence
+
+      - name: Test Adult Content Filter
+        run: bun run test:safety:adult-content
+
+      - name: Generate Safety Report
+        run: bun run generate:safety-report
+        if: always()
+
+      - name: Upload Safety Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: safety-validation-report
+          path: safety-report.json
+          retention-days: 30
+
+  guardrail-system-test:
+    name: Guardrail System Testing
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: nanobot_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Install bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ secrets.BUN_VERSION }}
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Setup Test Database
+        run: bun run db:test:setup
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/nanobot_test
+
+      - name: Test Guardrail Engine
+        run: bun run test:guardrails:engine
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/nanobot_test
+          EDUCATION_MODE: true
+          SAFETY_LEVEL: strict
+
+      - name: Test Role-Based Permissions
+        run: bun run test:guardrails:permissions
+
+      - name: Test Violation Tracking
+        run: bun run test:guardrails:violations
+
+      - name: Test Parental Controls
+        run: bun run test:guardrails:parental
+
+      - name: Generate Guardrail Coverage Report
+        run: bun run coverage:guardrails
+        if: always()
+
+      - name: Upload Guardrail Coverage
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/guardrails/lcov.info
+          flags: guardrails
+
+  educational-component-validation:
+    name: Educational Component Validation
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Install bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ secrets.BUN_VERSION }}
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Test Educational UI Components
+        run: bun run test:components:education
+
+      - name: Test STEAM Learning Modules
+        run: bun run test:steam:modules
+
+      - name: Test Assessment Tools
+        run: bun run test:assessment:tools
+
+      - name: Test Progress Tracking
+        run: bun run test:progress:tracking
+
+      - name: Test Course Browser Safety
+        run: bun run test:courses:safety
+
+      - name: Test Student Dashboard
+        run: bun run test:dashboard:student
+
+      - name: Validate Educational Content Alignment
+        run: bun run validate:curriculum:alignment
+
+  accessibility-compliance:
+    name: Educational Accessibility Compliance
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Run WCAG 2.1 AA Compliance Tests
+        run: bun run test:accessibility:wcag
+
+      - name: Test Screen Reader Compatibility
+        run: bun run test:accessibility:screen-reader
+
+      - name: Test Keyboard Navigation
+        run: bun run test:accessibility:keyboard
+
+      - name: Test Color Contrast for K-12
+        run: bun run test:accessibility:contrast
+
+      - name: Generate Accessibility Report
+        run: bun run generate:accessibility-report
+        if: always()
+
+  security-scan:
+    name: Educational Security Scanning
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Run Dependency Security Audit
+        run: bun audit
+
+      - name: Run SAST Security Scan
+        uses: github/super-linter@v5
+        env:
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_TYPESCRIPT_ES: true
+          VALIDATE_JAVASCRIPT_ES: true
+
+      - name: Scan for Educational Data Privacy Issues
+        run: bun run scan:privacy:coppa
+
+      - name: Scan for Student Data Protection
+        run: bun run scan:privacy:ferpa
+
+      - name: Generate Security Report
+        run: bun run generate:security-report
+        if: always()
+
+  notify-safety-status:
+    name: Notify Safety Status
+    runs-on: ubuntu-latest
+    needs: [content-safety-validation, guardrail-system-test, educational-component-validation, accessibility-compliance, security-scan]
+    if: always()
+    
+    steps:
+      - name: Notify Success
+        if: ${{ needs.content-safety-validation.result == 'success' && needs.guardrail-system-test.result == 'success' && needs.educational-component-validation.result == 'success' && needs.accessibility-compliance.result == 'success' && needs.security-scan.result == 'success' }}
+        run: |
+          echo "🎓 Educational Safety Validation: PASSED ✅"
+          echo "All safety guardrails and educational components validated successfully"
+
+      - name: Notify Failure
+        if: ${{ needs.content-safety-validation.result == 'failure' || needs.guardrail-system-test.result == 'failure' || needs.educational-component-validation.result == 'failure' || needs.accessibility-compliance.result == 'failure' || needs.security-scan.result == 'failure' }}
+        run: |
+          echo "🚨 Educational Safety Validation: FAILED ❌"
+          echo "Safety validation failed - review logs before deployment"
+          exit 1

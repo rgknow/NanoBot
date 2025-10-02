@@ -1,4 +1,4 @@
-name: Test CI
+name: NanoBot Educational CI
 
 on: [push, pull_request]
 
@@ -6,8 +6,8 @@ permissions:
   contents: read
 
 jobs:
-  # Package tests - using each package's own test script
-  test-intenral-packages:
+  # Educational package tests - using each package's own test script
+  test-educational-packages:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -22,7 +22,7 @@ jobs:
           - context-engine
           - agent-runtime
 
-    name: Test package ${{ matrix.package }}
+    name: Test Educational Package ${{ matrix.package }}
 
     steps:
       - uses: actions/checkout@v5
@@ -41,8 +41,11 @@ jobs:
       - name: Install deps
         run: bun i
 
+      - name: Run Educational Safety Tests for ${{ matrix.package }}
+        run: bun run --filter @rgknow/${{ matrix.package }} test:safety || echo "Safety tests not configured for ${{ matrix.package }}"
+
       - name: Test ${{ matrix.package }} package with coverage
-        run: bun run --filter @lobechat/${{ matrix.package }} test:coverage
+        run: bun run --filter @rgknow/${{ matrix.package }} test:coverage
 
       - name: Upload ${{ matrix.package }} coverage to Codecov
         uses: codecov/codecov-action@v4

@@ -1,13 +1,34 @@
-name: Release CI
+name: NanoBot Educational Release
 on:
   push:
     branches:
       - main
 
 jobs:
-  release:
-    name: Release
+  educational-safety-validation:
+    name: Educational Safety Validation
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Install bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ secrets.BUN_VERSION }}
+      - name: Install deps
+        run: bun i
+      - name: Run Educational Safety Validation
+        run: bun run test:safety:complete
+      - name: Validate Age-Appropriate Content
+        run: bun run validate:content:k12
+
+  release:
+    name: Educational Release
+    runs-on: ubuntu-latest
+    needs: educational-safety-validation
 
     services:
       postgres:
@@ -65,13 +86,13 @@ jobs:
       - name: Workflow
         run: bun run workflow:readme
 
-      - name: Commit changes
+      - name: Commit Educational Updates
         run: |-
           git diff
-          git config --global user.name "lobehubbot"
-          git config --global user.email "i@lobehub.com"
+          git config --global user.name "nanobotai"
+          git config --global user.email "hello@rgknow.com"
           git add .
-          git commit -m "📝 docs(bot): Auto sync agents & plugin to readme" || exit 0
+          git commit -m "� docs(bot): Auto sync educational agents & plugins" || exit 0
           git push
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
