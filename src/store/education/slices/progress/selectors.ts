@@ -60,9 +60,9 @@ const dailyProgress = (s: EducationStoreState) => {
     const { learningGoals, learningStats } = s;
     const todayMinutes = 0; // This would need to be calculated from today's activities
     return {
-        target: learningGoals.dailyMinutes,
         completed: todayMinutes,
         percentage: (todayMinutes / learningGoals.dailyMinutes) * 100,
+        target: learningGoals.dailyMinutes,
     };
 };
 
@@ -74,9 +74,9 @@ const weeklyProgress = (s: EducationStoreState) => {
     const weekMinutes = 0; // This would need to be calculated from this week's activities
     const weekHours = weekMinutes / 60;
     return {
-        target: learningGoals.weeklyHours,
         completed: weekHours,
         percentage: (weekHours / learningGoals.weeklyHours) * 100,
+        target: learningGoals.weeklyHours,
     };
 };
 
@@ -106,32 +106,36 @@ const isGoalAchieved = (goalType: 'daily' | 'weekly' | 'monthly') => (s: Educati
     const { learningGoals, learningStats } = s;
 
     switch (goalType) {
-        case 'daily':
+        case 'daily': {
             return dailyProgress(s).percentage >= 100;
-        case 'weekly':
+        }
+        case 'weekly': {
             return weeklyProgress(s).percentage >= 100;
-        case 'monthly':
+        }
+        case 'monthly': {
             // This would need monthly completion data
             return false;
-        default:
+        }
+        default: {
             return false;
+        }
     }
 };
 
 export const educationProgressSelectors = {
+    completedCourses,
     courseProgress,
     courseProgressPercentage,
+    courseStudyTime,
+    dailyProgress,
+    inProgressCourses,
     isCourseCompleted,
     isCourseStarted,
-    completedCourses,
-    inProgressCourses,
-    totalStudyTime,
-    learningStats,
-    learningGoals,
-    dailyProgress,
-    weeklyProgress,
-    studyStreak,
-    recentlyAccessedCourses,
-    courseStudyTime,
     isGoalAchieved,
+    learningGoals,
+    learningStats,
+    recentlyAccessedCourses,
+    studyStreak,
+    totalStudyTime,
+    weeklyProgress,
 };

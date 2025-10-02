@@ -16,17 +16,14 @@ import {
   Progress, 
   Avatar, 
   Input, 
-  Select, 
-  Badge,
+  Select,
   Tooltip,
-  Space,
-  Divider
+  Space
 } from 'antd';
 import {
   BookOutlined,
   PlayCircleOutlined,
   ClockCircleOutlined,
-  TrophyOutlined,
   SearchOutlined,
   FilterOutlined,
   StarFilled,
@@ -47,14 +44,6 @@ const useStyles = createStyles(({ css, token }) => ({
     padding: ${token.paddingLG}px;
     background: ${token.colorBgLayout};
     min-height: 100vh;
-  `,
-  
-  headerSection: css`
-    background: ${token.colorBgContainer};
-    padding: ${token.paddingLG}px;
-    border-radius: ${token.borderRadius}px;
-    margin-bottom: ${token.marginLG}px;
-    box-shadow: ${token.boxShadowSecondary};
   `,
   
   courseCard: css`
@@ -87,19 +76,6 @@ const useStyles = createStyles(({ css, token }) => ({
     color: ${token.colorPrimary};
   `,
   
-  courseTitle: css`
-    font-size: ${token.fontSizeLG}px;
-    font-weight: 600;
-    margin: 0;
-    color: ${token.colorText};
-  `,
-  
-  courseSubtitle: css`
-    color: ${token.colorTextSecondary};
-    font-size: ${token.fontSizeSM}px;
-    margin: 0;
-  `,
-  
   courseStats: css`
     display: flex;
     justify-content: space-between;
@@ -109,23 +85,17 @@ const useStyles = createStyles(({ css, token }) => ({
     border-top: 1px solid ${token.colorBorderSecondary};
   `,
   
-  statItem: css`
-    display: flex;
-    align-items: center;
-    gap: ${token.marginXS}px;
-    font-size: ${token.fontSizeSM}px;
+  courseSubtitle: css`
     color: ${token.colorTextSecondary};
+    font-size: ${token.fontSizeSM}px;
+    margin: 0;
   `,
   
-  progressSection: css`
-    margin-top: auto;
-    padding-top: ${token.paddingMD}px;
-  `,
-  
-  safetyBadge: css`
-    position: absolute;
-    top: ${token.paddingSM}px;
-    right: ${token.paddingSM}px;
+  courseTitle: css`
+    font-size: ${token.fontSizeLG}px;
+    font-weight: 600;
+    margin: 0;
+    color: ${token.colorText};
   `,
   
   filterSection: css`
@@ -142,34 +112,61 @@ const useStyles = createStyles(({ css, token }) => ({
     font-weight: 500;
   `,
   
+  headerSection: css`
+    background: ${token.colorBgContainer};
+    padding: ${token.paddingLG}px;
+    border-radius: ${token.borderRadius}px;
+    margin-bottom: ${token.marginLG}px;
+    box-shadow: ${token.boxShadowSecondary};
+  `,
+  
+  progressSection: css`
+    margin-top: auto;
+    padding-top: ${token.paddingMD}px;
+  `,
+  
+  safetyBadge: css`
+    position: absolute;
+    top: ${token.paddingSM}px;
+    right: ${token.paddingSM}px;
+  `,
+  
   safetyIndicator: css`
     &.safe { color: ${token.colorSuccess}; }
     &.caution { color: ${token.colorWarning}; }
     &.restricted { color: ${token.colorError}; }
+  `,
+  
+  statItem: css`
+    display: flex;
+    align-items: center;
+    gap: ${token.marginXS}px;
+    font-size: ${token.fontSizeSM}px;
+    color: ${token.colorTextSecondary};
   `
 }));
 
 interface Course {
-  id: string;
-  title: string;
-  subject: string;
+  completedLessons: number;
   description: string;
-  gradeLevel: string[];
   difficulty: 'beginner' | 'intermediate' | 'advanced';
   duration: string;
-  lessons: number;
-  completedLessons: number;
-  rating: number;
+  gradeLevel: string[];
+  id: string;
   instructor: string;
-  safetyLevel: 'safe' | 'caution' | 'restricted';
-  topics: string[];
+  lessons: number;
   prerequisites: string[];
+  rating: number;
+  safetyLevel: 'safe' | 'caution' | 'restricted';
+  subject: string;
+  title: string;
+  topics: string[];
 }
 
 interface CourseBrowserProps {
-  userRole: 'student' | 'teacher' | 'parent' | 'tutor' | 'admin';
-  studentGrade?: string;
   onCourseSelect?: (course: Course) => void;
+  studentGrade?: string;
+  userRole: 'student' | 'teacher' | 'parent' | 'tutor' | 'admin';
 }
 
 const CourseBrowser: React.FC<CourseBrowserProps> = ({
@@ -189,84 +186,84 @@ const CourseBrowser: React.FC<CourseBrowserProps> = ({
   // Mock courses data
   const mockCourses: Course[] = [
     {
-      id: 'math-101',
-      title: 'Basic Mathematics',
-      subject: 'Mathematics',
+      completedLessons: 8,
       description: 'Learn fundamental math concepts including addition, subtraction, multiplication, and division.',
-      gradeLevel: ['K', '1', '2', '3'],
       difficulty: 'beginner',
       duration: '6 weeks',
-      lessons: 24,
-      completedLessons: 8,
-      rating: 4.8,
+      gradeLevel: ['K', '1', '2', '3'],
+      id: 'math-101',
       instructor: 'Ms. Johnson',
+      lessons: 24,
+      prerequisites: [],
+      subject: 'Mathematics',
+      rating: 4.8,
+      title: 'Basic Mathematics',
       safetyLevel: 'safe',
-      topics: ['numbers', 'counting', 'basic operations', 'problem solving'],
-      prerequisites: []
+      topics: ['numbers', 'counting', 'basic operations', 'problem solving']
     },
     {
-      id: 'science-101',
-      title: 'Introduction to Science',
-      subject: 'Science',
+      completedLessons: 12,
       description: 'Explore the wonders of science through fun experiments and observations.',
-      gradeLevel: ['3', '4', '5'],
       difficulty: 'beginner',
       duration: '8 weeks',
-      lessons: 32,
-      completedLessons: 12,
-      rating: 4.9,
+      gradeLevel: ['3', '4', '5'],
+      id: 'science-101',
       instructor: 'Dr. Smith',
+      lessons: 32,
+      prerequisites: [],
+      subject: 'Science',
+      rating: 4.9,
+      title: 'Introduction to Science',
       safetyLevel: 'safe',
-      topics: ['experiments', 'observation', 'nature', 'scientific method'],
-      prerequisites: []
+      topics: ['experiments', 'observation', 'nature', 'scientific method']
     },
     {
-      id: 'reading-advanced',
-      title: 'Advanced Reading Comprehension',
-      subject: 'English',
+      completedLessons: 25,
       description: 'Develop advanced reading skills and critical thinking through literature analysis.',
-      gradeLevel: ['6', '7', '8'],
       difficulty: 'intermediate',
       duration: '10 weeks',
-      lessons: 40,
-      completedLessons: 25,
-      rating: 4.7,
+      gradeLevel: ['6', '7', '8'],
+      id: 'reading-advanced',
       instructor: 'Mr. Davis',
+      lessons: 40,
+      prerequisites: ['basic reading skills'],
+      subject: 'English',
+      rating: 4.7,
+      title: 'Advanced Reading Comprehension',
       safetyLevel: 'safe',
-      topics: ['literature', 'analysis', 'comprehension', 'writing'],
-      prerequisites: ['basic reading skills']
+      topics: ['literature', 'analysis', 'comprehension', 'writing']
     },
     {
-      id: 'history-world',
-      title: 'World History Overview',
-      subject: 'History',
+      completedLessons: 30,
       description: 'Journey through major historical events and civilizations.',
-      gradeLevel: ['9', '10', '11', '12'],
       difficulty: 'intermediate',
       duration: '12 weeks',
-      lessons: 48,
-      completedLessons: 30,
-      rating: 4.6,
+      gradeLevel: ['9', '10', '11', '12'],
+      id: 'history-world',
       instructor: 'Prof. Williams',
+      lessons: 48,
+      prerequisites: ['basic history knowledge'],
+      subject: 'History',
+      rating: 4.6,
+      title: 'World History Overview',
       safetyLevel: 'caution',
-      topics: ['civilizations', 'wars', 'politics', 'culture'],
-      prerequisites: ['basic history knowledge']
+      topics: ['civilizations', 'wars', 'politics', 'culture']
     },
     {
-      id: 'chemistry-101',
-      title: 'Introduction to Chemistry',
-      subject: 'Science',
+      completedLessons: 15,
       description: 'Learn basic chemistry concepts and safe laboratory practices.',
-      gradeLevel: ['9', '10', '11', '12'],
       difficulty: 'intermediate',
       duration: '14 weeks',
-      lessons: 56,
-      completedLessons: 15,
-      rating: 4.5,
+      gradeLevel: ['9', '10', '11', '12'],
+      id: 'chemistry-101',
       instructor: 'Dr. Brown',
+      lessons: 56,
+      prerequisites: ['algebra', 'basic science'],
+      subject: 'Science',
+      rating: 4.5,
+      title: 'Introduction to Chemistry',
       safetyLevel: 'caution',
-      topics: ['atoms', 'molecules', 'reactions', 'lab safety'],
-      prerequisites: ['algebra', 'basic science']
+      topics: ['atoms', 'molecules', 'reactions', 'lab safety']
     }
   ];
   
@@ -306,22 +303,33 @@ const CourseBrowser: React.FC<CourseBrowserProps> = ({
   
   const getSafetyIcon = (level: string) => {
     switch (level) {
-      case 'safe': return <ShieldCheckOutlined className={`${styles.safetyIndicator} safe`} />;
-      case 'caution': return <SafetyOutlined className={`${styles.safetyIndicator} caution`} />;
-      case 'restricted': return <SafetyOutlined className={`${styles.safetyIndicator} restricted`} />;
-      default: return <SafetyOutlined />;
+      case 'safe': { return <ShieldCheckOutlined className={`${styles.safetyIndicator} safe`} />;
+      }
+      case 'caution': { return <SafetyOutlined className={`${styles.safetyIndicator} caution`} />;
+      }
+      case 'restricted': { return <SafetyOutlined className={`${styles.safetyIndicator} restricted`} />;
+      }
+      default: { return <SafetyOutlined />;
+      }
     }
   };
   
   const getSubjectIcon = (subject: string) => {
     switch (subject.toLowerCase()) {
-      case 'mathematics': return '🔢';
-      case 'science': return '🔬';
-      case 'english': return '📚';
-      case 'history': return '🏛️';
-      case 'art': return '🎨';
-      case 'music': return '🎵';
-      default: return '📖';
+      case 'mathematics': { return '🔢';
+      }
+      case 'science': { return '🔬';
+      }
+      case 'english': { return '📚';
+      }
+      case 'history': { return '🏛️';
+      }
+      case 'art': { return '🎨';
+      }
+      case 'music': { return '🎵';
+      }
+      default: { return '📖';
+      }
     }
   };
   
@@ -329,9 +337,9 @@ const CourseBrowser: React.FC<CourseBrowserProps> = ({
     <div className={styles.browserContainer}>
       {/* Header Section */}
       <div className={styles.headerSection}>
-        <Flexbox justify="space-between" align="center">
+        <Flexbox align="center" justify="space-between">
           <div>
-            <h1 style={{ margin: 0, fontSize: '24px' }}>
+            <h1 style={{ fontSize: '24px', margin: 0 }}>
               {getSubjectIcon('education')} Course Browser
             </h1>
             <p style={{ margin: '8px 0 0 0', opacity: 0.7 }}>
@@ -341,9 +349,9 @@ const CourseBrowser: React.FC<CourseBrowserProps> = ({
           </div>
           <Space>
             <Button 
-              type="primary" 
-              icon={<SafetyOutlined />}
+              icon={<SafetyOutlined />} 
               onClick={() => setShowSafetyDashboard(!showSafetyDashboard)}
+              type="primary"
             >
               Safety Dashboard
             </Button>
@@ -360,32 +368,32 @@ const CourseBrowser: React.FC<CourseBrowserProps> = ({
       {showSafetyDashboard && (
         <Card style={{ marginBottom: 24 }}>
           <SafetyDashboard 
-            userRole={userRole} 
+            compact={false} 
             studentGrade={studentGrade}
-            compact={false}
+            userRole={userRole}
           />
         </Card>
       )}
       
       {/* Filter Section */}
       <div className={styles.filterSection}>
-        <Row gutter={[16, 16]} align="middle">
+        <Row align="middle" gutter={[16, 16]}>
           <Col span={8}>
             <Search
-              placeholder="Search courses, subjects, or topics..."
               allowClear
-              value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search courses, subjects, or topics..."
               prefix={<SearchOutlined />}
+              value={searchTerm}
             />
           </Col>
           <Col span={4}>
             <Select
-              placeholder="Subject"
               allowClear
-              value={selectedSubject}
               onChange={setSelectedSubject}
+              placeholder="Subject"
               style={{ width: '100%' }}
+              value={selectedSubject}
             >
               <Option value="Mathematics">Mathematics</Option>
               <Option value="Science">Science</Option>
@@ -397,11 +405,11 @@ const CourseBrowser: React.FC<CourseBrowserProps> = ({
           </Col>
           <Col span={4}>
             <Select
-              placeholder="Grade Level"
               allowClear
-              value={selectedGrade}
               onChange={setSelectedGrade}
+              placeholder="Grade Level"
               style={{ width: '100%' }}
+              value={selectedGrade}
             >
               {['K', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'].map(grade => (
                 <Option key={grade} value={grade}>Grade {grade}</Option>
@@ -410,11 +418,11 @@ const CourseBrowser: React.FC<CourseBrowserProps> = ({
           </Col>
           <Col span={4}>
             <Select
-              placeholder="Difficulty"
               allowClear
-              value={selectedDifficulty}
               onChange={setSelectedDifficulty}
+              placeholder="Difficulty"
               style={{ width: '100%' }}
+              value={selectedDifficulty}
             >
               <Option value="beginner">Beginner</Option>
               <Option value="intermediate">Intermediate</Option>
@@ -437,7 +445,7 @@ const CourseBrowser: React.FC<CourseBrowserProps> = ({
       {/* Course Grid */}
       <Row gutter={[16, 16]}>
         {filteredCourses.map((course) => (
-          <Col key={course.id} xs={24} sm={12} lg={8} xl={6}>
+          <Col key={course.id} lg={8} sm={12} xl={6} xs={24}>
             <Card 
               className={styles.courseCard}
               onClick={() => onCourseSelect?.(course)}
@@ -458,7 +466,7 @@ const CourseBrowser: React.FC<CourseBrowserProps> = ({
                 </div>
               </div>
               
-              <p style={{ flex: 1, marginBottom: 16, lineHeight: 1.4 }}>
+              <p style={{ flex: 1, lineHeight: 1.4, marginBottom: 16 }}>
                 {course.description}
               </p>
               
@@ -466,8 +474,8 @@ const CourseBrowser: React.FC<CourseBrowserProps> = ({
                 <Space wrap>
                   {course.gradeLevel.map(grade => (
                     <Tag 
-                      key={grade} 
-                      className={styles.gradeBadge}
+                      className={styles.gradeBadge} 
+                      key={grade}
                       size="small"
                     >
                       Grade {grade}
@@ -495,7 +503,7 @@ const CourseBrowser: React.FC<CourseBrowserProps> = ({
               </div>
               
               <div className={styles.progressSection}>
-                <Flexbox justify="space-between" align="center" style={{ marginBottom: 8 }}>
+                <Flexbox align="center" justify="space-between" style={{ marginBottom: 8 }}>
                   <span style={{ fontSize: '14px', fontWeight: 500 }}>
                     Progress
                   </span>
@@ -512,15 +520,15 @@ const CourseBrowser: React.FC<CourseBrowserProps> = ({
                   }}
                 />
                 
-                <Flexbox justify="space-between" align="center" style={{ marginTop: 16 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <Avatar size="small" icon={<UserOutlined />} />
+                <Flexbox align="center" justify="space-between" style={{ marginTop: 16 }}>
+                  <div style={{ alignItems: 'center', display: 'flex', gap: 8 }}>
+                    <Avatar icon={<UserOutlined />} size="small" />
                     <span style={{ fontSize: '12px' }}>{course.instructor}</span>
                   </div>
                   <Button 
-                    type="primary" 
+                    icon={<PlayCircleOutlined />} 
                     size="small"
-                    icon={<PlayCircleOutlined />}
+                    type="primary"
                   >
                     {course.completedLessons > 0 ? 'Continue' : 'Start'}
                   </Button>
@@ -532,8 +540,8 @@ const CourseBrowser: React.FC<CourseBrowserProps> = ({
       </Row>
       
       {filteredCourses.length === 0 && (
-        <Card style={{ textAlign: 'center', padding: 40 }}>
-          <BookOutlined style={{ fontSize: 64, opacity: 0.3, marginBottom: 16 }} />
+        <Card style={{ padding: 40, textAlign: 'center' }}>
+          <BookOutlined style={{ fontSize: 64, marginBottom: 16, opacity: 0.3 }} />
           <h3>No courses found</h3>
           <p style={{ opacity: 0.7 }}>
             Try adjusting your search criteria or contact your teacher for more course options.

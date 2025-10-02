@@ -53,10 +53,10 @@ const searchResultsStats = (s: EducationStoreState) => {
         : 0;
 
     return {
-        totalResults: results.length,
-        uniqueConcepts: concepts.size,
         averageSimilarity: avgSimilarity,
         highQualityResults: results.filter(r => r.similarity > 0.8).length,
+        totalResults: results.length,
+        uniqueConcepts: concepts.size,
     };
 };
 
@@ -117,11 +117,11 @@ const learningPathProgress = (s: EducationStoreState) => {
     // This would be calculated based on completed steps
     // For now, return mock data
     return {
-        totalSteps: s.learningPath.steps.length,
         completedSteps: 0,
         currentStep: s.learningPath.steps[0],
-        progressPercentage: 0,
         estimatedTimeRemaining: s.learningPath.estimatedDuration,
+        progressPercentage: 0,
+        totalSteps: s.learningPath.steps.length,
     };
 };
 
@@ -150,12 +150,12 @@ const validationStats = (s: EducationStoreState) => {
         : 0;
 
     return {
-        total: validations.length,
-        approved: approvedCount,
-        rejected: rejectedCount,
-        pending: pendingCount,
-        averageScore: avgScore,
         approvalRate: validations.length > 0 ? (approvedCount / validations.length) * 100 : 0,
+        approved: approvedCount,
+        averageScore: avgScore,
+        pending: pendingCount,
+        rejected: rejectedCount,
+        total: validations.length,
     };
 };
 
@@ -192,34 +192,34 @@ const conceptCoverage = (s: EducationStoreState) => {
     });
 
     return {
-        totalConcepts: allConcepts.size,
         conceptsList: Array.from(allConcepts),
+        totalConcepts: allConcepts.size,
     };
 };
 
 export const educationRAGSelectors = {
     activeKnowledgeBase,
-    knowledgeBasesList,
-    knowledgeBasesBySubject,
-    knowledgeBasesByGrade,
-    publicKnowledgeBases,
-    userKnowledgeBases,
-    searchResults,
-    searchResultsStats,
     currentTutorSession,
     hasActiveTutorSession,
-    tutorSessionHistory,
-    recentTutorInteractions,
+    knowledgeBasesByGrade,
+    knowledgeBasesBySubject,
+    knowledgeBasesList,
     personalizedRecommendations,
-    topRecommendations,
-    recommendationsByDifficulty,
+    publicKnowledgeBases,
     learningPath,
-    learningPathProgress,
-    ragConfig,
+    recentTutorInteractions,
     contentValidation,
-    validationStats,
+    recommendationsByDifficulty,
     isSearching,
-    isLoadingKnowledgeBases,
+    searchResults,
     highQualityRecommendations,
+    userKnowledgeBases,
     conceptCoverage,
+    searchResultsStats,
+    isLoadingKnowledgeBases,
+    learningPathProgress,
+    tutorSessionHistory,
+    ragConfig,
+    topRecommendations,
+    validationStats,
 };

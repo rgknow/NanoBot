@@ -65,22 +65,22 @@ const paidCourses = (s: EducationStoreState) =>
  * 获取课程统计信息
  */
 const coursesStats = (s: EducationStoreState) => ({
-    total: Object.keys(s.coursesMap).length,
     enrolled: s.enrolledCourseIds.length,
     recommended: s.recommendedCourseIds.length,
     searchResults: s.courseSearchResults.length,
+    total: Object.keys(s.coursesMap).length,
 });
 
 export const educationCoursesSelectors = {
     activeCourse,
-    coursesList,
-    enrolledCourses,
-    recommendedCourses,
-    searchResultCourses,
-    isEnrolledInCourse,
     coursesByCategory,
     coursesByDifficulty,
-    freeCourses,
-    paidCourses,
+    coursesList,
     coursesStats,
+    enrolledCourses,
+    freeCourses,
+    isEnrolledInCourse,
+    paidCourses,
+    recommendedCourses,
+    searchResultCourses,
 };

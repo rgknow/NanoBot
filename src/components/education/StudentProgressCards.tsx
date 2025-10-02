@@ -32,7 +32,6 @@ import {
   CalendarOutlined,
   BulbOutlined,
   SafetyOutlined,
-  GiftOutlined,
   RocketOutlined,
   CheckCircleOutlined,
   PlayCircleOutlined
@@ -42,9 +41,22 @@ import { createStyles } from 'antd-style';
 import { useGuardrailStore } from '@/store/guardrails/store';
 
 const useStyles = createStyles(({ css, token }) => ({
-  progressContainer: css`
-    padding: ${token.paddingLG}px;
-    background: ${token.colorBgLayout};
+  achievementBadge: css`
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    
+    &:hover {
+      transform: scale(1.1);
+    }
+    
+    &.earned {
+      filter: none;
+    }
+    
+    &.locked {
+      filter: grayscale(100%) opacity(0.4);
+    }
   `,
   
   heroCard: css`
@@ -66,65 +78,6 @@ const useStyles = createStyles(({ css, token }) => ({
     }
   `,
   
-  progressCard: css`
-    height: 100%;
-    border-radius: ${token.borderRadius}px;
-    box-shadow: ${token.boxShadowSecondary};
-    transition: all 0.3s ease;
-    
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: ${token.boxShadowTertiary};
-    }
-  `,
-  
-  subjectIcon: css`
-    font-size: 24px;
-    margin-bottom: ${token.marginSM}px;
-  `,
-  
-  achievementBadge: css`
-    position: relative;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-    
-    &:hover {
-      transform: scale(1.1);
-    }
-    
-    &.earned {
-      filter: none;
-    }
-    
-    &.locked {
-      filter: grayscale(100%) opacity(0.4);
-    }
-  `,
-  
-  streakIndicator: css`
-    display: flex;
-    align-items: center;
-    gap: ${token.marginXS}px;
-    padding: ${token.paddingSM}px ${token.paddingMD}px;
-    background: ${token.colorWarningBg};
-    border-radius: ${token.borderRadius}px;
-    color: ${token.colorWarning};
-    font-weight: 500;
-  `,
-  
-  safetyScore: css`
-    padding: ${token.paddingSM}px;
-    background: ${token.colorSuccessBg};
-    border-radius: ${token.borderRadius}px;
-    text-align: center;
-    border: 1px solid ${token.colorSuccessBorder};
-  `,
-  
-  timelineCard: css`
-    max-height: 300px;
-    overflow-y: auto;
-  `,
-  
   levelBadge: css`
     background: ${token.colorPrimaryBg};
     color: ${token.colorPrimary};
@@ -140,41 +93,87 @@ const useStyles = createStyles(({ css, token }) => ({
     border-radius: ${token.borderRadius}px;
     padding: ${token.paddingMD}px;
     text-align: center;
+  `,
+  
+  progressCard: css`
+    height: 100%;
+    border-radius: ${token.borderRadius}px;
+    box-shadow: ${token.boxShadowSecondary};
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: ${token.boxShadowTertiary};
+    }
+  `,
+  
+  progressContainer: css`
+    padding: ${token.paddingLG}px;
+    background: ${token.colorBgLayout};
+  `,
+  
+  safetyScore: css`
+    padding: ${token.paddingSM}px;
+    background: ${token.colorSuccessBg};
+    border-radius: ${token.borderRadius}px;
+    text-align: center;
+    border: 1px solid ${token.colorSuccessBorder};
+  `,
+  
+  streakIndicator: css`
+    display: flex;
+    align-items: center;
+    gap: ${token.marginXS}px;
+    padding: ${token.paddingSM}px ${token.paddingMD}px;
+    background: ${token.colorWarningBg};
+    border-radius: ${token.borderRadius}px;
+    color: ${token.colorWarning};
+    font-weight: 500;
+  `,
+  
+  subjectIcon: css`
+    font-size: 24px;
+    margin-bottom: ${token.marginSM}px;
+  `,
+  
+  timelineCard: css`
+    max-height: 300px;
+    overflow-y: auto;
   `
 }));
 
 interface Subject {
-  id: string;
-  name: string;
-  icon: string;
-  progress: number;
-  level: number;
-  xp: number;
-  nextLevelXp: number;
-  streak: number;
-  completedLessons: number;
-  totalLessons: number;
-  lastActivity: Date;
   achievements: Achievement[];
   color: string;
+  completedLessons: number;
+  icon: string;
+  id: string;
+  lastActivity: Date;
+  level: number;
+  name: string;
+  nextLevelXp: number;
+  progress: number;
+  xp: number;
+  totalLessons: number;
+  streak: number;
 }
 
 interface Achievement {
-  id: string;
-  title: string;
   description: string;
-  icon: string;
-  rarity: 'common' | 'rare' | 'epic' | 'legendary';
   earned: boolean;
   earnedDate?: Date;
-  progress?: number;
+  icon: string;
+  id: string;
   maxProgress?: number;
+  progress?: number;
+  rarity: 'common' | 'rare' | 'epic' | 'legendary';
+  title: string;
 }
 
 interface StudentProgressProps {
+  studentGrade: string;
   studentId: string;
   studentName: string;
-  studentGrade: string;
   userRole: 'student' | 'teacher' | 'parent' | 'tutor' | 'admin';
 }
 
@@ -191,18 +190,8 @@ const StudentProgressCards: React.FC<StudentProgressProps> = ({
   // Mock data for demonstration
   const mockSubjects: Subject[] = [
     {
-      id: 'math',
-      name: 'Mathematics',
-      icon: '🔢',
-      progress: 78,
-      level: 5,
-      xp: 2340,
-      nextLevelXp: 3000,
-      streak: 7,
       completedLessons: 23,
-      totalLessons: 30,
-      lastActivity: new Date(Date.now() - 1000 * 60 * 60 * 2), // 2 hours ago
-      color: '#1890ff',
+      icon: '🔢',
       achievements: [
         {
           id: 'math-streak-7',
@@ -223,21 +212,30 @@ const StudentProgressCards: React.FC<StudentProgressProps> = ({
           progress: 7,
           maxProgress: 10
         }
-      ]
+      ],
+      id: 'math',
+      // 2 hours ago
+color: '#1890ff',
+      
+lastActivity: new Date(Date.now() - 1000 * 60 * 60 * 2),
+      
+level: 5,
+      
+name: 'Mathematics',
+      
+nextLevelXp: 3000,
+      
+progress: 78,
+      
+streak: 7, 
+      
+totalLessons: 30,
+      
+xp: 2340
     },
     {
-      id: 'science',
-      name: 'Science',
-      icon: '🔬',
-      progress: 65,
-      level: 4,
-      xp: 1890,
-      nextLevelXp: 2500,
-      streak: 3,
       completedLessons: 19,
-      totalLessons: 28,
-      lastActivity: new Date(Date.now() - 1000 * 60 * 60 * 24), // 1 day ago
-      color: '#52c41a',
+      icon: '🔬',
       achievements: [
         {
           id: 'science-explorer',
@@ -248,21 +246,30 @@ const StudentProgressCards: React.FC<StudentProgressProps> = ({
           earned: true,
           earnedDate: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3)
         }
-      ]
+      ],
+      id: 'science',
+      // 1 day ago
+color: '#52c41a',
+      
+lastActivity: new Date(Date.now() - 1000 * 60 * 60 * 24),
+      
+level: 4,
+      
+name: 'Science',
+      
+nextLevelXp: 2500,
+      
+progress: 65,
+      
+streak: 3, 
+      
+totalLessons: 28,
+      
+xp: 1890
     },
     {
-      id: 'reading',
-      name: 'Reading',
-      icon: '📚',
-      progress: 92,
-      level: 6,
-      xp: 3120,
-      nextLevelXp: 3500,
-      streak: 12,
       completedLessons: 34,
-      totalLessons: 37,
-      lastActivity: new Date(Date.now() - 1000 * 60 * 30), // 30 minutes ago
-      color: '#722ed1',
+      icon: '📚',
       achievements: [
         {
           id: 'reading-bookworm',
@@ -283,7 +290,26 @@ const StudentProgressCards: React.FC<StudentProgressProps> = ({
           progress: 3,
           maxProgress: 5
         }
-      ]
+      ],
+      id: 'reading',
+      // 30 minutes ago
+color: '#722ed1',
+      
+lastActivity: new Date(Date.now() - 1000 * 60 * 30),
+      
+level: 6,
+      
+name: 'Reading',
+      
+nextLevelXp: 3500,
+      
+progress: 92,
+      
+streak: 12, 
+      
+totalLessons: 37,
+      
+xp: 3120
     }
   ];
   
@@ -294,11 +320,16 @@ const StudentProgressCards: React.FC<StudentProgressProps> = ({
   
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
-      case 'common': return '#1890ff';
-      case 'rare': return '#722ed1';
-      case 'epic': return '#fa8c16';
-      case 'legendary': return '#f5222d';
-      default: return '#1890ff';
+      case 'common': { return '#1890ff';
+      }
+      case 'rare': { return '#722ed1';
+      }
+      case 'epic': { return '#fa8c16';
+      }
+      case 'legendary': { return '#f5222d';
+      }
+      default: { return '#1890ff';
+      }
     }
   };
   
@@ -317,7 +348,7 @@ const StudentProgressCards: React.FC<StudentProgressProps> = ({
     <div className={styles.progressContainer}>
       {/* Hero Overview Card */}
       <Card className={styles.heroCard}>
-        <Row gutter={[24, 24]} align="middle">
+        <Row align="middle" gutter={[24, 24]}>
           <Col span={6}>
             <div style={{ textAlign: 'center' }}>
               <Avatar size={80} style={{ backgroundColor: '#fff', color: '#1890ff', fontSize: '32px' }}>
@@ -331,35 +362,35 @@ const StudentProgressCards: React.FC<StudentProgressProps> = ({
             <Row gutter={[24, 0]}>
               <Col span={6}>
                 <Statistic
+                  prefix={<StarFilled />}
                   title="Total XP"
                   value={totalXp}
-                  prefix={<StarFilled />}
                   valueStyle={{ color: 'white' }}
                 />
               </Col>
               <Col span={6}>
                 <Statistic
+                  prefix={<BookOutlined />}
+                  suffix="%"
                   title="Average Progress"
                   value={Math.round(averageProgress)}
-                  suffix="%"
-                  prefix={<BookOutlined />}
                   valueStyle={{ color: 'white' }}
                 />
               </Col>
               <Col span={6}>
                 <Statistic
+                  prefix={<TrophyOutlined />}
                   title="Achievements"
                   value={totalAchievements}
-                  prefix={<TrophyOutlined />}
                   valueStyle={{ color: 'white' }}
                 />
               </Col>
               <Col span={6}>
                 <div className={styles.safetyScore}>
-                  <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#52c41a', marginBottom: 4 }}>
+                  <div style={{ color: '#52c41a', fontSize: '24px', fontWeight: 'bold', marginBottom: 4 }}>
                     {safetyStatus.safetyScore}%
                   </div>
-                  <div style={{ fontSize: '12px', color: '#52c41a' }}>
+                  <div style={{ color: '#52c41a', fontSize: '12px' }}>
                     <SafetyOutlined /> Safety Score
                   </div>
                 </div>
@@ -372,14 +403,14 @@ const StudentProgressCards: React.FC<StudentProgressProps> = ({
       <Row gutter={[16, 16]}>
         {/* Subject Progress Cards */}
         {mockSubjects.map((subject) => (
-          <Col key={subject.id} xs={24} sm={12} lg={8}>
+          <Col key={subject.id} lg={8} sm={12} xs={24}>
             <Card className={styles.progressCard}>
-              <Flexbox justify="space-between" align="center" style={{ marginBottom: 16 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <Flexbox align="center" justify="space-between" style={{ marginBottom: 16 }}>
+                <div style={{ alignItems: 'center', display: 'flex', gap: 12 }}>
                   <div style={{ fontSize: '24px' }}>{subject.icon}</div>
                   <div>
-                    <h3 style={{ margin: 0, fontSize: '16px' }}>{subject.name}</h3>
-                    <p style={{ margin: 0, fontSize: '12px', opacity: 0.7 }}>
+                    <h3 style={{ fontSize: '16px', margin: 0 }}>{subject.name}</h3>
+                    <p style={{ fontSize: '12px', margin: 0, opacity: 0.7 }}>
                       Level {subject.level} • {subject.xp} XP
                     </p>
                   </div>
@@ -393,7 +424,7 @@ const StudentProgressCards: React.FC<StudentProgressProps> = ({
               </Flexbox>
               
               <div style={{ marginBottom: 16 }}>
-                <Flexbox justify="space-between" align="center" style={{ marginBottom: 8 }}>
+                <Flexbox align="center" justify="space-between" style={{ marginBottom: 8 }}>
                   <span style={{ fontSize: '14px', fontWeight: 500 }}>Progress</span>
                   <span style={{ fontSize: '12px', opacity: 0.7 }}>
                     {subject.completedLessons}/{subject.totalLessons} lessons
@@ -401,13 +432,13 @@ const StudentProgressCards: React.FC<StudentProgressProps> = ({
                 </Flexbox>
                 <Progress 
                   percent={subject.progress}
-                  strokeColor={subject.color}
                   size="small"
+                  strokeColor={subject.color}
                 />
               </div>
               
               <div style={{ marginBottom: 16 }}>
-                <Flexbox justify="space-between" align="center" style={{ marginBottom: 8 }}>
+                <Flexbox align="center" justify="space-between" style={{ marginBottom: 8 }}>
                   <span style={{ fontSize: '14px', fontWeight: 500 }}>Level Progress</span>
                   <span style={{ fontSize: '12px', opacity: 0.7 }}>
                     {subject.xp}/{subject.nextLevelXp} XP
@@ -415,11 +446,11 @@ const StudentProgressCards: React.FC<StudentProgressProps> = ({
                 </Flexbox>
                 <Progress 
                   percent={Math.round((subject.xp / subject.nextLevelXp) * 100)}
+                  size="small"
                   strokeColor={{
                     '0%': subject.color,
                     '100%': '#87d068',
                   }}
-                  size="small"
                 />
               </div>
               
@@ -450,10 +481,10 @@ const StudentProgressCards: React.FC<StudentProgressProps> = ({
                           className={`${styles.achievementBadge} ${achievement.earned ? 'earned' : 'locked'}`}
                           onClick={() => setSelectedAchievement(achievement)}
                           style={{ 
-                            fontSize: '20px',
-                            padding: '4px',
+                            backgroundColor: achievement.earned ? getRarityColor(achievement.rarity) + '20' : 'transparent',
                             borderRadius: '4px',
-                            backgroundColor: achievement.earned ? getRarityColor(achievement.rarity) + '20' : 'transparent'
+                            fontSize: '20px',
+                            padding: '4px'
                           }}
                         >
                           {achievement.icon}
@@ -471,12 +502,12 @@ const StudentProgressCards: React.FC<StudentProgressProps> = ({
               
               <Divider style={{ margin: '12px 0' }} />
               
-              <Flexbox justify="space-between" align="center">
+              <Flexbox align="center" justify="space-between">
                 <div style={{ fontSize: '12px', opacity: 0.7 }}>
                   <ClockCircleOutlined style={{ marginRight: 4 }} />
                   Last activity: {getTimeAgo(subject.lastActivity)}
                 </div>
-                <Button type="primary" size="small" icon={<PlayCircleOutlined />}>
+                <Button icon={<PlayCircleOutlined />} size="small" type="primary">
                   Continue
                 </Button>
               </Flexbox>
@@ -485,21 +516,21 @@ const StudentProgressCards: React.FC<StudentProgressProps> = ({
         ))}
         
         {/* Quick Stats Card */}
-        <Col xs={24} sm={12} lg={8}>
+        <Col lg={8} sm={12} xs={24}>
           <Card className={styles.progressCard} title="Quick Stats">
-            <Space direction="vertical" style={{ width: '100%' }} size="large">
+            <Space direction="vertical" size="large" style={{ width: '100%' }}>
               <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                <div style={{ alignItems: 'center', display: 'flex', gap: 8, marginBottom: 8 }}>
                   <FireOutlined style={{ color: '#fa8c16' }} />
                   <span style={{ fontWeight: 500 }}>Longest Streak</span>
                 </div>
-                <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#fa8c16' }}>
+                <div style={{ color: '#fa8c16', fontSize: '24px', fontWeight: 'bold' }}>
                   {longestStreak} days
                 </div>
               </div>
               
               <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                <div style={{ alignItems: 'center', display: 'flex', gap: 8, marginBottom: 8 }}>
                   <CalendarOutlined style={{ color: '#1890ff' }} />
                   <span style={{ fontWeight: 500 }}>This Week</span>
                 </div>
@@ -510,18 +541,18 @@ const StudentProgressCards: React.FC<StudentProgressProps> = ({
               </div>
               
               <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                <div style={{ alignItems: 'center', display: 'flex', gap: 8, marginBottom: 8 }}>
                   <BulbOutlined style={{ color: '#52c41a' }} />
                   <span style={{ fontWeight: 500 }}>Learning Goal</span>
                 </div>
                 <div className={styles.nextGoal}>
-                  <RocketOutlined style={{ marginRight: 8, color: '#1890ff' }} />
+                  <RocketOutlined style={{ color: '#1890ff', marginRight: 8 }} />
                   Reach Level 7 in Reading
                   <Progress 
                     percent={85} 
                     size="small" 
-                    style={{ marginTop: 8 }}
                     strokeColor="#1890ff"
+                    style={{ marginTop: 8 }}
                   />
                 </div>
               </div>
@@ -530,14 +561,14 @@ const StudentProgressCards: React.FC<StudentProgressProps> = ({
         </Col>
         
         {/* Activity Timeline */}
-        <Col xs={24} lg={16}>
-          <Card title="Recent Activity" className={styles.progressCard}>
+        <Col lg={16} xs={24}>
+          <Card className={styles.progressCard} title="Recent Activity">
             <div className={styles.timelineCard}>
               <Timeline>
                 <Timeline.Item color="green" dot={<CheckCircleOutlined />}>
                   <div style={{ marginBottom: 4 }}>
                     <strong>Completed "Fractions Made Easy"</strong>
-                    <Tag style={{ marginLeft: 8 }} color="blue">Mathematics</Tag>
+                    <Tag color="blue" style={{ marginLeft: 8 }}>Mathematics</Tag>
                   </div>
                   <div style={{ fontSize: '12px', opacity: 0.7 }}>2 hours ago • +50 XP</div>
                 </Timeline.Item>
@@ -545,7 +576,7 @@ const StudentProgressCards: React.FC<StudentProgressProps> = ({
                 <Timeline.Item color="gold" dot={<TrophyOutlined />}>
                   <div style={{ marginBottom: 4 }}>
                     <strong>Earned "Week Warrior" achievement</strong>
-                    <Tag style={{ marginLeft: 8 }} color="purple">Achievement</Tag>
+                    <Tag color="purple" style={{ marginLeft: 8 }}>Achievement</Tag>
                   </div>
                   <div style={{ fontSize: '12px', opacity: 0.7 }}>3 hours ago • 7-day streak!</div>
                 </Timeline.Item>
@@ -553,7 +584,7 @@ const StudentProgressCards: React.FC<StudentProgressProps> = ({
                 <Timeline.Item color="blue" dot={<BookOutlined />}>
                   <div style={{ marginBottom: 4 }}>
                     <strong>Started "Advanced Reading Comprehension"</strong>
-                    <Tag style={{ marginLeft: 8 }} color="purple">Reading</Tag>
+                    <Tag color="purple" style={{ marginLeft: 8 }}>Reading</Tag>
                   </div>
                   <div style={{ fontSize: '12px', opacity: 0.7 }}>1 day ago</div>
                 </Timeline.Item>
@@ -561,7 +592,7 @@ const StudentProgressCards: React.FC<StudentProgressProps> = ({
                 <Timeline.Item color="green" dot={<StarFilled />}>
                   <div style={{ marginBottom: 4 }}>
                     <strong>Perfect score on Science Quiz</strong>
-                    <Tag style={{ marginLeft: 8 }} color="green">Science</Tag>
+                    <Tag color="green" style={{ marginLeft: 8 }}>Science</Tag>
                   </div>
                   <div style={{ fontSize: '12px', opacity: 0.7 }}>2 days ago • +100 XP</div>
                 </Timeline.Item>
@@ -573,14 +604,14 @@ const StudentProgressCards: React.FC<StudentProgressProps> = ({
       
       {/* Achievement Details Modal */}
       <Modal
-        title="Achievement Details"
-        open={!!selectedAchievement}
-        onCancel={() => setSelectedAchievement(null)}
         footer={null}
+        onCancel={() => setSelectedAchievement(null)}
+        open={!!selectedAchievement}
+        title="Achievement Details"
         width={400}
       >
         {selectedAchievement && (
-          <div style={{ textAlign: 'center', padding: '20px 0' }}>
+          <div style={{ padding: '20px 0', textAlign: 'center' }}>
             <div style={{ fontSize: '48px', marginBottom: 16 }}>
               {selectedAchievement.icon}
             </div>
@@ -596,7 +627,7 @@ const StudentProgressCards: React.FC<StudentProgressProps> = ({
             >
               {selectedAchievement.rarity.toUpperCase()}
             </Tag>
-            <p style={{ marginBottom: 16, color: '#666' }}>
+            <p style={{ color: '#666', marginBottom: 16 }}>
               {selectedAchievement.description}
             </p>
             
@@ -611,7 +642,7 @@ const StudentProgressCards: React.FC<StudentProgressProps> = ({
             ) : (
               <div>
                 <div style={{ marginBottom: 16 }}>
-                  <div style={{ marginBottom: 8, fontWeight: 500 }}>Progress</div>
+                  <div style={{ fontWeight: 500, marginBottom: 8 }}>Progress</div>
                   <Progress 
                     percent={selectedAchievement.progress && selectedAchievement.maxProgress ? 
                       Math.round((selectedAchievement.progress / selectedAchievement.maxProgress) * 100) : 0

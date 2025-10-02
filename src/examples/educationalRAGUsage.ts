@@ -5,7 +5,6 @@
  * for curriculum content training and AI tutoring.
  */
 
-import { educationalRAGService } from '@/services/educationalRAG';
 import { useEducationStore } from '@/store/education/store';
 import { educationRAGSelectors } from '@/store/education/selectors';
 
@@ -15,14 +14,14 @@ export async function setupScienceKnowledgeBase() {
 
     // Create a knowledge base for 8th grade physics
     await educationStore.createKnowledgeBase({
-        name: "8th Grade Physics Fundamentals",
-        description: "Comprehensive physics curriculum covering motion, forces, and energy",
-        subject: "science",
-        grade: "8",
-        difficulty: "intermediate",
         contentType: "interactive",
-        tags: ["physics", "motion", "forces", "energy", "waves"],
+        description: "Comprehensive physics curriculum covering motion, forces, and energy",
+        difficulty: "intermediate",
+        grade: "8",
         isPublic: true,
+        name: "8th Grade Physics Fundamentals",
+        subject: "science",
+        tags: ["physics", "motion", "forces", "energy", "waves"],
     });
 
     console.log("Science knowledge base created successfully!");
@@ -58,19 +57,19 @@ export async function processPhysicsLesson() {
 
     // Process the content for RAG
     await educationStore.processEducationalContent({
+        concepts: ["inertia", "force", "motion", "equilibrium"],
         content: lessonContent,
+        contentType: "text",
         courseId: "physics_8th_grade",
-        lessonId: "newtons_laws_1",
+        difficulty: "intermediate",
         knowledgeBaseId: "kb_physics_8th",
         learningObjectives: [
             "Understand the concept of inertia",
             "Identify balanced and unbalanced forces",
             "Apply Newton's first law to real-world scenarios"
         ],
-        concepts: ["inertia", "force", "motion", "equilibrium"],
-        prerequisites: ["motion", "forces"],
-        difficulty: "intermediate",
-        contentType: "text"
+        lessonId: "newtons_laws_1",
+        prerequisites: ["motion", "forces"]
     });
 
     console.log("Physics lesson processed and ready for RAG!");
@@ -83,12 +82,12 @@ export async function startPhysicsTutorSession() {
     // Start an AI tutor session
     await educationStore.startTutorSession({
         courseId: "physics_8th_grade",
-        lessonId: "newtons_laws_1",
+        difficulty: "intermediate",
         knowledgeBaseId: "kb_physics_8th",
-        tutorPersonality: "encouraging",
+        lessonId: "newtons_laws_1",
         sessionType: "study",
         topic: "Newton's Laws of Motion",
-        difficulty: "intermediate"
+        tutorPersonality: "encouraging"
     });
 
     // Student asks a question
@@ -112,12 +111,12 @@ export async function searchForPhysicsConcepts() {
 
     // Search for concepts related to forces
     await educationStore.semanticSearch({
-        query: "What happens when forces are balanced on an object?",
-        subject: "science",
-        grade: "8",
-        difficulty: "intermediate",
         concepts: ["forces", "equilibrium", "motion"],
-        limit: 5
+        difficulty: "intermediate",
+        grade: "8",
+        limit: 5,
+        query: "What happens when forces are balanced on an object?",
+        subject: "science"
     });
 
     // Get the search results
@@ -139,13 +138,13 @@ export async function generatePhysicsLearningPath() {
 
     // Generate a personalized learning path
     await educationStore.generateLearningPath({
+        currentKnowledge: ["basic motion", "force definition"],
+        difficulty: "intermediate",
         targetObjectives: [
             "Master Newton's three laws of motion",
             "Apply force analysis to real-world problems",
             "Understand the relationship between mass, force, and acceleration"
         ],
-        currentKnowledge: ["basic motion", "force definition"],
-        difficulty: "intermediate",
         timeConstraints: 120 // 2 hours available
     });
 
@@ -168,15 +167,15 @@ export async function validateEducationalContent() {
 
     // Validate a content chunk
     await educationStore.validateContent({
-        chunkId: "chunk_newtons_laws_intro",
-        validationType: "accuracy",
         accuracyScore: 95,
-        relevanceScore: 88,
-        clarityScore: 92,
         appropriatenessScore: 90,
+        chunkId: "chunk_newtons_laws_intro",
+        clarityScore: 92,
         feedback: "Excellent explanation of Newton's First Law with clear examples",
+        flaggedIssues: [],
+        relevanceScore: 88,
         suggestions: "Consider adding more visual diagrams for better comprehension",
-        flaggedIssues: []
+        validationType: "accuracy"
     });
 
     // Check validation status
@@ -192,8 +191,8 @@ export async function getPersonalizedRecommendations() {
     // Get recommendations based on student's progress
     await educationStore.getPersonalizedRecommendations({
         courseId: "physics_8th_grade",
-        subject: "science",
-        limit: 10
+        limit: 10,
+        subject: "science"
     });
 
     const recommendations = educationRAGSelectors.personalizedRecommendations(educationStore);
@@ -255,19 +254,26 @@ export function usePhysicsRAG() {
     } = educationStore;
 
     return {
-        // State
-        knowledgeBases,
+        
         currentTutorSession,
-        searchResults,
-        recommendations,
+        
+generateLearningPath,
+        
+getPersonalizedRecommendations,
+        // State
+knowledgeBases,
         learningPath,
 
-        // Actions
-        startTutorSession,
+        
         queryAiTutor,
-        semanticSearch,
-        generateLearningPath,
-        getPersonalizedRecommendations
+        
+recommendations,
+        
+searchResults,
+        
+semanticSearch,
+        // Actions
+startTutorSession
     };
 }
 
@@ -277,10 +283,15 @@ export function configureRAGSystem() {
 
     // Update RAG configuration for optimal performance
     educationStore.updateRAGConfig({
-        embeddingModel: 'text-embedding-3-large', // Latest OpenAI model
-        languageModel: 'gpt-4-turbo',
-        chunkSize: 800, // Optimal for educational content
-        chunkOverlap: 150, // Good context preservation
+        // Optimal for educational content
+chunkOverlap: 150, 
+        
+chunkSize: 800,
+        
+
+embeddingModel: 'text-embedding-3-large', 
+        // Latest OpenAI model
+languageModel: 'gpt-4-turbo', // Good context preservation
         searchLimit: 8, // Balance between relevance and performance
         similarityThreshold: 0.75 // High relevance requirement
     });

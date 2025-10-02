@@ -87,10 +87,10 @@ const userLevelInfo = (s: EducationStoreState) => {
     const currentLevelProgress = points % 1000;
 
     return {
-        level,
-        points,
         currentLevelProgress,
+        level,
         nextLevelPoints,
+        points,
         progressToNext: (currentLevelProgress / 1000) * 100,
     };
 };
@@ -119,21 +119,21 @@ const nearCompletionAchievements = (s: EducationStoreState) =>
     );
 
 export const educationAchievementsSelectors = {
-    achievementsList,
-    earnedAchievements,
-    unearnedAchievements,
-    hasAchievement,
     achievementDetails,
     achievementProgress,
-    recentAchievements,
-    inProgressAchievementsList,
-    unshownNotifications,
     achievementStats,
-    achievementsByType,
     achievementsByCategory,
-    rareAchievements,
-    userLevelInfo,
+    achievementsByType,
+    achievementsList,
     completionRate,
+    earnedAchievements,
+    hasAchievement,
     hasNewNotifications,
+    inProgressAchievementsList,
     nearCompletionAchievements,
+    unearnedAchievements,
+    rareAchievements,
+    recentAchievements,
+    unshownNotifications,
+    userLevelInfo,
 };

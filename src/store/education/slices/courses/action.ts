@@ -2,7 +2,7 @@ import { StateCreator } from 'zustand/vanilla';
 
 import { trpc } from '@/libs/trpc';
 import { EducationStore } from '@/store/education/store';
-import { Action, setNamespace } from '@/utils/storeDebug';
+import { setNamespace } from '@/utils/storeDebug';
 
 import type { EducationStoreState } from '../../initialState';
 
@@ -10,9 +10,14 @@ const n = setNamespace('education-courses');
 
 export interface EducationCoursesAction {
     /**
-     * 设置当前活动课程
+     * 清除搜索结果
      */
-    setActiveCourse: (courseId: string) => void;
+    clearSearch: () => void;
+
+    /**
+     * 注册课程
+     */
+    enrollCourse: (courseId: string) => Promise<void>;
 
     /**
      * 获取所有课程
@@ -25,14 +30,9 @@ export interface EducationCoursesAction {
     fetchEnrolledCourses: () => Promise<void>;
 
     /**
-     * 注册课程
+     * 获取推荐课程
      */
-    enrollCourse: (courseId: string) => Promise<void>;
-
-    /**
-     * 取消注册课程
-     */
-    unenrollCourse: (courseId: string) => Promise<void>;
+    fetchRecommendedCourses: () => Promise<void>;
 
     /**
      * 搜索课程
@@ -40,19 +40,19 @@ export interface EducationCoursesAction {
     searchCourses: (query: string) => Promise<void>;
 
     /**
+     * 设置当前活动课程
+     */
+    setActiveCourse: (courseId: string) => void;
+
+    /**
      * 设置课程过滤器
      */
     setCourseFilters: (filters: Partial<EducationStoreState['filters']>) => void;
 
     /**
-     * 清除搜索结果
+     * 取消注册课程
      */
-    clearSearch: () => void;
-
-    /**
-     * 获取推荐课程
-     */
-    fetchRecommendedCourses: () => Promise<void>;
+    unenrollCourse: (courseId: string) => Promise<void>;
 }
 
 export const educationCoursesSlice: StateCreator<
@@ -61,8 +61,27 @@ export const educationCoursesSlice: StateCreator<
     [],
     EducationCoursesAction
 > = (set, get) => ({
-    setActiveCourse: (courseId) => {
-        set({ activeCourseId: courseId }, false, n('setActiveCourse', courseId));
+    clearSearch: () => {
+        set(
+            { courseSearchResults: [], searchQuery: '' },
+            false,
+            n('clearSearch'),
+        );
+    },
+
+    enrollCourse: async (courseId) => {
+        try {
+            await trpc.education.courses.enrollCourse.mutate({ courseId });
+            const { enrolledCourseIds } = get();
+
+            set(
+                { enrolledCourseIds: [...enrolledCourseIds, courseId] },
+                false,
+                n('enrollCourse/success', courseId),
+            );
+        } catch (error) {
+            console.error('Failed to enroll in course:', error);
+        }
     },
 
     fetchCourses: async () => {
@@ -80,9 +99,9 @@ export const educationCoursesSlice: StateCreator<
 
             set(
                 {
-                    coursesMap,
                     coursesInit: true,
                     coursesLoading: false,
+                    coursesMap,
                 },
                 false,
                 n('fetchCourses/success'),
@@ -107,33 +126,18 @@ export const educationCoursesSlice: StateCreator<
         }
     },
 
-    enrollCourse: async (courseId) => {
+    fetchRecommendedCourses: async () => {
         try {
-            await trpc.education.courses.enrollCourse.mutate({ courseId });
-            const { enrolledCourseIds } = get();
+            const recommendations = await trpc.education.courses.getRecommendedCourses.query();
+            const recommendedCourseIds = recommendations.map(course => course.id);
 
             set(
-                { enrolledCourseIds: [...enrolledCourseIds, courseId] },
+                { recommendedCourseIds },
                 false,
-                n('enrollCourse/success', courseId),
+                n('fetchRecommendedCourses/success'),
             );
         } catch (error) {
-            console.error('Failed to enroll in course:', error);
-        }
-    },
-
-    unenrollCourse: async (courseId) => {
-        try {
-            await trpc.education.courses.unenrollCourse.mutate({ courseId });
-            const { enrolledCourseIds } = get();
-
-            set(
-                { enrolledCourseIds: enrolledCourseIds.filter(id => id !== courseId) },
-                false,
-                n('unenrollCourse/success', courseId),
-            );
-        } catch (error) {
-            console.error('Failed to unenroll from course:', error);
+            console.error('Failed to fetch recommended courses:', error);
         }
     },
 
@@ -157,6 +161,10 @@ export const educationCoursesSlice: StateCreator<
         }
     },
 
+    setActiveCourse: (courseId) => {
+        set({ activeCourseId: courseId }, false, n('setActiveCourse', courseId));
+    },
+
     setCourseFilters: (filters) => {
         const currentFilters = get().filters;
         set(
@@ -166,26 +174,18 @@ export const educationCoursesSlice: StateCreator<
         );
     },
 
-    clearSearch: () => {
-        set(
-            { courseSearchResults: [], searchQuery: '' },
-            false,
-            n('clearSearch'),
-        );
-    },
-
-    fetchRecommendedCourses: async () => {
+    unenrollCourse: async (courseId) => {
         try {
-            const recommendations = await trpc.education.courses.getRecommendedCourses.query();
-            const recommendedCourseIds = recommendations.map(course => course.id);
+            await trpc.education.courses.unenrollCourse.mutate({ courseId });
+            const { enrolledCourseIds } = get();
 
             set(
-                { recommendedCourseIds },
+                { enrolledCourseIds: enrolledCourseIds.filter(id => id !== courseId) },
                 false,
-                n('fetchRecommendedCourses/success'),
+                n('unenrollCourse/success', courseId),
             );
         } catch (error) {
-            console.error('Failed to fetch recommended courses:', error);
+            console.error('Failed to unenroll from course:', error);
         }
     },
 });

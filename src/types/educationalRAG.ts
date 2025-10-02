@@ -2,227 +2,229 @@ import { z } from 'zod';
 
 // Educational RAG Search Schema
 export const EducationalSemanticSearchSchema = z.object({
-    query: z.string().min(1),
-    courseId: z.string().optional(),
-    lessonId: z.string().optional(),
-    subject: z.string().optional(),
-    grade: z.string().optional(),
-    difficulty: z.enum(['beginner', 'intermediate', 'advanced', 'expert']).optional(),
     concepts: z.array(z.string()).optional(),
+    courseId: z.string().optional(),
+    difficulty: z.enum(['beginner', 'intermediate', 'advanced', 'expert']).optional(),
+    grade: z.string().optional(),
     knowledgeBaseIds: z.array(z.string()).optional(),
+    lessonId: z.string().optional(),
     limit: z.number().min(1).max(50).default(10),
+    query: z.string().min(1),
+    subject: z.string().optional(),
 });
 
 export type EducationalSemanticSearchParams = z.infer<typeof EducationalSemanticSearchSchema>;
 
 // AI Tutor Query Schema
 export const AiTutorQuerySchema = z.object({
+    context: z.string().optional(),
+    courseId: z.string().optional(),
+    difficulty: z.string().optional(),
+    lessonId: z.string().optional(),
     query: z.string().min(1),
     sessionId: z.string().optional(),
-    courseId: z.string().optional(),
-    lessonId: z.string().optional(),
-    difficulty: z.string().optional(),
     tutorPersonality: z.enum(['encouraging', 'challenging', 'patient', 'enthusiastic']).default('encouraging'),
-    context: z.string().optional(),
 });
 
 export type AiTutorQueryParams = z.infer<typeof AiTutorQuerySchema>;
 
 // Educational Content Processing Schema
 export const EducationalContentProcessingSchema = z.object({
+    concepts: z.array(z.string()).optional(),
     content: z.string().min(1),
+    contentType: z.enum(['text', 'pdf', 'video', 'interactive', 'assessment']).default('text'),
     courseId: z.string().optional(),
-    lessonId: z.string().optional(),
+    difficulty: z.enum(['beginner', 'intermediate', 'advanced', 'expert']).default('beginner'),
     knowledgeBaseId: z.string(),
     learningObjectives: z.array(z.string()).optional(),
-    concepts: z.array(z.string()).optional(),
+    lessonId: z.string().optional(),
     prerequisites: z.array(z.string()).optional(),
-    difficulty: z.enum(['beginner', 'intermediate', 'advanced', 'expert']).default('beginner'),
-    contentType: z.enum(['text', 'pdf', 'video', 'interactive', 'assessment']).default('text'),
 });
 
 export type EducationalContentProcessingParams = z.infer<typeof EducationalContentProcessingSchema>;
 
 // Content Validation Schema
 export const ContentValidationSchema = z.object({
-    chunkId: z.string(),
-    validationType: z.enum(['accuracy', 'relevance', 'appropriateness', 'clarity']),
     accuracyScore: z.number().min(0).max(100).optional(),
-    relevanceScore: z.number().min(0).max(100).optional(),
-    clarityScore: z.number().min(0).max(100).optional(),
     appropriatenessScore: z.number().min(0).max(100).optional(),
+    chunkId: z.string(),
+    clarityScore: z.number().min(0).max(100).optional(),
     feedback: z.string().optional(),
-    suggestions: z.string().optional(),
     flaggedIssues: z.array(z.string()).optional(),
+    relevanceScore: z.number().min(0).max(100).optional(),
+    suggestions: z.string().optional(),
+    validationType: z.enum(['accuracy', 'relevance', 'appropriateness', 'clarity']),
 });
 
 export type ContentValidationParams = z.infer<typeof ContentValidationSchema>;
 
 // Educational Search Result Interface
 export interface EducationalSearchResult {
-    id: string;
-    text: string;
     abstract?: string;
-    similarity: number;
     concepts?: string[];
-    learningObjectives?: string[];
-    prerequisites?: string[];
-    difficulty: string;
-    courseId?: string;
-    lessonId?: string;
-    knowledgeBaseId: string;
     contentType: string;
+    courseId?: string;
+    difficulty: string;
+    id: string;
+    knowledgeBaseId: string;
+    learningObjectives?: string[];
+    lessonId?: string;
     metadata?: Record<string, any>;
+    prerequisites?: string[];
+    similarity: number;
+    text: string;
 }
 
 // AI Tutor Interaction Interface
 export interface AiTutorInteraction {
-    id: string;
-    sessionId: string;
-    userQuery: string;
     aiResponse: string;
-    rewrittenQuery?: string;
+    comprehensionLevel?: 'low' | 'medium' | 'high';
+    concepts?: string[];
+    contextUsed: string;
+    difficulty?: string;
+    id: string;
+    interactionType: 'question' | 'explanation' | 'practice' | 'assessment' | 'feedback';
+    isCorrectAnswer?: boolean;
+    responseTime: number;
     retrievedChunks: Array<{
         id: string;
         similarity: number;
         text: string;
     }>;
-    contextUsed: string;
-    interactionType: 'question' | 'explanation' | 'practice' | 'assessment' | 'feedback';
-    difficulty?: string;
-    concepts?: string[];
-    responseTime: number;
+    rewrittenQuery?: string;
+    sessionId: string;
     similarityScore: number;
-    userFeedback?: 'helpful' | 'unhelpful' | 'neutral';
-    isCorrectAnswer?: boolean;
-    comprehensionLevel?: 'low' | 'medium' | 'high';
     timestamp: string;
+    userFeedback?: 'helpful' | 'unhelpful' | 'neutral';
+    userQuery: string;
 }
 
 // Educational Knowledge Base Interface
 export interface EducationalKnowledgeBase {
-    id: string;
-    name: string;
-    description?: string;
-    subject: string;
-    grade: string;
-    difficulty: string;
-    contentType: string;
-    tags?: string[];
-    language: string;
-    embeddingModel?: string;
-    chunkSize: number;
     chunkOverlap: number;
-    createdBy: string;
-    isPublic: boolean;
-    qualityScore?: number;
-    lastValidated?: string;
+    chunkSize: number;
+    contentType: string;
     createdAt: string;
+    createdBy: string;
+    description?: string;
+    difficulty: string;
+    embeddingModel?: string;
+    grade: string;
+    id: string;
+    isPublic: boolean;
+    language: string;
+    lastValidated?: string;
+    name: string;
+    qualityScore?: number;
+    subject: string;
+    tags?: string[];
     updatedAt: string;
 }
 
 // Learning Path Interface
 export interface LearningPath {
-    id: string;
-    studentId: string;
-    targetObjectives: string[];
+    createdAt: string;
     currentKnowledge?: string[];
     difficulty: string;
-    timeConstraints?: number;
-    steps: LearningPathStep[];
     estimatedDuration: number;
+    id: string;
     progressTracking: {
         completedSteps: string[];
         currentStepId: string;
         overallProgress: number;
     };
-    createdAt: string;
+    steps: LearningPathStep[];
+    studentId: string;
+    targetObjectives: string[];
+    timeConstraints?: number;
     updatedAt: string;
 }
 
 export interface LearningPathStep {
-    id: string;
-    title: string;
-    description: string;
-    estimatedTime: number; // in minutes
-    prerequisites: string[];
-    learningObjectives: string[];
-    resources: Array<{
-        id: string;
-        type: 'content' | 'exercise' | 'assessment' | 'video' | 'reading';
-        title: string;
-        url?: string;
-        description?: string;
-    }>;
     assessmentCriteria?: string[];
+    description: string;
+    estimatedTime: number;
+    id: string; 
+    learningObjectives: string[];
     nextSteps: string[];
     order: number;
+    // in minutes
+    prerequisites: string[];
+    resources: Array<{
+        description?: string;
+        id: string;
+        title: string;
+        type: 'content' | 'exercise' | 'assessment' | 'video' | 'reading';
+        url?: string;
+    }>;
+    title: string;
 }
 
 // Personalized Recommendation Interface
 export interface PersonalizedRecommendation {
-    id: string;
-    studentId: string;
-    title: string;
-    description: string;
-    contentType: 'course' | 'lesson' | 'exercise' | 'reading' | 'video';
-    relevanceScore: number;
-    difficulty: string;
-    subject: string;
-    grade?: string;
     concepts: string[];
-    learningObjectives: string[];
-    estimatedTime: number;
-    reasoning: string; // Why this was recommended
-    sourceKnowledgeBaseIds: string[];
+    contentType: 'course' | 'lesson' | 'exercise' | 'reading' | 'video';
     createdAt: string;
+    description: string;
+    difficulty: string;
+    estimatedTime: number;
+    grade?: string;
+    id: string;
+    learningObjectives: string[];
+    reasoning: string;
+    relevanceScore: number;
+    // Why this was recommended
+    sourceKnowledgeBaseIds: string[];
+    studentId: string; 
+    subject: string;
+    title: string;
 }
 
 // Educational Analytics Interface
 export interface EducationalAnalytics {
     knowledgeBaseStats: {
-        totalKnowledgeBases: number;
-        totalContent: number;
-        validatedContent: number;
         averageQualityScore: number;
         conceptsCovered: number;
         subjectDistribution: Record<string, number>;
-    };
-    tutorSessionStats: {
-        totalSessions: number;
-        averageSessionDuration: number;
-        interactionRate: number;
-        satisfactionScore: number;
-        commonQuestions: Array<{
-            question: string;
-            frequency: number;
-            averageScore: number;
-        }>;
+        totalContent: number;
+        totalKnowledgeBases: number;
+        validatedContent: number;
     };
     learningPathStats: {
-        totalPaths: number;
-        completionRate: number;
         averageProgress: number;
+        completionRate: number;
         mostPopularObjectives: string[];
+        totalPaths: number;
+    };
+    tutorSessionStats: {
+        averageSessionDuration: number;
+        commonQuestions: Array<{
+            averageScore: number;
+            frequency: number;
+            question: string;
+        }>;
+        interactionRate: number;
+        satisfactionScore: number;
+        totalSessions: number;
     };
 }
 
 // RAG Configuration Interface
 export interface RAGConfiguration {
+    chunkOverlap: number;
+    chunkSize: number;
+    contextWindowSize: number;
     embeddingModel: string;
     languageModel: string;
-    chunkSize: number;
-    chunkOverlap: number;
+    rerankingEnabled: boolean;
+    responseGenerationConfig: {
+        frequencyPenalty: number;
+        maxTokens: number;
+        presencePenalty: number;
+        temperature: number;
+        topP: number;
+    };
+    retrievalStrategy: 'semantic' | 'keyword' | 'hybrid';
     searchLimit: number;
     similarityThreshold: number;
-    retrievalStrategy: 'semantic' | 'keyword' | 'hybrid';
-    rerankingEnabled: boolean;
-    contextWindowSize: number;
-    responseGenerationConfig: {
-        temperature: number;
-        maxTokens: number;
-        topP: number;
-        frequencyPenalty: number;
-        presencePenalty: number;
-    };
 }

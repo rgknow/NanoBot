@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { desc, eq, and, like, inArray } from 'drizzle-orm';
+import { desc, eq, and, like } from 'drizzle-orm';
 
 import { authedProcedure, router } from '@/libs/trpc/lambda';
 import { serverDatabase } from '@/libs/trpc/lambda/middleware';
@@ -8,7 +8,6 @@ import {
     lessons,
     courseEnrollments,
     NewCourse,
-    NewLesson,
     NewCourseEnrollment
 } from '@/database/schemas/education';
 
@@ -17,21 +16,21 @@ const courseProcedure = authedProcedure.use(serverDatabase);
 
 // Input validation schemas
 const createCourseSchema = z.object({
-    title: z.string().min(1).max(255),
     description: z.string().optional(),
-    shortDescription: z.string().optional(),
-    subject: z.enum(['science', 'technology', 'engineering', 'arts', 'mathematics', 'robotics', 'programming', 'electronics', 'design', 'maker']),
-    grade: z.enum(['k', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']),
     difficulty: z.enum(['beginner', 'intermediate', 'advanced', 'expert']),
     estimatedHours: z.number().min(0).optional(),
-    prerequisites: z.array(z.string()).optional(),
+    bannerUrl: z.string().optional(),
+    grade: z.enum(['k', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']),
+    isFeatured: z.boolean().default(false),
     learningObjectives: z.array(z.string()).optional(),
+    allowSelfEnrollment: z.boolean().default(true),
+    shortDescription: z.string().optional(),
+    isPublished: z.boolean().default(false),
+    title: z.string().min(1).max(255),
+    prerequisites: z.array(z.string()).optional(),
+    subject: z.enum(['science', 'technology', 'engineering', 'arts', 'mathematics', 'robotics', 'programming', 'electronics', 'design', 'maker']),
     tags: z.array(z.string()).optional(),
     thumbnailUrl: z.string().optional(),
-    bannerUrl: z.string().optional(),
-    isPublished: z.boolean().default(false),
-    isFeatured: z.boolean().default(false),
-    allowSelfEnrollment: z.boolean().default(true),
 });
 
 const updateCourseSchema = createCourseSchema.partial().extend({
@@ -39,21 +38,21 @@ const updateCourseSchema = createCourseSchema.partial().extend({
 });
 
 const createLessonSchema = z.object({
-    courseId: z.string(),
-    title: z.string().min(1).max(255),
-    description: z.string().optional(),
     content: z.string().optional(),
-    order: z.number().min(0).default(0),
-    parentLessonId: z.string().optional(),
-    estimatedMinutes: z.number().min(0).optional(),
-    difficulty: z.enum(['beginner', 'intermediate', 'advanced', 'expert']),
-    learningObjectives: z.array(z.string()).optional(),
     contentType: z.string().default('text'),
-    resources: z.array(z.any()).optional(),
     aiPrompts: z.array(z.any()).optional(),
-    makerComponents: z.array(z.any()).optional(),
+    courseId: z.string(),
+    description: z.string().optional(),
+    difficulty: z.enum(['beginner', 'intermediate', 'advanced', 'expert']),
+    estimatedMinutes: z.number().min(0).optional(),
     isPublished: z.boolean().default(false),
+    learningObjectives: z.array(z.string()).optional(),
+    makerComponents: z.array(z.any()).optional(),
+    order: z.number().min(0).default(0),
+    title: z.string().min(1).max(255),
+    parentLessonId: z.string().optional(),
     requiresCompletion: z.boolean().default(true),
+    resources: z.array(z.any()).optional(),
 });
 
 const enrollCourseSchema = z.object({
@@ -61,79 +60,21 @@ const enrollCourseSchema = z.object({
 });
 
 const courseFiltersSchema = z.object({
-    subject: z.enum(['science', 'technology', 'engineering', 'arts', 'mathematics', 'robotics', 'programming', 'electronics', 'design', 'maker']).optional(),
-    grade: z.enum(['k', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']).optional(),
     difficulty: z.enum(['beginner', 'intermediate', 'advanced', 'expert']).optional(),
-    search: z.string().optional(),
     featured: z.boolean().optional(),
-    published: z.boolean().default(true),
+    grade: z.enum(['k', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']).optional(),
     limit: z.number().min(1).max(100).default(20),
     offset: z.number().min(0).default(0),
+    published: z.boolean().default(true),
+    search: z.string().optional(),
+    subject: z.enum(['science', 'technology', 'engineering', 'arts', 'mathematics', 'robotics', 'programming', 'electronics', 'design', 'maker']).optional(),
 });
 
 export const coursesRouter = router({
-    // Get all courses with filters
-    list: courseProcedure
-        .input(courseFiltersSchema)
-        .query(async ({ ctx, input }) => {
-            const { serverDB } = ctx;
-
-            let query = serverDB.select().from(courses);
-
-            // Apply filters
-            const filters = [];
-            if (input.subject) filters.push(eq(courses.subject, input.subject));
-            if (input.grade) filters.push(eq(courses.grade, input.grade));
-            if (input.difficulty) filters.push(eq(courses.difficulty, input.difficulty));
-            if (input.featured !== undefined) filters.push(eq(courses.isFeatured, input.featured));
-            if (input.published !== undefined) filters.push(eq(courses.isPublished, input.published));
-
-            if (input.search) {
-                filters.push(like(courses.title, `%${input.search}%`));
-            }
-
-            if (filters.length > 0) {
-                query = query.where(and(...filters));
-            }
-
-            const results = await query
-                .orderBy(desc(courses.createdAt))
-                .limit(input.limit)
-                .offset(input.offset);
-
-            return results;
-        }),
-
-    // Get course by ID with lessons
-    getById: courseProcedure
-        .input(z.object({ id: z.string() }))
-        .query(async ({ ctx, input }) => {
-            const { serverDB } = ctx;
-
-            const [course] = await serverDB
-                .select()
-                .from(courses)
-                .where(eq(courses.id, input.id));
-
-            if (!course) {
-                throw new Error('Course not found');
-            }
-
-            // Get lessons for this course
-            const courseLessons = await serverDB
-                .select()
-                .from(lessons)
-                .where(eq(lessons.courseId, input.id))
-                .orderBy(lessons.order, lessons.createdAt);
-
-            return {
-                ...course,
-                lessons: courseLessons,
-            };
-        }),
-
-    // Create new course (teachers/admins only)
-    create: courseProcedure
+    
+    
+// Create new course (teachers/admins only)
+create: courseProcedure
         .input(createCourseSchema)
         .mutation(async ({ ctx, input }) => {
             const { serverDB, userId } = ctx;
@@ -142,7 +83,7 @@ export const coursesRouter = router({
             // For now, any authenticated user can create courses
 
             const newCourse: NewCourse = {
-                id: `course_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                id: `course_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`,
                 instructorId: userId,
                 ...input,
             };
@@ -155,38 +96,12 @@ export const coursesRouter = router({
             return createdCourse;
         }),
 
-    // Update course
-    update: courseProcedure
-        .input(updateCourseSchema)
-        .mutation(async ({ ctx, input }) => {
-            const { serverDB, userId } = ctx;
-            const { id, ...updateData } = input;
+    
+    
 
-            // Check if user owns the course or has admin rights
-            const [course] = await serverDB
-                .select()
-                .from(courses)
-                .where(eq(courses.id, id));
 
-            if (!course) {
-                throw new Error('Course not found');
-            }
-
-            if (course.instructorId !== userId) {
-                throw new Error('Unauthorized: You can only update your own courses');
-            }
-
-            const [updatedCourse] = await serverDB
-                .update(courses)
-                .set({ ...updateData, updatedAt: new Date() })
-                .where(eq(courses.id, id))
-                .returning();
-
-            return updatedCourse;
-        }),
-
-    // Delete course
-    delete: courseProcedure
+// Delete course
+delete: courseProcedure
         .input(z.object({ id: z.string() }))
         .mutation(async ({ ctx, input }) => {
             const { serverDB, userId } = ctx;
@@ -212,8 +127,12 @@ export const coursesRouter = router({
             return { success: true };
         }),
 
-    // Enroll in course
-    enroll: courseProcedure
+    
+    
+
+
+// Enroll in course
+enroll: courseProcedure
         .input(enrollCourseSchema)
         .mutation(async ({ ctx, input }) => {
             const { serverDB, userId } = ctx;
@@ -252,11 +171,11 @@ export const coursesRouter = router({
                 .where(eq(lessons.courseId, input.courseId));
 
             const newEnrollment: NewCourseEnrollment = {
-                id: `enrollment_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-                userId,
                 courseId: input.courseId,
                 enrolledAt: new Date().toISOString(),
+                id: `enrollment_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`,
                 totalLessons: lessonsCount.length,
+                userId,
             };
 
             const [enrollment] = await serverDB
@@ -267,68 +186,13 @@ export const coursesRouter = router({
             return enrollment;
         }),
 
-    // Get user's enrolled courses
-    getEnrolled: courseProcedure
-        .query(async ({ ctx }) => {
-            const { serverDB, userId } = ctx;
+    
+    
 
-            const enrolledCourses = await serverDB
-                .select({
-                    course: courses,
-                    enrollment: courseEnrollments,
-                })
-                .from(courseEnrollments)
-                .innerJoin(courses, eq(courseEnrollments.courseId, courses.id))
-                .where(eq(courseEnrollments.userId, userId))
-                .orderBy(desc(courseEnrollments.enrolledAt));
 
-            return enrolledCourses.map(({ course, enrollment }) => ({
-                ...course,
-                enrollment,
-            }));
-        }),
 
-    // Get courses created by user (for teachers)
-    getOwned: courseProcedure
-        .query(async ({ ctx }) => {
-            const { serverDB, userId } = ctx;
 
-            const ownedCourses = await serverDB
-                .select()
-                .from(courses)
-                .where(eq(courses.instructorId, userId))
-                .orderBy(desc(courses.createdAt));
-
-            return ownedCourses;
-        }),
-
-    // Additional methods for the store
-    getAllCourses: courseProcedure
-        .query(async ({ ctx }) => {
-            const { serverDB } = ctx;
-
-            const allCourses = await serverDB
-                .select()
-                .from(courses)
-                .where(eq(courses.isPublished, true))
-                .orderBy(desc(courses.createdAt));
-
-            return allCourses;
-        }),
-
-    getEnrolledCourses: courseProcedure
-        .query(async ({ ctx }) => {
-            const { serverDB, userId } = ctx;
-
-            const enrollments = await serverDB
-                .select()
-                .from(courseEnrollments)
-                .where(eq(courseEnrollments.userId, userId));
-
-            return enrollments;
-        }),
-
-    enrollCourse: courseProcedure
+enrollCourse: courseProcedure
         .input(z.object({ courseId: z.string() }))
         .mutation(async ({ ctx, input }) => {
             const { serverDB, userId } = ctx;
@@ -367,11 +231,11 @@ export const coursesRouter = router({
                 .where(eq(lessons.courseId, input.courseId));
 
             const newEnrollment: NewCourseEnrollment = {
-                id: `enrollment_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-                userId,
                 courseId: input.courseId,
                 enrolledAt: new Date().toISOString(),
+                id: `enrollment_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`,
                 totalLessons: lessonsCount.length,
+                userId,
             };
 
             const [enrollment] = await serverDB
@@ -382,22 +246,178 @@ export const coursesRouter = router({
             return enrollment;
         }),
 
-    unenrollCourse: courseProcedure
-        .input(z.object({ courseId: z.string() }))
-        .mutation(async ({ ctx, input }) => {
-            const { serverDB, userId } = ctx;
+    
+    
 
-            await serverDB
-                .delete(courseEnrollments)
-                .where(and(
-                    eq(courseEnrollments.courseId, input.courseId),
-                    eq(courseEnrollments.userId, userId)
-                ));
 
-            return { success: true };
+
+
+// Additional methods for the store
+getAllCourses: courseProcedure
+        .query(async ({ ctx }) => {
+            const { serverDB } = ctx;
+
+            const allCourses = await serverDB
+                .select()
+                .from(courses)
+                .where(eq(courses.isPublished, true))
+                .orderBy(desc(courses.createdAt));
+
+            return allCourses;
         }),
 
-    searchCourses: courseProcedure
+    
+    
+
+
+// Get course by ID with lessons
+getById: courseProcedure
+        .input(z.object({ id: z.string() }))
+        .query(async ({ ctx, input }) => {
+            const { serverDB } = ctx;
+
+            const [course] = await serverDB
+                .select()
+                .from(courses)
+                .where(eq(courses.id, input.id));
+
+            if (!course) {
+                throw new Error('Course not found');
+            }
+
+            // Get lessons for this course
+            const courseLessons = await serverDB
+                .select()
+                .from(lessons)
+                .where(eq(lessons.courseId, input.id))
+                .orderBy(lessons.order, lessons.createdAt);
+
+            return {
+                ...course,
+                lessons: courseLessons,
+            };
+        }),
+
+    
+    
+
+
+// Get user's enrolled courses
+getEnrolled: courseProcedure
+        .query(async ({ ctx }) => {
+            const { serverDB, userId } = ctx;
+
+            const enrolledCourses = await serverDB
+                .select({
+                    course: courses,
+                    enrollment: courseEnrollments,
+                })
+                .from(courseEnrollments)
+                .innerJoin(courses, eq(courseEnrollments.courseId, courses.id))
+                .where(eq(courseEnrollments.userId, userId))
+                .orderBy(desc(courseEnrollments.enrolledAt));
+
+            return enrolledCourses.map(({ course, enrollment }) => ({
+                ...course,
+                enrollment,
+            }));
+        }),
+
+    
+    
+
+
+
+
+getEnrolledCourses: courseProcedure
+        .query(async ({ ctx }) => {
+            const { serverDB, userId } = ctx;
+
+            const enrollments = await serverDB
+                .select()
+                .from(courseEnrollments)
+                .where(eq(courseEnrollments.userId, userId));
+
+            return enrollments;
+        }),
+
+    
+    
+
+
+
+// Get courses created by user (for teachers)
+getOwned: courseProcedure
+        .query(async ({ ctx }) => {
+            const { serverDB, userId } = ctx;
+
+            const ownedCourses = await serverDB
+                .select()
+                .from(courses)
+                .where(eq(courses.instructorId, userId))
+                .orderBy(desc(courses.createdAt));
+
+            return ownedCourses;
+        }),
+
+    
+
+
+
+getRecommendedCourses: courseProcedure
+        .query(async ({ ctx }) => {
+            const { serverDB } = ctx;
+
+            // Simple recommendation: featured courses
+            const recommendedCourses = await serverDB
+                .select()
+                .from(courses)
+                .where(and(
+                    eq(courses.isFeatured, true),
+                    eq(courses.isPublished, true)
+                ))
+                .orderBy(desc(courses.createdAt))
+                .limit(10);
+
+            return recommendedCourses;
+        }),
+
+    
+
+// Get all courses with filters
+list: courseProcedure
+        .input(courseFiltersSchema)
+        .query(async ({ ctx, input }) => {
+            const { serverDB } = ctx;
+
+            let query = serverDB.select().from(courses);
+
+            // Apply filters
+            const filters = [];
+            if (input.subject) filters.push(eq(courses.subject, input.subject));
+            if (input.grade) filters.push(eq(courses.grade, input.grade));
+            if (input.difficulty) filters.push(eq(courses.difficulty, input.difficulty));
+            if (input.featured !== undefined) filters.push(eq(courses.isFeatured, input.featured));
+            if (input.published !== undefined) filters.push(eq(courses.isPublished, input.published));
+
+            if (input.search) {
+                filters.push(like(courses.title, `%${input.search}%`));
+            }
+
+            if (filters.length > 0) {
+                query = query.where(and(...filters));
+            }
+
+            const results = await query
+                .orderBy(desc(courses.createdAt))
+                .limit(input.limit)
+                .offset(input.offset);
+
+            return results;
+        }),
+
+    
+searchCourses: courseProcedure
         .input(z.object({ query: z.string() }))
         .query(async ({ ctx, input }) => {
             const { serverDB } = ctx;
@@ -415,21 +435,49 @@ export const coursesRouter = router({
             return results;
         }),
 
-    getRecommendedCourses: courseProcedure
-        .query(async ({ ctx }) => {
-            const { serverDB } = ctx;
+    
+unenrollCourse: courseProcedure
+        .input(z.object({ courseId: z.string() }))
+        .mutation(async ({ ctx, input }) => {
+            const { serverDB, userId } = ctx;
 
-            // Simple recommendation: featured courses
-            const recommendedCourses = await serverDB
+            await serverDB
+                .delete(courseEnrollments)
+                .where(and(
+                    eq(courseEnrollments.courseId, input.courseId),
+                    eq(courseEnrollments.userId, userId)
+                ));
+
+            return { success: true };
+        }),
+
+    // Update course
+update: courseProcedure
+        .input(updateCourseSchema)
+        .mutation(async ({ ctx, input }) => {
+            const { serverDB, userId } = ctx;
+            const { id, ...updateData } = input;
+
+            // Check if user owns the course or has admin rights
+            const [course] = await serverDB
                 .select()
                 .from(courses)
-                .where(and(
-                    eq(courses.isFeatured, true),
-                    eq(courses.isPublished, true)
-                ))
-                .orderBy(desc(courses.createdAt))
-                .limit(10);
+                .where(eq(courses.id, id));
 
-            return recommendedCourses;
+            if (!course) {
+                throw new Error('Course not found');
+            }
+
+            if (course.instructorId !== userId) {
+                throw new Error('Unauthorized: You can only update your own courses');
+            }
+
+            const [updatedCourse] = await serverDB
+                .update(courses)
+                .set({ ...updateData, updatedAt: new Date() })
+                .where(eq(courses.id, id))
+                .returning();
+
+            return updatedCourse;
         }),
 });

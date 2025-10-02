@@ -1,28 +1,38 @@
 export interface EducationProgressState {
     /**
-     * @title 用户进度映射
-     * @description 存储用户在各个课程中的进度数据
-     */
-    progressMap: Record<string, any>;
-
-    /**
      * @title 课程进度映射
      * @description 存储每个课程的详细进度信息
      */
     courseProgressMap: Record<string, {
-        courseId: string;
         completedLessons: string[];
-        totalLessons: number;
-        progressPercentage: number;
+        courseId: string;
         lastAccessedAt: string;
-        timeSpent: number; // in minutes
+        progressPercentage: number;
+        timeSpent: number;
+        totalLessons: number; // in minutes
     }>;
 
     /**
-     * @title 进度加载状态
-     * @description 是否正在加载进度数据
+     * @title 学习目标
+     * @description 用户设定的学习目标
      */
-    progressLoading: boolean;
+    learningGoals: {
+        dailyMinutes: number;
+        monthlyCoursesToComplete: number;
+        weeklyHours: number;
+    };
+
+    /**
+     * @title 学习统计数据
+     * @description 用户的学习统计信息
+     */
+    learningStats: {
+        coursesCompleted: number;
+        lastStudyDate?: string;
+        lessonsCompleted: number;
+        streakDays: number;
+        totalTimeSpent: number;
+    };
 
     /**
      * @title 进度初始化状态
@@ -31,42 +41,32 @@ export interface EducationProgressState {
     progressInit: boolean;
 
     /**
-     * @title 学习统计数据
-     * @description 用户的学习统计信息
+     * @title 进度加载状态
+     * @description 是否正在加载进度数据
      */
-    learningStats: {
-        totalTimeSpent: number;
-        coursesCompleted: number;
-        lessonsCompleted: number;
-        streakDays: number;
-        lastStudyDate?: string;
-    };
+    progressLoading: boolean;
 
     /**
-     * @title 学习目标
-     * @description 用户设定的学习目标
+     * @title 用户进度映射
+     * @description 存储用户在各个课程中的进度数据
      */
-    learningGoals: {
-        dailyMinutes: number;
-        weeklyHours: number;
-        monthlyCoursesToComplete: number;
-    };
+    progressMap: Record<string, any>;
 }
 
 export const initialProgressState: EducationProgressState = {
-    progressMap: {},
     courseProgressMap: {},
-    progressLoading: false,
-    progressInit: false,
+    learningGoals: {
+        dailyMinutes: 30,
+        monthlyCoursesToComplete: 1,
+        weeklyHours: 5,
+    },
     learningStats: {
-        totalTimeSpent: 0,
         coursesCompleted: 0,
         lessonsCompleted: 0,
         streakDays: 0,
+        totalTimeSpent: 0,
     },
-    learningGoals: {
-        dailyMinutes: 30,
-        weeklyHours: 5,
-        monthlyCoursesToComplete: 1,
-    },
+    progressInit: false,
+    progressLoading: false,
+    progressMap: {},
 };

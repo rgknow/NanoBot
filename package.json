@@ -77,7 +77,7 @@
     "test-app": "vitest run",
     "test-app:coverage": "vitest --coverage --silent='passed-only'",
     "test:update": "vitest -u",
-    "type-check": "tsgo --noEmit",
+    "type-check": "tsc --noEmit",
     "webhook:ngrok": "ngrok http http://localhost:3011",
     "workflow:cdn": "tsx ./scripts/cdnWorkflow/index.ts",
     "workflow:changelog": "tsx ./scripts/changelogWorkflow/index.ts",

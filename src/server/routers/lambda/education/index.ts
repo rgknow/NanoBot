@@ -8,10 +8,10 @@ import { educationalRAGRouter } from './rag';
 import guardrailsRouter from './guardrails';
 
 export const educationRouter = router({
+    achievements: achievementsRouter,
     courses: coursesRouter,
+    guardrails: guardrailsRouter,
     lessons: lessonsRouter,
     progress: progressRouter,
-    achievements: achievementsRouter,
     rag: educationalRAGRouter,
-    guardrails: guardrailsRouter,
 });

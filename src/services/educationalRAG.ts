@@ -1,62 +1,62 @@
 import { lambdaClient } from '@/libs/trpc/client';
 
 export interface EducationalSemanticSearchParams {
-    query: string;
-    courseId?: string;
-    lessonId?: string;
-    subject?: string;
-    grade?: string;
-    difficulty?: string;
     concepts?: string[];
+    courseId?: string;
+    difficulty?: string;
+    grade?: string;
     knowledgeBaseIds?: string[];
+    lessonId?: string;
     limit?: number;
+    query: string;
+    subject?: string;
 }
 
 export interface AiTutorQueryParams {
+    context?: string;
+    courseId?: string;
+    difficulty?: string;
+    lessonId?: string;
     query: string;
     sessionId?: string;
-    courseId?: string;
-    lessonId?: string;
-    difficulty?: string;
     tutorPersonality?: string;
-    context?: string;
 }
 
 export interface ContentValidationParams {
-    chunkId: string;
-    validationType: 'accuracy' | 'relevance' | 'appropriateness';
     accuracyScore?: number;
-    relevanceScore?: number;
-    clarityScore?: number;
     appropriatenessScore?: number;
+    chunkId: string;
+    clarityScore?: number;
     feedback?: string;
-    suggestions?: string;
     flaggedIssues?: string[];
+    relevanceScore?: number;
+    suggestions?: string;
+    validationType: 'accuracy' | 'relevance' | 'appropriateness';
 }
 
 class EducationalRAGService {
     // Knowledge Base Management
     createKnowledgeBase = async (params: {
-        name: string;
-        description?: string;
-        subject: string;
-        grade: string;
-        difficulty?: string;
         contentType?: string;
-        tags?: string[];
+        description?: string;
+        difficulty?: string;
+        grade: string;
         isPublic?: boolean;
+        name: string;
+        subject: string;
+        tags?: string[];
     }) => {
         return lambdaClient.education.rag.createKnowledgeBase.mutate(params);
     };
 
     updateKnowledgeBase = async (id: string, params: Partial<{
-        name: string;
         description: string;
-        subject: string;
-        grade: string;
         difficulty: string;
-        tags: string[];
+        grade: string;
         isPublic: boolean;
+        name: string;
+        subject: string;
+        tags: string[];
     }>) => {
         return lambdaClient.education.rag.updateKnowledgeBase.mutate({ id, ...params });
     };
@@ -66,38 +66,38 @@ class EducationalRAGService {
     };
 
     getKnowledgeBases = async (filters?: {
-        subject?: string;
-        grade?: string;
         difficulty?: string;
+        grade?: string;
         isPublic?: boolean;
+        subject?: string;
     }) => {
         return lambdaClient.education.rag.getKnowledgeBases.query(filters);
     };
 
     // Educational Content Processing
     processEducationalContent = async (params: {
+        concepts?: string[];
         content: string;
+        contentType?: string;
         courseId?: string;
-        lessonId?: string;
+        difficulty?: string;
         knowledgeBaseId: string;
         learningObjectives?: string[];
-        concepts?: string[];
+        lessonId?: string;
         prerequisites?: string[];
-        difficulty?: string;
-        contentType?: string;
     }) => {
         return lambdaClient.education.rag.processContent.mutate(params);
     };
 
     createEducationalChunks = async (params: {
-        knowledgeBaseId: string;
-        content: string;
-        chunkSize?: number;
         chunkOverlap?: number;
-        courseId?: string;
-        lessonId?: string;
-        learningObjectives?: string[];
+        chunkSize?: number;
         concepts?: string[];
+        content: string;
+        courseId?: string;
+        knowledgeBaseId: string;
+        learningObjectives?: string[];
+        lessonId?: string;
     }) => {
         return lambdaClient.education.rag.createChunks.mutate(params);
     };
@@ -112,21 +112,21 @@ class EducationalRAGService {
     };
 
     searchByLearningObjective = async (params: {
-        learningObjective: string;
-        subject?: string;
-        grade?: string;
         difficulty?: string;
+        grade?: string;
+        learningObjective: string;
         limit?: number;
+        subject?: string;
     }) => {
         return lambdaClient.education.rag.searchByLearningObjective.query(params);
     };
 
     searchByConcept = async (params: {
         concept: string;
-        subject?: string;
         grade?: string;
-        relatedConcepts?: string[];
         limit?: number;
+        relatedConcepts?: string[];
+        subject?: string;
     }) => {
         return lambdaClient.education.rag.searchByConcept.query(params);
     };
@@ -134,23 +134,23 @@ class EducationalRAGService {
     // AI Tutor Integration
     startTutorSession = async (params: {
         courseId?: string;
-        lessonId?: string;
+        difficulty?: string;
         knowledgeBaseId?: string;
-        tutorPersonality?: string;
+        lessonId?: string;
         sessionType?: string;
         topic?: string;
-        difficulty?: string;
+        tutorPersonality?: string;
     }) => {
         return lambdaClient.education.rag.startTutorSession.mutate(params);
     };
 
     endTutorSession = async (sessionId: string, feedback?: {
-        helpfulVotes: number;
-        unhelpfulVotes: number;
-        overallRating: number;
         comments?: string;
+        helpfulVotes: number;
+        overallRating: number;
+        unhelpfulVotes: number;
     }) => {
-        return lambdaClient.education.rag.endTutorSession.mutate({ sessionId, feedback });
+        return lambdaClient.education.rag.endTutorSession.mutate({ feedback, sessionId });
     };
 
     queryAiTutor = async (params: AiTutorQueryParams) => {
@@ -158,10 +158,10 @@ class EducationalRAGService {
     };
 
     provideTutorFeedback = async (interactionId: string, feedback: {
-        isHelpful: boolean;
-        isCorrect?: boolean;
-        comprehensionLevel?: string;
         comments?: string;
+        comprehensionLevel?: string;
+        isCorrect?: boolean;
+        isHelpful: boolean;
     }) => {
         return lambdaClient.education.rag.provideTutorFeedback.mutate({ interactionId, ...feedback });
     };
@@ -190,9 +190,9 @@ class EducationalRAGService {
 
     getTutorSessionAnalytics = async (filters?: {
         courseId?: string;
-        studentId?: string;
         dateFrom?: string;
         dateTo?: string;
+        studentId?: string;
     }) => {
         return lambdaClient.education.rag.getTutorSessionAnalytics.query(filters);
     };
@@ -203,20 +203,20 @@ class EducationalRAGService {
 
     // Curriculum Alignment
     alignContentToCurriculum = async (params: {
+        assessmentCriteria?: string[];
         chunkId: string;
-        standardsAlignment: string[];
         learningObjectives: string[];
         prerequisites: string[];
-        assessmentCriteria?: string[];
+        standardsAlignment: string[];
     }) => {
         return lambdaClient.education.rag.alignContentToCurriculum.mutate(params);
     };
 
     generateLearningPath = async (params: {
-        studentId: string;
-        targetObjectives: string[];
         currentKnowledge?: string[];
         difficulty?: string;
+        studentId: string;
+        targetObjectives: string[];
         timeConstraints?: number; // minutes
     }) => {
         return lambdaClient.education.rag.generateLearningPath.mutate(params);
@@ -224,20 +224,21 @@ class EducationalRAGService {
 
     // Adaptive Learning
     adaptContentDifficulty = async (params: {
-        studentId: string;
         courseId: string;
-        currentPerformance: number; // 0-100
-        learningStyle?: string;
+        currentPerformance: number;
+        // 0-100
+        learningStyle?: string; 
+        studentId: string;
         timeSpent?: number;
     }) => {
         return lambdaClient.education.rag.adaptContentDifficulty.mutate(params);
     };
 
     getPersonalizedRecommendations = async (params: {
-        studentId: string;
         courseId?: string;
-        subject?: string;
         limit?: number;
+        studentId: string;
+        subject?: string;
     }) => {
         return lambdaClient.education.rag.getPersonalizedRecommendations.query(params);
     };

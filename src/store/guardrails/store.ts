@@ -5,130 +5,130 @@
  */
 
 import { StateCreator } from 'zustand';
-import { devtools } from 'zustand/middleware';
+import { devtools , subscribeWithSelector } from 'zustand/middleware';
 import { createWithEqualityFn } from 'zustand/traditional';
-import { subscribeWithSelector } from 'zustand/middleware';
 import { GuardrailViolation, GuardrailContext } from '@/lib/guardrails';
 
 // State interfaces
 export interface GuardrailSettings {
-    strictMode: boolean;
     allowedTopics: string[];
     blockedTopics: string[];
     maxDailyInteractions: number;
-    requireParentalApproval: boolean;
     notificationPreferences: {
         emailNotifications: boolean;
-        smsNotifications: boolean;
         inAppNotifications: boolean;
+        smsNotifications: boolean;
     };
+    requireParentalApproval: boolean;
+    strictMode: boolean;
 }
 
 export interface SafetyStatus {
-    safetyScore: number; // 0-100
-    totalInteractions: number;
-    violationsThisWeek: number;
-    violationsThisMonth: number;
-    lastViolation?: Date;
+    blockedAttempts: number; 
     consecutiveViolations: number;
-    blockedAttempts: number;
+    lastViolation?: Date;
+    safetyScore: number;
+    // 0-100
+    totalInteractions: number;
+    violationsThisMonth: number;
+    violationsThisWeek: number;
 }
 
 export interface GuardrailInteraction {
     id: string;
-    timestamp: Date;
-    userRole: string;
+    responseFiltered: boolean;
     studentGrade?: string;
     subject?: string;
+    timestamp: Date;
+    userRole: string;
     violations: GuardrailViolation[];
     wasBlocked: boolean;
-    responseFiltered: boolean;
 }
 
 // State slices
 interface GuardrailState {
-    // Settings
-    settings: GuardrailSettings;
-
-    // Safety monitoring
-    safetyStatus: SafetyStatus;
-    recentInteractions: GuardrailInteraction[];
-
     // Current session
     currentContext: GuardrailContext | null;
+
+    isLoadingSafetyStatus: boolean;
+    // Loading states
+    isUpdatingSettings: boolean;
+
+    recentInteractions: GuardrailInteraction[];
+    // Safety monitoring
+    safetyStatus: SafetyStatus;
+
+    selectedInteraction: GuardrailInteraction | null;
     sessionViolations: GuardrailViolation[];
+    // Settings
+    settings: GuardrailSettings;
 
     // UI state
     showSafetyDashboard: boolean;
     showViolationDetails: boolean;
-    selectedInteraction: GuardrailInteraction | null;
-
-    // Loading states
-    isUpdatingSettings: boolean;
-    isLoadingSafetyStatus: boolean;
 }
 
 interface GuardrailActions {
-    // Settings management
-    updateSettings: (settings: Partial<GuardrailSettings>) => void;
-    resetSettingsToDefault: () => void;
+    clearCurrentContext: () => void;
+    clearViolations: () => void;
 
+    hideSafetyDetails: () => void;
     // Safety monitoring
     recordInteraction: (interaction: Omit<GuardrailInteraction, 'id' | 'timestamp'>) => void;
-    clearViolations: () => void;
     refreshSafetyStatus: () => Promise<void>;
+
+    reportSafetyIncident: (incidentType: string, description: string) => Promise<void>;
+    resetSettingsToDefault: () => void;
+
+    showInteractionDetails: (interaction: GuardrailInteraction) => void;
+    // UI actions
+    toggleSafetyDashboard: () => void;
+    // Emergency actions
+    triggerEmergencyMode: () => void;
 
     // Context management
     updateCurrentContext: (context: GuardrailContext) => void;
-    clearCurrentContext: () => void;
-
-    // UI actions
-    toggleSafetyDashboard: () => void;
-    showInteractionDetails: (interaction: GuardrailInteraction) => void;
-    hideSafetyDetails: () => void;
-
-    // Emergency actions
-    triggerEmergencyMode: () => void;
-    reportSafetyIncident: (incidentType: string, description: string) => Promise<void>;
+    // Settings management
+    updateSettings: (settings: Partial<GuardrailSettings>) => void;
 }
 
 // Default state
 const defaultSettings: GuardrailSettings = {
-    strictMode: true,
     allowedTopics: [
         'mathematics', 'science', 'reading', 'writing', 'history', 'geography',
         'art', 'music', 'physical education', 'computer science', 'languages'
     ],
     blockedTopics: [],
     maxDailyInteractions: 50,
-    requireParentalApproval: false,
     notificationPreferences: {
         emailNotifications: true,
-        smsNotifications: false,
-        inAppNotifications: true
-    }
+        inAppNotifications: true,
+        smsNotifications: false
+    },
+    requireParentalApproval: false,
+    strictMode: true
 };
 
 const defaultSafetyStatus: SafetyStatus = {
+    blockedAttempts: 0,
+    consecutiveViolations: 0,
     safetyScore: 100,
     totalInteractions: 0,
-    violationsThisWeek: 0,
     violationsThisMonth: 0,
-    consecutiveViolations: 0,
-    blockedAttempts: 0
+    violationsThisWeek: 0
 };
 
 const initialState: GuardrailState = {
-    settings: defaultSettings,
-    safetyStatus: defaultSafetyStatus,
-    recentInteractions: [],
     currentContext: null,
-    sessionViolations: [],
-    showSafetyDashboard: false,
-    showViolationDetails: false,
-    selectedInteraction: null,
+    isLoadingSafetyStatus: false,
     isUpdatingSettings: false,
-    isLoadingSafetyStatus: false
+    recentInteractions: [],
+    safetyStatus: defaultSafetyStatus,
+    selectedInteraction: null,
+    sessionViolations: [],
+    settings: defaultSettings,
+    showSafetyDashboard: false,
+    showViolationDetails: false
 };
 
 // Actions implementation
@@ -138,32 +138,41 @@ const createGuardrailActions: StateCreator<
     [],
     GuardrailActions
 > = (set, get) => ({
-    // Settings management
-    updateSettings: (newSettings) => {
-        set((state) => ({
-            isUpdatingSettings: true
-        }));
-
-        // Simulate API call
-        setTimeout(() => {
-            set((state) => ({
-                settings: { ...state.settings, ...newSettings },
-                isUpdatingSettings: false
-            }));
-        }, 500);
+    
+    clearCurrentContext: () => {
+        set({ currentContext: null });
     },
 
-    resetSettingsToDefault: () => {
+    
+
+clearViolations: () => {
         set((state) => ({
-            settings: defaultSettings
+            safetyStatus: {
+                ...state.safetyStatus,
+                consecutiveViolations: 0
+            },
+            sessionViolations: []
         }));
     },
 
-    // Safety monitoring
-    recordInteraction: (interactionData) => {
+    
+    
+
+
+hideSafetyDetails: () => {
+        set({
+            selectedInteraction: null,
+            showViolationDetails: false
+        });
+    },
+
+    
+
+// Safety monitoring
+recordInteraction: (interactionData) => {
         const interaction: GuardrailInteraction = {
             ...interactionData,
-            id: `interaction_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+            id: `interaction_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`,
             timestamp: new Date()
         };
 
@@ -174,21 +183,21 @@ const createGuardrailActions: StateCreator<
             // Update safety status
             const updatedSafetyStatus: SafetyStatus = {
                 ...state.safetyStatus,
-                totalInteractions: state.safetyStatus.totalInteractions + 1,
-                violationsThisWeek: hasViolations
-                    ? state.safetyStatus.violationsThisWeek + 1
-                    : state.safetyStatus.violationsThisWeek,
-                violationsThisMonth: hasViolations
-                    ? state.safetyStatus.violationsThisMonth + 1
-                    : state.safetyStatus.violationsThisMonth,
-                lastViolation: hasViolations ? new Date() : state.safetyStatus.lastViolation,
                 consecutiveViolations: hasViolations
                     ? state.safetyStatus.consecutiveViolations + 1
                     : 0,
                 blockedAttempts: interaction.wasBlocked
                     ? state.safetyStatus.blockedAttempts + 1
                     : state.safetyStatus.blockedAttempts,
-                safetyScore: Math.max(0, 100 - (state.safetyStatus.violationsThisWeek * 5))
+                totalInteractions: state.safetyStatus.totalInteractions + 1,
+                lastViolation: hasViolations ? new Date() : state.safetyStatus.lastViolation,
+                violationsThisMonth: hasViolations
+                    ? state.safetyStatus.violationsThisMonth + 1
+                    : state.safetyStatus.violationsThisMonth,
+                safetyScore: Math.max(0, 100 - (state.safetyStatus.violationsThisWeek * 5)),
+                violationsThisWeek: hasViolations
+                    ? state.safetyStatus.violationsThisWeek + 1
+                    : state.safetyStatus.violationsThisWeek
             };
 
             return {
@@ -201,17 +210,8 @@ const createGuardrailActions: StateCreator<
         });
     },
 
-    clearViolations: () => {
-        set((state) => ({
-            sessionViolations: [],
-            safetyStatus: {
-                ...state.safetyStatus,
-                consecutiveViolations: 0
-            }
-        }));
-    },
-
-    refreshSafetyStatus: async () => {
+    
+refreshSafetyStatus: async () => {
         set({ isLoadingSafetyStatus: true });
 
         try {
@@ -226,8 +226,8 @@ const createGuardrailActions: StateCreator<
             };
 
             set({
-                safetyStatus: mockUpdatedStatus,
-                isLoadingSafetyStatus: false
+                isLoadingSafetyStatus: false,
+                safetyStatus: mockUpdatedStatus
             });
 
         } catch (error) {
@@ -236,78 +236,107 @@ const createGuardrailActions: StateCreator<
         }
     },
 
-    // Context management
-    updateCurrentContext: (context) => {
-        set({ currentContext: context });
+    
+    
+reportSafetyIncident: async (incidentType, description) => {
+        try {
+            // Simulate API call to report incident
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            console.log('Safety incident reported:', { description, incidentType });
+
+            // Record as high-severity interaction
+            get().recordInteraction({
+                studentGrade: get().currentContext?.studentGrade,
+                responseFiltered: true,
+                subject: get().currentContext?.courseSubject,
+                userRole: get().currentContext?.userRole || 'unknown',
+                violations: [{
+                    message: `Reported incident: ${incidentType}`,
+                    severity: 'high',
+                    requiresHumanReview: true,
+                    type: 'safety_incident',
+                    suggestedAction: 'immediate_review'
+                }],
+                wasBlocked: true
+            });
+
+        } catch (error) {
+            console.error('Failed to report safety incident:', error);
+        }
     },
 
-    clearCurrentContext: () => {
-        set({ currentContext: null });
-    },
+    
 
-    // UI actions
-    toggleSafetyDashboard: () => {
+resetSettingsToDefault: () => {
         set((state) => ({
-            showSafetyDashboard: !state.showSafetyDashboard
+            settings: defaultSettings
         }));
     },
 
-    showInteractionDetails: (interaction) => {
+    
+    
+
+showInteractionDetails: (interaction) => {
         set({
             selectedInteraction: interaction,
             showViolationDetails: true
         });
     },
 
-    hideSafetyDetails: () => {
-        set({
-            showViolationDetails: false,
-            selectedInteraction: null
-        });
+    
+
+
+// UI actions
+toggleSafetyDashboard: () => {
+        set((state) => ({
+            showSafetyDashboard: !state.showSafetyDashboard
+        }));
     },
 
-    // Emergency actions
-    triggerEmergencyMode: () => {
+    
+
+
+
+// Emergency actions
+triggerEmergencyMode: () => {
         set((state) => ({
+            sessionViolations: [],
             settings: {
                 ...state.settings,
-                strictMode: true,
                 maxDailyInteractions: 10,
-                requireParentalApproval: true
-            },
-            sessionViolations: []
+                requireParentalApproval: true,
+                strictMode: true
+            }
         }));
 
         // In production, this would trigger immediate notifications
         console.warn('EMERGENCY SAFETY MODE ACTIVATED');
     },
 
-    reportSafetyIncident: async (incidentType, description) => {
-        try {
-            // Simulate API call to report incident
-            await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    
 
-            console.log('Safety incident reported:', { incidentType, description });
 
-            // Record as high-severity interaction
-            get().recordInteraction({
-                userRole: get().currentContext?.userRole || 'unknown',
-                studentGrade: get().currentContext?.studentGrade,
-                subject: get().currentContext?.courseSubject,
-                violations: [{
-                    type: 'safety_incident',
-                    severity: 'high',
-                    message: `Reported incident: ${incidentType}`,
-                    suggestedAction: 'immediate_review',
-                    requiresHumanReview: true
-                }],
-                wasBlocked: true,
-                responseFiltered: true
-            });
+// Settings management
+updateSettings: (newSettings) => {
+        set((state) => ({
+            isUpdatingSettings: true
+        }));
 
-        } catch (error) {
-            console.error('Failed to report safety incident:', error);
-        }
+        // Simulate API call
+        setTimeout(() => {
+            set((state) => ({
+                settings: { ...state.settings, ...newSettings },
+                isUpdatingSettings: false
+            }));
+        }, 500);
+    },
+
+    
+// Context management
+updateCurrentContext: (context) => {
+        set({ currentContext: context });
     }
 });
 
@@ -321,15 +350,9 @@ const selectors = {
         return 'alert';
     },
 
-    // Recent violations
-    getRecentViolations: (state: GuardrailState & GuardrailActions) => {
-        return state.recentInteractions
-            .filter(interaction => interaction.violations.length > 0)
-            .slice(0, 10);
-    },
-
+    
     // High-severity violations
-    getHighSeverityViolations: (state: GuardrailState & GuardrailActions) => {
+getHighSeverityViolations: (state: GuardrailState & GuardrailActions) => {
         return state.recentInteractions
             .filter(interaction =>
                 interaction.violations.some(v => v.severity === 'high')
@@ -337,16 +360,24 @@ const selectors = {
             .slice(0, 5);
     },
 
+    
+    // Recent violations
+getRecentViolations: (state: GuardrailState & GuardrailActions) => {
+        return state.recentInteractions
+            .filter(interaction => interaction.violations.length > 0)
+            .slice(0, 10);
+    },
+
     // Settings validation
     getSettingsStatus: (state: GuardrailState & GuardrailActions) => {
         const { settings } = state;
 
         return {
-            isStrictModeEnabled: settings.strictMode,
             hasCustomTopicRestrictions: settings.blockedTopics.length > 0,
             hasInteractionLimits: settings.maxDailyInteractions < 100,
-            requiresParentalApproval: settings.requireParentalApproval,
-            notificationsEnabled: Object.values(settings.notificationPreferences).some(Boolean)
+            isStrictModeEnabled: settings.strictMode,
+            notificationsEnabled: Object.values(settings.notificationPreferences).some(Boolean),
+            requiresParentalApproval: settings.requireParentalApproval
         };
     }
 };
@@ -369,8 +400,8 @@ export const useGuardrailStore = createWithEqualityFn<GuardrailState & Guardrail
 // Export selectors as hooks
 export const useGuardrailSelectors = () => ({
     getCurrentSafetyLevel: () => useGuardrailStore(selectors.getCurrentSafetyLevel),
-    getRecentViolations: () => useGuardrailStore(selectors.getRecentViolations),
     getHighSeverityViolations: () => useGuardrailStore(selectors.getHighSeverityViolations),
+    getRecentViolations: () => useGuardrailStore(selectors.getRecentViolations),
     getSettingsStatus: () => useGuardrailStore(selectors.getSettingsStatus)
 });
 

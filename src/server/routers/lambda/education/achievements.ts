@@ -13,35 +13,54 @@ import {
 const achievementProcedure = authedProcedure.use(serverDatabase);
 
 export const achievementsRouter = router({
-    // Get all available achievements
-    getAllAchievements: achievementProcedure
-        .query(async ({ ctx }) => {
-            const { serverDB } = ctx;
-
-            const allAchievements = await serverDB
-                .select()
-                .from(achievements)
-                .orderBy(achievements.category, achievements.title);
-
-            return allAchievements;
-        }),
-
-    // Get user's earned achievements
-    getUserAchievements: achievementProcedure
-        .query(async ({ ctx }) => {
+    
+    
+// Award achievement to user (typically called by system)
+awardAchievement: achievementProcedure
+        .input(z.object({
+            achievementId: z.string(),
+            progress: z.number().optional(),
+        }))
+        .mutation(async ({ ctx, input }) => {
             const { serverDB, userId } = ctx;
 
-            const userEarnedAchievements = await serverDB
+            // Check if user already has this achievement
+            const [existingAchievement] = await serverDB
                 .select()
                 .from(userAchievements)
-                .where(eq(userAchievements.userId, userId))
-                .orderBy(desc(userAchievements.earnedAt));
+                .where(and(
+                    eq(userAchievements.userId, userId),
+                    eq(userAchievements.achievementId, input.achievementId)
+                ));
 
-            return userEarnedAchievements;
+            if (existingAchievement) {
+                return existingAchievement;
+            }
+
+            // Award the achievement
+            const newUserAchievement: NewUserAchievement = {
+                achievementId: input.achievementId,
+                earnedAt: new Date().toISOString(),
+                id: `user_achievement_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`,
+                progress: input.progress || 100,
+                userId,
+            };
+
+            const [awardedAchievement] = await serverDB
+                .insert(userAchievements)
+                .values(newUserAchievement)
+                .returning();
+
+            return awardedAchievement;
         }),
 
-    // Check and unlock achievements (would be called after user actions)
-    checkAchievements: achievementProcedure
+    
+    
+
+
+
+// Check and unlock achievements (would be called after user actions)
+checkAchievements: achievementProcedure
         .mutation(async ({ ctx }) => {
             const { serverDB, userId } = ctx;
 
@@ -52,8 +71,13 @@ export const achievementsRouter = router({
             return [];
         }),
 
-    // Get achievement progress for incomplete achievements
-    getAchievementProgress: achievementProcedure
+    
+    
+
+
+
+// Get achievement progress for incomplete achievements
+getAchievementProgress: achievementProcedure
         .query(async ({ ctx }) => {
             const { serverDB, userId } = ctx;
 
@@ -62,8 +86,12 @@ export const achievementsRouter = router({
             return [];
         }),
 
-    // Get achievement statistics
-    getAchievementStats: achievementProcedure
+    
+    
+
+
+// Get achievement statistics
+getAchievementStats: achievementProcedure
         .query(async ({ ctx }) => {
             const { serverDB, userId } = ctx;
 
@@ -91,55 +119,21 @@ export const achievementsRouter = router({
             const level = Math.floor(points / 1000) + 1; // 1000 points per level
 
             return {
-                totalEarned,
-                totalAvailable,
                 completionRate,
-                points,
                 level,
+                points,
+                totalAvailable,
+                totalEarned,
             };
         }),
 
-    // Award achievement to user (typically called by system)
-    awardAchievement: achievementProcedure
-        .input(z.object({
-            achievementId: z.string(),
-            progress: z.number().optional(),
-        }))
-        .mutation(async ({ ctx, input }) => {
-            const { serverDB, userId } = ctx;
+    
+    
 
-            // Check if user already has this achievement
-            const [existingAchievement] = await serverDB
-                .select()
-                .from(userAchievements)
-                .where(and(
-                    eq(userAchievements.userId, userId),
-                    eq(userAchievements.achievementId, input.achievementId)
-                ));
 
-            if (existingAchievement) {
-                return existingAchievement;
-            }
 
-            // Award the achievement
-            const newUserAchievement: NewUserAchievement = {
-                id: `user_achievement_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-                userId,
-                achievementId: input.achievementId,
-                earnedAt: new Date().toISOString(),
-                progress: input.progress || 100,
-            };
-
-            const [awardedAchievement] = await serverDB
-                .insert(userAchievements)
-                .values(newUserAchievement)
-                .returning();
-
-            return awardedAchievement;
-        }),
-
-    // Get achievements by category
-    getAchievementsByCategory: achievementProcedure
+// Get achievements by category
+getAchievementsByCategory: achievementProcedure
         .input(z.object({ category: z.string() }))
         .query(async ({ ctx, input }) => {
             const { serverDB } = ctx;
@@ -153,8 +147,27 @@ export const achievementsRouter = router({
             return categoryAchievements;
         }),
 
-    // Get rare achievements
-    getRareAchievements: achievementProcedure
+    
+    
+
+
+// Get all available achievements
+getAllAchievements: achievementProcedure
+        .query(async ({ ctx }) => {
+            const { serverDB } = ctx;
+
+            const allAchievements = await serverDB
+                .select()
+                .from(achievements)
+                .orderBy(achievements.category, achievements.title);
+
+            return allAchievements;
+        }),
+
+    
+    
+// Get rare achievements
+getRareAchievements: achievementProcedure
         .query(async ({ ctx }) => {
             const { serverDB } = ctx;
 
@@ -165,5 +178,20 @@ export const achievementsRouter = router({
                 .orderBy(achievements.title);
 
             return rareAchievements;
+        }),
+
+    
+    // Get user's earned achievements
+getUserAchievements: achievementProcedure
+        .query(async ({ ctx }) => {
+            const { serverDB, userId } = ctx;
+
+            const userEarnedAchievements = await serverDB
+                .select()
+                .from(userAchievements)
+                .where(eq(userAchievements.userId, userId))
+                .orderBy(desc(userAchievements.earnedAt));
+
+            return userEarnedAchievements;
         }),
 });

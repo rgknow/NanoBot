@@ -1,21 +1,26 @@
 export interface EducationAchievementsState {
     /**
-     * @title 成就数据映射
-     * @description 存储所有成就数据的映射表
+     * @title 成就通知队列
+     * @description 待显示的成就通知队列
      */
-    achievementsMap: Record<string, any>;
+    achievementNotifications: Array<{
+        achievementId: string;
+        id: string;
+        shown: boolean;
+        timestamp: string;
+    }>;
 
     /**
-     * @title 用户成就映射
-     * @description 存储用户已获得的成就数据
+     * @title 成就统计
+     * @description 用户成就统计信息
      */
-    userAchievementsMap: Record<string, any>;
-
-    /**
-     * @title 成就加载状态
-     * @description 是否正在加载成就数据
-     */
-    achievementsLoading: boolean;
+    achievementStats: {
+        completionRate: number;
+        level: number;
+        points: number;
+        totalAvailable: number;
+        totalEarned: number;
+    };
 
     /**
      * @title 成就初始化状态
@@ -24,10 +29,16 @@ export interface EducationAchievementsState {
     achievementsInit: boolean;
 
     /**
-     * @title 最近获得的成就
-     * @description 用户最近获得的成就列表
+     * @title 成就加载状态
+     * @description 是否正在加载成就数据
      */
-    recentAchievements: string[];
+    achievementsLoading: boolean;
+
+    /**
+     * @title 成就数据映射
+     * @description 存储所有成就数据的映射表
+     */
+    achievementsMap: Record<string, any>;
 
     /**
      * @title 进行中的成就
@@ -36,47 +47,36 @@ export interface EducationAchievementsState {
     inProgressAchievements: Record<string, {
         achievementId: string;
         currentProgress: number;
-        targetProgress: number;
         progressPercentage: number;
+        targetProgress: number;
     }>;
 
     /**
-     * @title 成就通知队列
-     * @description 待显示的成就通知队列
+     * @title 最近获得的成就
+     * @description 用户最近获得的成就列表
      */
-    achievementNotifications: Array<{
-        id: string;
-        achievementId: string;
-        timestamp: string;
-        shown: boolean;
-    }>;
+    recentAchievements: string[];
 
     /**
-     * @title 成就统计
-     * @description 用户成就统计信息
+     * @title 用户成就映射
+     * @description 存储用户已获得的成就数据
      */
-    achievementStats: {
-        totalEarned: number;
-        totalAvailable: number;
-        completionRate: number;
-        points: number;
-        level: number;
-    };
+    userAchievementsMap: Record<string, any>;
 }
 
 export const initialAchievementsState: EducationAchievementsState = {
-    achievementsMap: {},
-    userAchievementsMap: {},
-    achievementsLoading: false,
-    achievementsInit: false,
-    recentAchievements: [],
-    inProgressAchievements: {},
     achievementNotifications: [],
     achievementStats: {
-        totalEarned: 0,
-        totalAvailable: 0,
         completionRate: 0,
-        points: 0,
         level: 1,
+        totalAvailable: 0,
+        points: 0,
+        totalEarned: 0,
     },
+    achievementsInit: false,
+    achievementsLoading: false,
+    achievementsMap: {},
+    inProgressAchievements: {},
+    recentAchievements: [],
+    userAchievementsMap: {},
 };
