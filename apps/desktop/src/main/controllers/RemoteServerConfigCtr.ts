@@ -312,9 +312,8 @@ export default class RemoteServerConfigCtr extends ControllerModule {
       if (!response.ok) {
         // 尝试解析错误响应
         const errorData = await response.json().catch(() => ({}));
-        const errorMessage = `刷新令牌失败: ${response.status} ${response.statusText} ${
-          errorData.error_description || errorData.error || ''
-        }`.trim();
+        const errorMessage = `刷新令牌失败: ${response.status} ${response.statusText} ${errorData.error_description || errorData.error || ''
+          }`.trim();
         logger.error(errorMessage, errorData);
         return { error: errorMessage, success: false };
       }
