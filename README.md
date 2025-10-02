@@ -2,10 +2,12 @@
 
 [![][image-banner]][vercel-link]
 
-# NanoBot
+# 🤖 NanoBot
 
-An open-source, educational AI platform with comprehensive safety guardrails.<br/>
-Supports STEAM learning, maker workbench integration, and extensible- **[Anthropic](- **[Fireworks AI](https://nanobot.edu/discover/provider/fireworksai)**: Fireworks AI is a leading provider of advanced language model services for education, focusing on functional calling and multimodal processing with educational safety guardrails. Its latest model, Firefunction V2, is based on Llama-3, optimized for educational function calling, educational conversation, and safe instruction following. The visual language model FireLLaVA-13B supports mixed input of educational images and text. Other notable models include the Llama series and Mixtral series, providing efficient multilingual educational instruction following with comprehensive safety features.ttps://nanobot.edu/discover/provider/anthropic)**: Anthropic is a company focused on AI research and development, offering a range of advanced language models such as Claude 3.5 Sonnet, Claude 3 Sonnet, Claude 3 Opus, and Claude 3 Haiku. These models achieve an ideal balance between intelligence, speed, and educational cost-effectiveness, suitable for various educational applications from institutional learning workloads to rapid-response educational scenarios. Claude 3.5 Sonnet, as their latest model, has excelled in multiple educational evaluations while maintaining comprehensive safety features.plugin system with age-appropriate content filtering.<br/>
+**The Next-Generation Educational AI Platform**
+
+An open-source, educational AI platform with comprehensive safety guardrails, supporting STEAM learning, maker workbench integration, and extensible plugin systems with age-appropriate content filtering.
+
 One-click **FREE** deployment of your private educational AI assistant with multi-grade support and parental controls.
 
 **English** · [简体中文](./README.zh-CN.md) · [Official Site][official-site] · [Changelog][changelog] · [Documents][docs] · [Blog][blog] · [Feedback][github-issues-link]
@@ -37,7 +39,7 @@ One-click **FREE** deployment of your private educational AI assistant with mult
 [![][share-mastodon-shield]][share-mastodon-link]
 [![][share-linkedin-shield]][share-linkedin-link]
 
-<sup>Pioneering safe educational AI for students K-12. Built for learning, creating, and exploring with confidence.</sup>
+<sup>🎓 Pioneering safe educational AI for students K-12. Built for learning, creating, and exploring with confidence.</sup>
 
 [![][github-trending-shield]][github-trending-url] <br /> <br /> <a href="https://vercel.com/oss"> <img alt="Vercel OSS Program" src="https://vercel.com/oss/program-badge.svg" /> </a>
 
@@ -45,10 +47,972 @@ One-click **FREE** deployment of your private educational AI assistant with mult
 
 </div>
 
+---
+
+## 📋 Table of Contents
+
 <details>
-<summary><kbd>Table of contents</kbd></summary>
+<summary><kbd>Expand Table of Contents</kbd></summary>
 
 #### TOC
+
+- [🌟 What is NanoBot?](#-what-is-nanobot)
+- [🎯 Key Features](#-key-features)
+- [🏗️ Platform Architecture](#%EF%B8%8F-platform-architecture)
+- [🚀 Quick Start Guide](#-quick-start-guide)
+- [📚 User Guide](#-user-guide)
+- [🛡️ Safety & Security](#%EF%B8%8F-safety--security)
+- [🎓 Educational Features](#-educational-features)
+- [🔌 Plugin Ecosystem](#-plugin-ecosystem)
+- [⚙️ Configuration](#%EF%B8%8F-configuration)
+- [🏫 Institutional Deployment](#-institutional-deployment)
+- [🔧 Development & Contributing](#-development--contributing)
+- [📖 API Documentation](#-api-documentation)
+- [❓ FAQ](#-faq)
+- [🤝 Community & Support](#-community--support)
+
+</details>
+
+---
+
+## 🌟 What is NanoBot?
+
+**NanoBot** is a cutting-edge educational AI platform designed specifically for K-12 learning environments. Unlike general-purpose AI chatbots, NanoBot prioritizes **educational safety**, **age-appropriate content**, and **STEAM learning** through comprehensive safety guardrails and educational-first design.
+
+### 🎯 Mission Statement
+
+> Empowering the next generation of learners through safe, intelligent, and engaging AI-powered educational experiences.
+
+### 🏆 Core Values
+
+- **🛡️ Safety First**: Comprehensive content filtering and age-appropriate responses
+- **🎓 Educational Excellence**: STEAM-focused curriculum integration
+- **🌍 Accessibility**: Multi-language support and inclusive design
+- **👥 Community-Driven**: Open-source with educator input
+- **🔬 Innovation**: Cutting-edge AI with educational best practices
+
+---
+
+## 🎯 Key Features
+
+### 🛡️ **Advanced Safety Guardrails**
+- **Content Filtering**: Real-time inappropriate content detection and blocking
+- **Age-Appropriate Responses**: Grade-level specific language and complexity
+- **Parental Controls**: Comprehensive monitoring and usage restrictions
+- **Violation Tracking**: Detailed safety incident reporting and analytics
+
+### 🎓 **Educational Excellence**
+- **STEAM Integration**: Science, Technology, Engineering, Arts, and Mathematics focus
+- **Curriculum Alignment**: Standards-based content for K-12 grades
+- **Progress Tracking**: Individual student learning analytics
+- **Assessment Tools**: Built-in quizzes, assignments, and evaluation systems
+
+### 🔧 **Maker Workbench Integration**
+- **Hardware Projects**: ESP32, Arduino, Raspberry Pi integration
+- **Block Coding**: Visual programming interface for beginners
+- **3D Design**: CAD integration for design thinking projects
+- **IoT Learning**: Internet of Things educational modules
+
+### 🌐 **Multi-Modal Learning**
+- **Text Conversations**: Natural language educational discussions
+- **Voice Interaction**: Age-appropriate text-to-speech and speech-to-text
+- **Visual Learning**: Image analysis and generation for educational content
+- **Document Processing**: PDF, Office files, and educational resource integration
+
+### 🔌 **Extensible Plugin System**
+- **Educational Plugins**: Curated marketplace of learning tools
+- **MCP Protocol**: Model Context Protocol for seamless integrations
+- **Custom Tools**: Institution-specific educational applications
+- **Third-Party APIs**: Safe integration with educational services
+
+---
+
+## 🏗️ Platform Architecture
+
+### 🎯 **High-Level Architecture**
+
+```mermaid
+graph TB
+    subgraph "Client Layer"
+        A[Web App - Next.js 15]
+        B[Desktop App - Electron]
+        C[Mobile App - PWA]
+    end
+    
+    subgraph "API Gateway Layer"
+        D[tRPC Router]
+        E[Authentication]
+        F[Rate Limiting]
+    end
+    
+    subgraph "Safety Layer"
+        G[Guardrail Engine]
+        H[Content Filter]
+        I[Age Verification]
+        J[Violation Tracker]
+    end
+    
+    subgraph "AI Processing Layer"
+        K[Model Router]
+        L[Context Engine]
+        M[Educational RAG]
+        N[Response Processor]
+    end
+    
+    subgraph "Data Layer"
+        O[(PostgreSQL)]
+        P[(PGLite - Client)]
+        Q[Vector Store]
+        R[File Storage]
+    end
+    
+    subgraph "External Services"
+        S[OpenAI/Anthropic]
+        T[Educational APIs]
+        U[Maker Tools]
+        V[Assessment Platforms]
+    end
+    
+    A --> D
+    B --> D
+    C --> D
+    D --> G
+    G --> K
+    K --> S
+    K --> O
+    O --> Q
+```
+
+### 🧱 **Core Components**
+
+#### **Frontend Architecture**
+- **Framework**: Next.js 15 with React 19 and TypeScript
+- **UI Library**: Ant Design with educational-themed components
+- **State Management**: Zustand with educational slices
+- **Styling**: antd-style with CSS-in-JS for theming
+- **Build Tools**: Turbopack (dev) / Webpack (production)
+
+#### **Backend Architecture**
+- **API Layer**: tRPC with type-safe educational endpoints
+- **Database**: Dual-mode PostgreSQL (server) + PGLite (client)
+- **ORM**: Drizzle with educational schema definitions
+- **Authentication**: NextAuth with role-based access control
+- **File Processing**: Multi-format loaders with safety scanning
+
+#### **Safety & Security**
+- **Guardrail Engine**: Real-time content analysis and filtering
+- **Role-Based Access**: Student, Teacher, Parent, Admin permissions
+- **Audit Logging**: Comprehensive interaction tracking
+- **Privacy Protection**: COPPA and FERPA compliance features
+
+---
+
+## 🚀 Quick Start Guide
+
+### 📋 **Prerequisites**
+
+- **Node.js** 18+ 
+- **pnpm** 8+ (package manager)
+- **PostgreSQL** 14+ (for production) or **Docker**
+- **Git** for version control
+
+### ⚡ **1-Minute Deployment**
+
+```bash
+# Clone repository
+git clone https://github.com/rgknow/nanobot.git
+cd nanobot
+
+# Install dependencies
+pnpm install
+
+# Set up environment
+cp .env.example .env.local
+# Edit .env.local with your configuration
+
+# Run development server
+pnpm dev
+```
+
+Visit `http://localhost:3010` to start your educational AI journey!
+
+### 🐳 **Docker Deployment**
+
+```bash
+# Quick start with Docker Compose
+docker-compose -f docker-compose/local/docker-compose.yml up -d
+
+# Or build from source
+docker build -t nanobot:local .
+docker run -p 3010:3010 nanobot:local
+```
+
+### 🌍 **Environment Variables**
+
+Create `.env.local` with essential configurations:
+
+```env
+# Database Configuration
+DATABASE_URL="postgresql://user:password@localhost:5432/nanobot"
+
+# AI Model Providers
+OPENAI_API_KEY="your_openai_key"
+ANTHROPIC_API_KEY="your_anthropic_key"
+
+# Educational Platform Settings
+EDUCATION_MODE="true"
+GRADE_LEVEL_DEFAULT="middle"
+SAFETY_LEVEL="strict"
+
+# Authentication
+NEXTAUTH_SECRET="your_nextauth_secret"
+NEXTAUTH_URL="http://localhost:3010"
+
+# Parental Controls
+PARENTAL_CONTROLS_ENABLED="true"
+CONTENT_FILTER_LEVEL="educational"
+```
+
+---
+
+## 📚 User Guide
+
+### 👩‍🎓 **For Students**
+
+#### **Getting Started**
+1. **Create Account**: Sign up with grade level and interests
+2. **Complete Profile**: Set learning preferences and goals
+3. **Start Learning**: Begin conversations with your AI tutor
+4. **Track Progress**: Monitor your learning journey and achievements
+
+#### **Learning Features**
+- **📝 Homework Help**: Get explanations without direct answers
+- **🧪 Science Projects**: Interactive STEAM learning modules
+- **💻 Coding Tutorials**: Programming lessons with guided practice
+- **🎨 Creative Projects**: Art and design with AI assistance
+- **📊 Progress Dashboard**: Visual learning analytics and goals
+
+### 👨‍🏫 **For Teachers**
+
+#### **Classroom Management**
+1. **Create Classes**: Set up virtual classrooms with student rosters
+2. **Assign Projects**: Create AI-assisted learning assignments
+3. **Monitor Progress**: Track individual and class-wide learning metrics
+4. **Safety Oversight**: Review AI interactions and safety reports
+
+#### **Curriculum Integration**
+- **📚 Lesson Plans**: AI-generated curriculum-aligned content
+- **🧮 Assessments**: Automated quiz and assignment generation
+- **👥 Collaboration**: Student group projects with AI facilitation
+- **📈 Analytics**: Detailed learning outcome analysis
+
+### 👨‍👩‍👧‍👦 **For Parents**
+
+#### **Parental Controls**
+1. **Account Setup**: Link to your child's learning account
+2. **Safety Settings**: Configure age-appropriate content filters
+3. **Usage Monitoring**: Track learning time and interactions
+4. **Progress Reports**: Receive weekly learning summaries
+
+#### **Safety Features**
+- **🛡️ Content Filtering**: Automatic inappropriate content blocking
+- **⏰ Time Limits**: Set daily/weekly usage restrictions
+- **📊 Activity Reports**: Detailed interaction summaries
+- **🚨 Alert System**: Immediate notifications for safety concerns
+
+### 🏫 **For Administrators**
+
+#### **Institution Management**
+1. **School Setup**: Configure institution-wide settings
+2. **User Management**: Bulk user creation and role assignment
+3. **Policy Configuration**: Set safety and usage policies
+4. **Integration Setup**: Connect with existing school systems
+
+#### **Advanced Features**
+- **📊 Analytics Dashboard**: Institution-wide learning metrics
+- **🔧 Custom Plugins**: Deploy school-specific educational tools
+- **🛡️ Compliance Tools**: COPPA, FERPA, and GDPR compliance features
+- **💾 Data Management**: Backup, export, and data retention controls
+
+---
+
+## 🛡️ Safety & Security
+
+### 🎯 **Safety-First Design**
+
+NanoBot is built with educational safety as the primary concern, implementing multiple layers of protection:
+
+#### **Content Safety**
+- **Real-time Filtering**: Advanced AI-powered content analysis
+- **Age Appropriateness**: Grade-level specific response filtering
+- **Topic Boundaries**: Educational context enforcement
+- **Harmful Content Blocking**: Automatic detection and prevention
+
+#### **Privacy Protection**
+- **Data Minimization**: Collect only necessary educational data
+- **Encryption**: End-to-end encryption for sensitive information
+- **Access Controls**: Role-based permission system
+- **Audit Trails**: Comprehensive logging for compliance
+
+#### **Compliance Standards**
+- **COPPA Compliance**: Children's Online Privacy Protection Act
+- **FERPA Alignment**: Family Educational Rights and Privacy Act
+- **GDPR Ready**: European data protection regulations
+- **SOC 2 Type II**: Security and availability controls
+
+### 🚨 **Safety Monitoring**
+
+```typescript
+// Example: Safety Guardrail Implementation
+interface SafetyCheck {
+  contentType: 'text' | 'image' | 'file';
+  gradeLevel: 'elementary' | 'middle' | 'high';
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  action: 'allow' | 'filter' | 'block' | 'escalate';
+}
+
+const safetyResult = await checkContent({
+  content: userMessage,
+  gradeLevel: student.gradeLevel,
+  context: 'mathematics_homework'
+});
+```
+
+---
+
+## 🎓 Educational Features
+
+### 📚 **STEAM Learning Modules**
+
+#### **🔬 Science**
+- **Interactive Experiments**: Virtual lab simulations
+- **Concept Explanations**: Grade-appropriate scientific concepts
+- **Research Projects**: Guided scientific inquiry
+- **Data Analysis**: Statistical and scientific data interpretation
+
+#### **💻 Technology**
+- **Programming Basics**: Scratch, Python, JavaScript tutorials
+- **Digital Literacy**: Safe internet usage and digital citizenship
+- **AI Understanding**: How AI works and ethical considerations
+- **Cybersecurity**: Age-appropriate security awareness
+
+#### **⚙️ Engineering**
+- **Design Thinking**: Problem-solving methodology
+- **3D Modeling**: CAD software integration
+- **Robotics**: Arduino and Raspberry Pi projects
+- **Structural Engineering**: Building and testing designs
+
+#### **🎨 Arts**
+- **Digital Art**: AI-assisted creative projects
+- **Music Theory**: Composition and analysis tools
+- **Storytelling**: Creative writing with AI collaboration
+- **Visual Design**: Principles of design and aesthetics
+
+#### **🧮 Mathematics**
+- **Problem Solving**: Step-by-step solution guidance
+- **Visual Mathematics**: Graphing and geometric visualizations
+- **Real-world Applications**: Math in everyday contexts
+- **Assessment Tools**: Adaptive testing and progress tracking
+
+### 🏆 **Achievement System**
+
+```typescript
+interface EducationalAchievement {
+  id: string;
+  name: string;
+  description: string;
+  category: 'stem' | 'creativity' | 'collaboration' | 'problem_solving';
+  level: 'bronze' | 'silver' | 'gold' | 'platinum';
+  requirements: AchievementCriteria[];
+  rewards: BadgeReward[];
+}
+```
+
+---
+
+## 🔌 Plugin Ecosystem
+
+### 🛍️ **Educational Plugin Marketplace**
+
+Browse a growing library of educational MCP plugins to expand your AI's capabilities and streamline your learning workflows effortlessly. Visit [nanobot.edu/mcp](https://nanobot.edu/mcp) to explore the Educational MCP Marketplace.
+
+#### **Featured Educational Plugins**
+
+| Plugin | Description | Grade Level | Safety Rating |
+|--------|-------------|-------------|---------------|
+| 🧪 **Lab Simulator** | Virtual chemistry and physics experiments | 6-12 | ⭐⭐⭐⭐⭐ |
+| 📐 **Geometry Helper** | Interactive geometric problem solving | 4-12 | ⭐⭐⭐⭐⭐ |
+| 🌍 **Geography Explorer** | Interactive world exploration and mapping | K-12 | ⭐⭐⭐⭐⭐ |
+| 💻 **Code Coach** | Programming tutorials and debugging help | 6-12 | ⭐⭐⭐⭐⭐ |
+| 📚 **Literature Analyzer** | Text analysis and literary device identification | 6-12 | ⭐⭐⭐⭐⭐ |
+
+#### **Plugin Development**
+
+Create custom educational plugins using the MCP protocol:
+
+```typescript
+// Example Educational Plugin
+export interface EducationalPlugin {
+  name: string;
+  version: string;
+  gradeLevel: GradeLevel[];
+  subjects: Subject[];
+  safetyRating: number;
+  capabilities: PluginCapability[];
+  
+  execute(request: EducationalRequest): Promise<EducationalResponse>;
+  validateSafety(content: any): Promise<SafetyResult>;
+}
+```
+
+---
+
+## ⚙️ Configuration
+
+### 🎛️ **Educational Settings**
+
+#### **Grade Level Configuration**
+```typescript
+interface GradeLevelConfig {
+  level: 'elementary' | 'middle' | 'high';
+  vocabularyComplexity: 1-10;
+  conceptDepth: 'basic' | 'intermediate' | 'advanced';
+  safetyRestrictions: SafetyRule[];
+  allowedTopics: string[];
+  blockedTopics: string[];
+}
+```
+
+#### **Safety Configuration**
+```env
+# Safety Settings
+SAFETY_LEVEL=strict           # strict, moderate, relaxed
+CONTENT_FILTER_ENABLED=true
+AGE_VERIFICATION_REQUIRED=true
+PARENTAL_CONSENT_REQUIRED=true
+
+# Content Filtering
+BLOCK_VIOLENCE=true
+BLOCK_ADULT_CONTENT=true
+BLOCK_PROFANITY=true
+EDUCATIONAL_CONTEXT_ONLY=true
+
+# Monitoring
+CONVERSATION_LOGGING=true
+SAFETY_INCIDENT_ALERTS=true
+USAGE_ANALYTICS=true
+```
+
+### 🔧 **Advanced Configuration**
+
+#### **AI Model Settings**
+```typescript
+interface ModelConfig {
+  provider: 'openai' | 'anthropic' | 'google' | 'local';
+  model: string;
+  temperature: number;
+  maxTokens: number;
+  educationalPrompts: boolean;
+  safetyOverrides: SafetyOverride[];
+}
+```
+
+#### **Database Configuration**
+```typescript
+interface DatabaseConfig {
+  mode: 'client' | 'server' | 'hybrid';
+  encryption: boolean;
+  backupSchedule: string;
+  retentionPolicy: DataRetentionPolicy;
+}
+```
+
+---
+
+## 🏫 Institutional Deployment
+
+### 🎓 **School District Setup**
+
+#### **1. Infrastructure Requirements**
+- **Minimum**: 4 CPU cores, 8GB RAM, 100GB storage
+- **Recommended**: 8 CPU cores, 16GB RAM, 500GB SSD
+- **Network**: 100 Mbps internet connection
+- **Security**: SSL certificate, firewall configuration
+
+#### **2. Deployment Options**
+
+##### **Cloud Deployment**
+```bash
+# Vercel Deployment
+vercel --prod
+
+# AWS Deployment
+aws ecs create-cluster --cluster-name nanobot-cluster
+```
+
+##### **On-Premises Setup**
+```bash
+# Docker Compose for schools
+docker-compose -f docker-compose/school/docker-compose.yml up -d
+```
+
+##### **Hybrid Configuration**
+- **Local AI Processing**: On-premises model inference
+- **Cloud Safety Services**: Centralized content filtering
+- **Data Sovereignty**: Local data storage with cloud backups
+
+#### **3. Student Information System Integration**
+
+```typescript
+interface SISIntegration {
+  provider: 'schoology' | 'canvas' | 'google_classroom' | 'custom';
+  sync: {
+    students: boolean;
+    classes: boolean;
+    assignments: boolean;
+    grades: boolean;
+  };
+  sso: boolean;
+  dataMapping: SISDataMapping;
+}
+```
+
+### 📊 **Analytics & Reporting**
+
+#### **Learning Analytics Dashboard**
+- **Student Progress**: Individual learning trajectories
+- **Class Performance**: Aggregate classroom metrics
+- **Curriculum Alignment**: Standards-based reporting
+- **Safety Incidents**: Violation tracking and trends
+
+#### **Administrative Reports**
+- **Usage Statistics**: Platform adoption metrics
+- **Safety Summary**: Monthly safety incident reports
+- **ROI Analysis**: Educational outcome improvements
+- **Compliance Audits**: COPPA/FERPA compliance status
+
+---
+
+## 🔧 Development & Contributing
+
+### 🛠️ **Development Environment**
+
+#### **Prerequisites**
+- Node.js 18+
+- pnpm 8+
+- PostgreSQL 14+
+- Git
+
+#### **Development Setup**
+```bash
+# Clone and install
+git clone https://github.com/rgknow/nanobot.git
+cd nanobot
+pnpm install
+
+# Database setup
+pnpm db:generate
+pnpm db:migrate
+
+# Start development
+pnpm dev
+```
+
+#### **Project Structure**
+```
+nanobot/
+├── apps/
+│   └── desktop/              # Electron desktop app
+├── packages/
+│   ├── database/            # Drizzle ORM schemas
+│   ├── guardrails/          # Safety enforcement
+│   ├── education/           # Educational components
+│   └── types/               # TypeScript definitions
+├── src/
+│   ├── app/                 # Next.js app router
+│   ├── components/          # React components
+│   ├── store/               # Zustand state management
+│   └── services/            # API services
+└── docs/                    # Documentation
+```
+
+### 🧪 **Testing**
+
+#### **Test Categories**
+- **Unit Tests**: Component and function testing
+- **Integration Tests**: API and database testing
+- **Safety Tests**: Guardrail and content filtering
+- **E2E Tests**: Complete user workflow testing
+
+#### **Running Tests**
+```bash
+# Unit tests
+pnpm test
+
+# Integration tests
+pnpm test:integration
+
+# Safety tests
+pnpm test:safety
+
+# E2E tests
+pnpm test:e2e
+```
+
+### 🤝 **Contributing Guidelines**
+
+#### **Code Standards**
+- **TypeScript**: Strict mode enabled
+- **ESLint**: Educational coding standards
+- **Prettier**: Consistent code formatting
+- **Conventional Commits**: Structured commit messages
+
+#### **Pull Request Process**
+1. **Fork & Branch**: Create feature branch from main
+2. **Develop**: Implement changes with tests
+3. **Safety Review**: Ensure educational safety compliance
+4. **Submit PR**: Detailed description and testing evidence
+5. **Review**: Community and maintainer feedback
+6. **Merge**: Automated deployment to staging
+
+---
+
+## 📖 API Documentation
+
+### 🔌 **tRPC Educational API**
+
+#### **Student Management**
+```typescript
+// Get student profile
+const student = await trpc.education.student.get.query({
+  studentId: 'student_123'
+});
+
+// Update learning preferences
+await trpc.education.student.updatePreferences.mutate({
+  studentId: 'student_123',
+  subjects: ['mathematics', 'science'],
+  difficulty: 'intermediate'
+});
+```
+
+#### **Safety & Guardrails**
+```typescript
+// Check content safety
+const safetyResult = await trpc.safety.checkContent.query({
+  content: 'User message',
+  gradeLevel: 'middle',
+  context: 'homework_help'
+});
+
+// Report safety incident
+await trpc.safety.reportIncident.mutate({
+  type: 'inappropriate_content',
+  severity: 'medium',
+  description: 'Detected profanity in chat'
+});
+```
+
+#### **Educational Content**
+```typescript
+// Generate learning content
+const lesson = await trpc.education.content.generate.mutate({
+  subject: 'mathematics',
+  topic: 'algebra',
+  gradeLevel: 'high',
+  difficulty: 'beginner'
+});
+
+// Track learning progress
+await trpc.education.progress.update.mutate({
+  studentId: 'student_123',
+  lessonId: 'lesson_456',
+  progress: 0.75,
+  timeSpent: 1800 // seconds
+});
+```
+
+### 🛡️ **Safety API Endpoints**
+
+#### **Content Filtering**
+```http
+POST /api/safety/filter
+Content-Type: application/json
+
+{
+  "content": "Student message",
+  "gradeLevel": "middle",
+  "context": "science_homework"
+}
+```
+
+#### **Parental Controls**
+```http
+GET /api/safety/parental/controls/:studentId
+Authorization: Bearer parent_token
+
+Response:
+{
+  "timeLimit": 3600,
+  "allowedSubjects": ["math", "science"],
+  "blockedTopics": ["violence", "adult_content"],
+  "supervisionLevel": "strict"
+}
+```
+
+---
+
+## ❓ FAQ
+
+### 🔒 **Safety & Privacy**
+
+<details>
+<summary><strong>How does NanoBot ensure student safety?</strong></summary>
+
+NanoBot implements multiple layers of safety protection:
+- **Content Filtering**: Real-time AI-powered inappropriate content detection
+- **Age Verification**: Grade-level appropriate responses
+- **Violation Tracking**: Comprehensive safety incident monitoring
+- **Parental Controls**: Parent oversight and usage restrictions
+- **Educational Context**: Strict educational purpose enforcement
+
+</details>
+
+<details>
+<summary><strong>What student data is collected and how is it protected?</strong></summary>
+
+NanoBot follows strict privacy principles:
+- **Minimal Collection**: Only educationally necessary data
+- **Encryption**: All data encrypted in transit and at rest
+- **Access Control**: Role-based permissions (student, teacher, parent, admin)
+- **Compliance**: COPPA, FERPA, and GDPR aligned
+- **Retention**: Configurable data retention policies
+- **Transparency**: Clear privacy policies and data usage
+
+</details>
+
+### 🎓 **Educational Features**
+
+<details>
+<summary><strong>Which grade levels does NanoBot support?</strong></summary>
+
+NanoBot supports comprehensive K-12 education:
+- **Elementary (K-5)**: Basic concepts with visual learning
+- **Middle School (6-8)**: Intermediate complexity and project-based learning
+- **High School (9-12)**: Advanced topics and college preparation
+- **Adaptive**: Automatic difficulty adjustment based on student performance
+
+</details>
+
+<details>
+<summary><strong>How does NanoBot integrate with existing curriculum?</strong></summary>
+
+NanoBot aligns with educational standards:
+- **Standards Alignment**: Common Core, NGSS, and state standards
+- **Curriculum Mapping**: Integration with lesson plans and pacing guides
+- **Assessment Integration**: Compatible with existing testing platforms
+- **LMS Integration**: Works with Google Classroom, Canvas, Schoology
+- **Custom Content**: Institution-specific curriculum support
+
+</details>
+
+### 🔧 **Technical Questions**
+
+<details>
+<summary><strong>What are the system requirements for deployment?</strong></summary>
+
+**Minimum Requirements:**
+- 4 CPU cores, 8GB RAM, 100GB storage
+- PostgreSQL 14+ database
+- SSL certificate and domain
+- 50 Mbps internet connection
+
+**Recommended for Schools:**
+- 8+ CPU cores, 16GB+ RAM, 500GB+ SSD
+- Load balancer for high availability
+- 100+ Mbps dedicated internet
+- Backup and disaster recovery systems
+
+</details>
+
+<details>
+<summary><strong>Can NanoBot work offline?</strong></summary>
+
+NanoBot supports hybrid offline/online functionality:
+- **Client-side Database**: PGLite for offline data storage
+- **Local AI Models**: Optional on-premises model deployment
+- **Sync Capability**: Automatic sync when connectivity restored
+- **Safety Caching**: Pre-cached safety rules for offline operation
+- **Progressive Web App**: Mobile offline functionality
+
+</details>
+
+---
+
+## 🤝 Community & Support
+
+### 💬 **Get Help**
+
+- **📖 Documentation**: [docs.nanobot.edu](https://docs.nanobot.edu)
+- **💬 Discord Community**: [discord.gg/nanobot](https://discord.gg/nanobot)
+- **📧 Email Support**: support@rgknow.com
+- **🐛 Bug Reports**: [GitHub Issues](https://github.com/rgknow/nanobot/issues)
+- **💡 Feature Requests**: [GitHub Discussions](https://github.com/rgknow/nanobot/discussions)
+
+### 🌟 **Contributing**
+
+We welcome contributions from educators, developers, and the community:
+
+- **🔀 Code Contributions**: Submit pull requests with educational features
+- **📝 Documentation**: Help improve guides and tutorials
+- **🧪 Testing**: Report bugs and test new features
+- **🎨 Design**: UI/UX improvements for educational usability
+- **🌍 Translation**: Multi-language support for global education
+
+### 🏆 **Recognition**
+
+Special thanks to our contributors and supporters:
+
+- **🏫 Educational Partners**: Schools and districts using NanoBot
+- **👨‍💻 Open Source Contributors**: Community developers and maintainers
+- **🎓 Educators**: Teachers providing feedback and guidance
+- **👨‍👩‍👧‍👦 Families**: Parents and students helping improve safety features
+
+---
+
+## 📊 **Platform Statistics**
+
+<div align="center">
+
+### 🎯 **Star History**
+
+<picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=rgknow%2Fnanobot&theme=dark&type=Date">
+    <img width="100%" src="https://api.star-history.com/svg?repos=rgknow%2Fnanobot&type=Date">
+</picture>
+
+</div>
+
+---
+
+## 🚀 **What's Next**
+
+Transform your educational AI experience with NanoBot's powerful features designed for safe STEAM learning, comprehensive safety guardrails, and creative exploration.
+
+### 🔌 **Educational MCP Integration**
+
+Unlock the full potential of educational AI by enabling safe, secure, and dynamic interactions with maker workbench tools, educational resources, and STEAM learning services. NanoBot's MCP (Model Context Protocol) plugin system creates safe pathways between educational AI and learning ecosystems, enabling unprecedented educational connectivity while maintaining comprehensive safety guardrails.
+
+[![][image-mcp]][mcp-url]
+
+### 📱 **Cross-Platform Educational Experience**
+
+Get the full NanoBot educational experience without browser limitations—comprehensive, focused, and always safe for learning. Our desktop application provides a dedicated environment for educational AI interactions, ensuring optimal performance and minimal distractions for focused learning.
+
+[![][image-desktop]][desktop-url]
+
+### 🎨 **Educational Content Creation**
+
+Experience the power of Claude Artifacts, now integrated into NanoBot with educational safety guardrails. This revolutionary feature expands the boundaries of educational AI interaction, enabling safe real-time creation and visualization of diverse educational content formats.
+
+### 📚 **Educational Knowledge Base**
+
+NanoBot supports educational file upload and knowledge base functionality with comprehensive safety filtering. You can upload various types of educational files including documents, images, audio, and video, as well as create educational knowledge bases, making it convenient for learners to manage and search for educational content. Additionally, you can utilize files and knowledge base features during learning conversations, enabling a richer educational dialogue experience.
+
+> Learn more on [📘 NanoBot Educational Knowledge Base — Safe Learning Resources for STEAM Education](https://rgknow.com/blog/educational-knowledge-base)
+
+### 🤖 **AI Model Provider Support**
+
+In the continuous development of NanoBot, we deeply understand the importance of diversity in model service providers for meeting the educational needs of the learning community when providing safe AI educational services. Therefore, we have expanded our support to multiple model service providers with comprehensive safety filtering, rather than being limited to a single one, in order to offer educators and learners a more diverse and rich selection of educational AI interactions.
+
+In this way, NanoBot can more flexibly adapt to the needs of different educational contexts, while also providing educators and developers with a wider range of choices for safe learning environments.
+
+#### Supported Educational AI Providers
+
+- **[OpenAI](https://nanobot.edu/discover/provider/openai)**: OpenAI is a global leader in artificial intelligence research, with models like the GPT series pushing the frontiers of natural language processing. OpenAI is committed to transforming educational industries through innovative and efficient AI solutions. Their products demonstrate significant performance and cost-effectiveness, widely used in educational research, STEAM learning, and innovative educational applications.
+
+- **[Ollama](https://nanobot.edu/discover/provider/ollama)**: Ollama provides models that cover a wide range of educational fields, including code generation, mathematical operations, multilingual processing, and educational conversational interaction, catering to diverse educational institution-level and localized deployment needs.
+
+- **[Anthropic](https://nanobot.edu/discover/provider/anthropic)**: Anthropic is a company focused on AI research and development, offering a range of advanced language models such as Claude 3.5 Sonnet, Claude 3 Sonnet, Claude 3 Opus, and Claude 3 Haiku. These models achieve an ideal balance between intelligence, speed, and educational cost-effectiveness, suitable for various educational applications from institutional learning workloads to rapid-response educational scenarios.
+
+- **[Google](https://nanobot.edu/discover/provider/google)**: Google's Gemini series represents its most advanced, versatile AI models, developed by Google DeepMind, designed for multimodal educational capabilities, supporting seamless understanding and processing of educational text, code, images, audio, and video.
+
+- **[DeepSeek](https://nanobot.edu/discover/provider/deepseek)**: DeepSeek is a company focused on AI technology research and application, with its latest model DeepSeek-V2.5 integrating educational dialogue and safe code processing capabilities, achieving significant improvements in educational preference alignment, educational writing tasks, and safe instruction following.
+
+- **[Moonshot](https://nanobot.edu/discover/provider/moonshot)**: Moonshot is an open-source platform providing various natural language processing models with a wide range of educational applications, including educational content creation, academic research, intelligent educational recommendations, and safe STEAM learning support.
+
+- **[HuggingFace](https://nanobot.edu/discover/provider/huggingface)**: The HuggingFace Inference API provides a fast and safe way for educators to explore thousands of models for various educational tasks, giving instant access to high-performance educational models across multiple STEAM learning domains.
+
+- **[Cloudflare Workers AI](https://nanobot.edu/discover/provider/cloudflare)**: Run serverless GPU-powered educational machine learning models on Cloudflare's global network with comprehensive safety guardrails.
+
+---
+
+## 💝 Acknowledgments
+
+NanoBot builds upon the excellent foundation of LobeChat and is grateful to the open-source community for their contributions to AI and education.
+
+### 🏆 Special Recognition
+
+- **🏫 Educational Partners**: Forward-thinking schools and districts pioneering AI in education
+- **👨‍🏫 Educators**: Teachers worldwide providing invaluable feedback for educational AI
+- **👨‍👩‍👧‍👦 Families**: Parents and students helping shape safe AI learning experiences  
+- **🔧 Open Source Community**: Developers contributing to the future of educational technology
+
+---
+
+<div align="center">
+
+### 🌟 Built with Love for Education
+
+**NanoBot** - Empowering the next generation through safe, intelligent, and engaging AI-powered learning.
+
+[**🚀 Start Learning →**][vercel-link] · [**📖 Documentation**][docs] · [**🤝 Community**][discord-link]
+
+---
+
+<sup>© 2025 RGKnow. Licensed under the RGKnow Community License.</sup>
+
+</div>
+
+<!-- LINK GROUP -->
+
+- **[OpenAI](https://nanobot.edu/discover/provider/openai)**: OpenAI is a global leader in artificial intelligence research, with models like the GPT series pushing the frontiers of natural language processing. OpenAI is committed to transforming educational industries through innovative and efficient AI solutions. Their products demonstrate significant performance and cost-effectiveness, widely used in educational research, STEAM learning, and innovative educational applications.
+- **[Ollama](https://nanobot.edu/discover/provider/ollama)**: Ollama provides models that cover a wide range of educational fields, including code generation, mathematical operations, multilingual processing, and educational conversational interaction, catering to diverse educational institution-level and localized deployment needs.
+- **[Anthropic](https://nanobot.edu/discover/provider/anthropic)**: Anthropic is a company focused on AI research and development, offering a range of advanced language models such as Claude 3.5 Sonnet, Claude 3 Sonnet, Claude 3 Opus, and Claude 3 Haiku. These models achieve an ideal balance between intelligence, speed, and educational cost-effectiveness, suitable for various educational applications from institutional learning workloads to rapid-response educational scenarios. Claude 3.5 Sonnet, as their latest model, has excelled in multiple educational evaluations while maintaining comprehensive safety features.
+- **[Google](https://nanobot.edu/discover/provider/google)**: Google's Gemini series represents its most advanced, versatile AI models, developed by Google DeepMind, designed for multimodal educational capabilities, supporting seamless understanding and processing of educational text, code, images, audio, and video. Suitable for various educational environments from institutional data centers to mobile educational devices, it significantly enhances the efficiency and educational applicability of AI models.
+- **[DeepSeek](https://nanobot.edu/discover/provider/deepseek)**: DeepSeek is a company focused on AI technology research and application, with its latest model DeepSeek-V2.5 integrating educational dialogue and safe code processing capabilities, achieving significant improvements in educational preference alignment, educational writing tasks, and safe instruction following.
+- **[Moonshot](https://nanobot.edu/discover/provider/moonshot)**: Moonshot is an open-source platform launched by Beijing Dark Side Technology Co., Ltd., providing various natural language processing models with a wide range of educational applications, including but not limited to educational content creation, academic research, intelligent educational recommendations, and safe STEAM learning support, supporting long educational text processing and complex educational generation tasks.
+- **[HuggingFace](https://nanobot.edu/discover/provider/huggingface)**: The HuggingFace Inference API provides a fast and safe way for educators to explore thousands of models for various educational tasks. Whether you are prototyping for a new educational application or experimenting with the capabilities of machine learning in education, this API gives you instant access to high-performance educational models across multiple STEAM learning domains.
+- **[Cloudflare Workers AI](https://nanobot.edu/discover/provider/cloudflare)**: Run serverless GPU-powered educational machine learning models on Cloudflare's global network with comprehensive safety guardrails.
+
+---
+
+## 💝 Acknowledgments
+
+NanoBot builds upon the excellent foundation of LobeChat and is grateful to the open-source community for their contributions to AI and education.
+
+### 🏆 Special Recognition
+
+- **🎓 Educational Partners**: Forward-thinking schools and districts pioneering AI in education
+- **👨‍🏫 Educators**: Teachers worldwide providing invaluable feedback for educational AI
+- **👨‍👩‍👧‍👦 Families**: Parents and students helping shape safe AI learning experiences
+- **🔧 Open Source Community**: Developers contributing to the future of educational technology
+
+---
+
+<div align="center">
+
+### 🌟 Built with Love for Education
+
+**NanoBot** - Empowering the next generation through safe, intelligent, and engaging AI-powered learning.
+
+[**🚀 Start Learning →**][vercel-link] · [**📖 Documentation**][docs] · [**🤝 Community**][discord-link]
+
+---
+
+<sup>© 2025 RGKnow. Licensed under the RGKnow Community License.</sup>
+
+</div>
 
 - [👋🏻 Getting Started & Join Our Community](#-getting-started--join-our-community)
 - [✨ Features](#-features)
@@ -885,52 +1849,73 @@ This project is [LobeHub Community License](./LICENSE) licensed.
 [docs-usage-plugin]: https://lobehub.com/docs/usage/plugins/basic
 [fossa-license-link]: https://app.fossa.com/projects/git%2Bgithub.com%2Flobehub%2Flobe-chat
 [fossa-license-shield]: https://app.fossa.com/api/projects/git%2Bgithub.com%2Flobehub%2Flobe-chat.svg?type=large
-[github-action-release-link]: https://github.com/actions/workflows/lobehub/lobe-chat/release.yml
-[github-action-release-shield]: https://img.shields.io/github/actions/workflow/status/lobehub/lobe-chat/release.yml?label=release&labelColor=black&logo=githubactions&logoColor=white&style=flat-square
-[github-action-test-link]: https://github.com/actions/workflows/lobehub/lobe-chat/test.yml
-[github-action-test-shield]: https://img.shields.io/github/actions/workflow/status/lobehub/lobe-chat/test.yml?label=test&labelColor=black&logo=githubactions&logoColor=white&style=flat-square
-[github-contributors-link]: https://github.com/lobehub/lobe-chat/graphs/contributors
-[github-contributors-shield]: https://img.shields.io/github/contributors/lobehub/lobe-chat?color=c4f042&labelColor=black&style=flat-square
-[github-forks-link]: https://github.com/lobehub/lobe-chat/network/members
-[github-forks-shield]: https://img.shields.io/github/forks/lobehub/lobe-chat?color=8ae8ff&labelColor=black&style=flat-square
-[github-issues-link]: https://github.com/lobehub/lobe-chat/issues
-[github-issues-shield]: https://img.shields.io/github/issues/lobehub/lobe-chat?color=ff80eb&labelColor=black&style=flat-square
-[github-license-link]: https://github.com/lobehub/lobe-chat/blob/main/LICENSE
-[github-license-shield]: https://img.shields.io/badge/license-apache%202.0-white?labelColor=black&style=flat-square
-[github-project-link]: https://github.com/lobehub/lobe-chat/projects
-[github-release-link]: https://github.com/lobehub/lobe-chat/releases
-[github-release-shield]: https://img.shields.io/github/v/release/lobehub/lobe-chat?color=369eff&labelColor=black&logo=github&style=flat-square
-[github-releasedate-link]: https://github.com/lobehub/lobe-chat/releases
-[github-releasedate-shield]: https://img.shields.io/github/release-date/lobehub/lobe-chat?labelColor=black&style=flat-square
-[github-stars-link]: https://github.com/lobehub/lobe-chat/network/stargazers
-[github-stars-shield]: https://img.shields.io/github/stars/lobehub/lobe-chat?color=ffcb47&labelColor=black&style=flat-square
-[github-trending-shield]: https://trendshift.io/api/badge/repositories/2256
-[github-trending-url]: https://trendshift.io/repositories/2256
-[image-banner]: https://github.com/user-attachments/assets/6f293c7f-47b4-47eb-9202-fe68a942d35b
-[image-feat-agent]: https://github.com/user-attachments/assets/b3ab6e35-4fbc-468d-af10-e3e0c687350f
-[image-feat-artifacts]: https://github.com/user-attachments/assets/7f95fad6-b210-4e6e-84a0-7f39e96f3a00
-[image-feat-auth]: https://github.com/user-attachments/assets/80bb232e-19d1-4f97-98d6-e291f3585e6d
-[image-feat-branch]: https://github.com/user-attachments/assets/92f72082-02bd-4835-9c54-b089aad7fd41
-[image-feat-cot]: https://github.com/user-attachments/assets/f74f1139-d115-4e9c-8c43-040a53797a5e
-[image-feat-database]: https://github.com/user-attachments/assets/f1697c8b-d1fb-4dac-ba05-153c6295d91d
-[image-feat-desktop]: https://github.com/user-attachments/assets/a7bac8d3-ea96-4000-bb39-fadc9b610f96
-[image-feat-knowledgebase]: https://github.com/user-attachments/assets/7da7a3b2-92fd-4630-9f4e-8560c74955ae
-[image-feat-local]: https://github.com/user-attachments/assets/1239da50-d832-4632-a7ef-bd754c0f3850
-[image-feat-mcp]: https://github.com/user-attachments/assets/1be85d36-3975-4413-931f-27e05e440995
-[image-feat-mcp-market]: https://github.com/user-attachments/assets/bb114f9f-24c5-4000-a984-c10d187da5a0
-[image-feat-mobile]: https://github.com/user-attachments/assets/32cf43c4-96bd-4a4c-bfb6-59acde6fe380
-[image-feat-plugin]: https://github.com/user-attachments/assets/66a891ac-01b6-4e3f-b978-2eb07b489b1b
-[image-feat-privoder]: https://github.com/user-attachments/assets/e553e407-42de-4919-977d-7dbfcf44a821
-[image-feat-pwa]: https://github.com/user-attachments/assets/9647f70f-b71b-43b6-9564-7cdd12d1c24d
-[image-feat-t2i]: https://github.com/user-attachments/assets/708274a7-2458-494b-a6ec-b73dfa1fa7c2
-[image-feat-theme]: https://github.com/user-attachments/assets/b47c39f1-806f-492b-8fcb-b0fa973937c1
-[image-feat-tts]: https://github.com/user-attachments/assets/50189597-2cc3-4002-b4c8-756a52ad5c0a
-[image-feat-vision]: https://github.com/user-attachments/assets/18574a1f-46c2-4cbc-af2c-35a86e128a07
-[image-feat-web-search]: https://github.com/user-attachments/assets/cfdc48ac-b5f8-4a00-acee-db8f2eba09ad
-[image-overview]: https://github.com/user-attachments/assets/dbfaa84a-2c82-4dd9-815c-5be616f264a4
-[image-star]: https://github.com/user-attachments/assets/c3b482e7-cef5-4e94-bef9-226900ecfaab
-[issues-link]: https://img.shields.io/github/issues/lobehub/lobe-chat.svg?style=flat
-[lobe-chat-plugins]: https://github.com/lobehub/lobe-chat-plugins
+[github-action-release-link]: https://github.com/rgknow/nanobot/actions/workflows/release.yml
+[github-action-release-shield]: https://img.shields.io/github/actions/workflow/status/rgknow/nanobot/release.yml?label=release&labelColor=black&logo=githubactions&logoColor=white&style=flat-square
+[github-action-test-link]: https://github.com/rgknow/nanobot/actions/workflows/test.yml
+[github-action-test-shield]: https://img.shields.io/github/actions/workflow/status/rgknow/nanobot/test.yml?label=test&labelColor=black&logo=githubactions&logoColor=white&style=flat-square
+[github-contributors-link]: https://github.com/rgknow/nanobot/graphs/contributors
+[github-contributors-shield]: https://img.shields.io/github/contributors/rgknow/nanobot?color=c4f042&labelColor=black&style=flat-square
+[github-forks-link]: https://github.com/rgknow/nanobot/network/members
+[github-forks-shield]: https://img.shields.io/github/forks/rgknow/nanobot?color=8ae8ff&labelColor=black&style=flat-square
+[github-issues-link]: https://github.com/rgknow/nanobot/issues
+[github-issues-shield]: https://img.shields.io/github/issues/rgknow/nanobot?color=ff80eb&labelColor=black&style=flat-square
+[github-license-link]: https://github.com/rgknow/nanobot/blob/main/LICENSE
+[github-license-shield]: https://img.shields.io/github/license/rgknow/nanobot?color=white&labelColor=black&style=flat-square
+[github-project-link]: https://github.com/rgknow/nanobot/projects
+[github-release-link]: https://github.com/rgknow/nanobot/releases
+[github-release-shield]: https://img.shields.io/github/v/release/rgknow/nanobot?color=369eff&labelColor=black&logo=github&style=flat-square
+[github-releasedate-link]: https://github.com/rgknow/nanobot/releases
+[github-releasedate-shield]: https://img.shields.io/github/release-date/rgknow/nanobot?labelColor=black&style=flat-square
+[github-stars-link]: https://github.com/rgknow/nanobot/network/stargazers
+[github-stars-shield]: https://img.shields.io/github/stars/rgknow/nanobot?color=ffcb47&labelColor=black&style=flat-square
+[github-trending-shield]: https://trendshift.io/api/badge/repositories/11430
+[github-trending-url]: https://trendshift.io/repositories/11430
+[image-banner]: https://github.com/rgknow/nanobot/assets/banner.png
+[image-feat-agent]: https://github.com/rgknow/nanobot/assets/features/agent.png
+[image-feat-artifacts]: https://github.com/rgknow/nanobot/assets/features/artifacts.png
+[image-feat-auth]: https://github.com/rgknow/nanobot/assets/features/auth.png
+[image-feat-branch]: https://github.com/rgknow/nanobot/assets/features/branch.png
+[image-feat-cot]: https://github.com/rgknow/nanobot/assets/features/cot.png
+[image-feat-database]: https://github.com/rgknow/nanobot/assets/features/database.png
+[image-feat-desktop]: https://github.com/rgknow/nanobot/assets/features/desktop.png
+[image-feat-knowledgebase]: https://github.com/rgknow/nanobot/assets/features/knowledgebase.png
+[image-feat-local]: https://github.com/rgknow/nanobot/assets/features/local.png
+[image-feat-mcp]: https://github.com/rgknow/nanobot/assets/features/mcp.png
+[image-feat-mcp-market]: https://github.com/rgknow/nanobot/assets/features/mcp-market.png
+[image-feat-mobile]: https://github.com/rgknow/nanobot/assets/features/mobile.png
+[image-feat-plugin]: https://github.com/rgknow/nanobot/assets/features/plugin.png
+[image-feat-privoder]: https://github.com/rgknow/nanobot/assets/features/provider.png
+[image-feat-pwa]: https://github.com/rgknow/nanobot/assets/features/pwa.png
+[image-feat-t2i]: https://github.com/rgknow/nanobot/assets/features/t2i.png
+[image-feat-theme]: https://github.com/rgknow/nanobot/assets/features/theme.png
+[image-feat-tts]: https://github.com/rgknow/nanobot/assets/features/tts.png
+[image-feat-vision]: https://github.com/rgknow/nanobot/assets/features/vision.png
+[image-feat-web-search]: https://github.com/rgknow/nanobot/assets/features/web-search.png
+[image-overview]: https://github.com/rgknow/nanobot/assets/overview.png
+[image-star]: https://github.com/rgknow/nanobot/assets/star.png
+[issues-link]: https://github.com/rgknow/nanobot/issues
+[mcp-url]: https://nanobot.edu/mcp
+[official-site]: https://nanobot.edu
+[share-linkedin-link]: https://linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fgithub.com%2Frgknow%2Fnanobot
+[share-linkedin-shield]: https://img.shields.io/badge/-share%20on%20linkedin-black?labelColor=black&logo=linkedin&logoColor=white&style=flat-square
+[share-mastodon-link]: https://mastodon.social/share?text=Check%20out%20this%20awesome%20educational%20AI%20platform%20https%3A%2F%2Fgithub.com%2Frgknow%2Fnanobot
+[share-mastodon-shield]: https://img.shields.io/badge/-share%20on%20mastodon-black?labelColor=black&logo=mastodon&logoColor=white&style=flat-square
+[share-reddit-link]: https://www.reddit.com/submit?title=%F0%9F%A4%96%20NanoBot%20-%20Educational%20AI%20Platform&url=https%3A%2F%2Fgithub.com%2Frgknow%2Fnanobot
+[share-reddit-shield]: https://img.shields.io/badge/-share%20on%20reddit-black?labelColor=black&logo=reddit&logoColor=white&style=flat-square
+[share-telegram-link]: https://t.me/share/url?text=%F0%9F%A4%96%20NanoBot%20-%20Educational%20AI%20Platform&url=https%3A%2F%2Fgithub.com%2Frgknow%2Fnanobot
+[share-telegram-shield]: https://img.shields.io/badge/-share%20on%20telegram-black?labelColor=black&logo=telegram&logoColor=white&style=flat-square
+[share-weibo-link]: http://service.weibo.com/share/share.php?sharesource=weibo&title=%F0%9F%A4%96%20NanoBot%20-%20Educational%20AI%20Platform&url=https%3A%2F%2Fgithub.com%2Frgknow%2Fnanobot
+[share-weibo-shield]: https://img.shields.io/badge/-share%20on%20weibo-black?labelColor=black&logo=sinaweibo&logoColor=white&style=flat-square
+[share-whatsapp-link]: https://api.whatsapp.com/send?text=%F0%9F%A4%96%20NanoBot%20-%20Educational%20AI%20Platform%20https%3A%2F%2Fgithub.com%2Frgknow%2Fnanobot
+[share-whatsapp-shield]: https://img.shields.io/badge/-share%20on%20whatsapp-black?labelColor=black&logo=whatsapp&logoColor=white&style=flat-square
+[share-x-link]: https://x.com/intent/tweet?hashtags=chatbot%2CchatGPT%2CopenAI&text=%F0%9F%A4%98%20NanoBot%20-%20Educational%20AI%20Platform&url=https%3A%2F%2Fgithub.com%2Frgknow%2Fnanobot
+[share-x-shield]: https://img.shields.io/badge/-share%20on%20x-black?labelColor=black&logo=x&logoColor=white&style=flat-square
+[sponsor-link]: https://opencollective.com/nanobot
+[sponsor-shield]: https://img.shields.io/badge/-Sponsor%20NanoBot-f04f88?logo=opencollective&logoColor=white&style=flat-square
+[vercel-link]: https://nanobot.edu
+[vercel-shield]: https://img.shields.io/website?down_message=offline&label=vercel&labelColor=black&logo=vercel&style=flat-square&up_message=online&url=https%3A%2F%2Fnanobot.edu
+[vercel-shield-badge]: https://img.shields.io/website?down_message=offline&label=try%20nanobot&labelColor=black&logo=vercel&style=for-the-badge&up_message=online&url=https%3A%2F%2Fnanobot.edu
+[desktop-url]: https://nanobot.edu/desktop
 [lobe-commit]: https://github.com/lobehub/lobe-commit/tree/master/packages/lobe-commit
 [lobe-i18n]: https://github.com/lobehub/lobe-commit/tree/master/packages/lobe-i18n
 [lobe-icons-github]: https://github.com/lobehub/lobe-icons
